@@ -1,0 +1,55 @@
+/* Defino tus colores como variables globales */
+.root {
+    -color-primario: #2ECC71;   /* Verde Esmeralda */
+    -color-secundario: #1ABC9C; /* Azul Cerceta */
+    -color-texto: #2C3E50;      /* Gris Pizarra */
+    -color-fondo: #ECF0F1;      /* Gris Claro */
+    -color-acento: #F1C40F;     /* Amarillo Solar */
+
+    /* Aplicamos el fondo general a toda la app */
+    -fx-background-color: -color-fondo;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+/* Títulos y Etiquetas */
+.label {
+    -fx-text-fill: -color-texto;
+}
+
+.titulo {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-secundario; /* El azul para títulos */
+}
+
+/* Botón Principal (Verde) */
+.boton-primario {
+    -fx-background-color: -color-primario;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.boton-primario:hover {
+    -fx-background-color: derive(-color-primario, -10%); /* Un poco más oscuro al pasar el ratón */
+}
+
+/* Botón Secundario o de Acción (Azul) */
+.boton-secundario {
+    -fx-background-color: -color-secundario;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+}
+
+/* Campos de Texto */
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: #BDC3C7;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+}
+
+.text-field:focused {
+    -fx-border-color: -color-secundario; /* Se ilumina azul al escribir */
+}
