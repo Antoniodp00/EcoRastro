@@ -1,16 +1,16 @@
-package org.dam2.adp.ecorastro.dao;
+package org.dam2.adp.ecorastro.DAO;
 
 import org.dam2.adp.ecorastro.model.Usuario;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class UsuarioDaoTest {
+class UsuarioDAOTest {
 
 
     @Test
     void testGuardarUsuario() {
         // 1. Arrange
-        UsuarioDao dao = new UsuarioDao();
+        UsuarioDAO dao = new UsuarioDAO();
         String emailUnico = "alumno_" + System.currentTimeMillis() + "@clase.com";
 
         Usuario usuario = new Usuario();
@@ -23,15 +23,15 @@ class UsuarioDaoTest {
 
         // 3. Assert
         assertTrue(resultado, "El método debería devolver true si guardó correctamente");
-        assertNotNull(usuario.getIdUsuario(), "El ID debería haberse generado");
+        assertNotNull(usuario.getId(), "El ID debería haberse generado");
 
-        System.out.println("Usuario guardado ID: " + usuario.getIdUsuario());
+        System.out.println("Usuario guardado ID: " + usuario.getId());
     }
 
     @Test
     void testBuscarPorEmail() {
         // 1. Arrange: Guardamos uno primero
-        UsuarioDao dao = new UsuarioDao();
+        UsuarioDAO dao = new UsuarioDAO();
         String email = "busqueda_" + System.currentTimeMillis() + "@test.com";
         Usuario user = new Usuario("Busqueda", email, "123");
         dao.addUsuario(user);
@@ -43,4 +43,6 @@ class UsuarioDaoTest {
         assertNotNull(encontrado);
         assertEquals(email, encontrado.getEmail());
     }
+
+
 }

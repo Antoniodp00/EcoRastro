@@ -1,20 +1,21 @@
 package org.dam2.adp.ecorastro.connection;
 
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 public class Connection {
     private static Connection instance;
-    private final SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
     private Connection() {
-        // Inicializamos la fábrica usando la unidad de persistencia que definimos en el XML
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("EcoRastroPU");
-        // Extraemos la SessionFactory nativa de Hibernate
-        this.sessionFactory = emf.unwrap(SessionFactory.class);
+        try {
+            // Esto lee automáticamente el archivo "hibernate.cfg.xml" de resources
+            sessionFactory = new Configuration().configure().buildSessionFactory();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error al iniciar Hibernate: " + e.getMessage());
+        }
     }
 
     public static Connection getInstance() {
@@ -26,5 +27,12 @@ public class Connection {
 
     public Session getSession() {
         return sessionFactory.openSession();
+    }
+
+    // Método útil para cerrar la fábrica al salir de la app
+    public void close() {
+        if (sessionFactory != null && sessionFactory.isOpen()) {
+            sessionFactory.close();
+        }
     }
 }

@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- Configuracion a la BBDD -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ecorastro_db?useSSL=false&amp;serverTimezone=UTC</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">1234</property>
+
+        <!-- Dialecto de Hibernate para MySQL -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <!-- Configuración de Hibernate -->
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <mapping class="org.dam2.adp.ecorastro.model.Usuario"/>
+        <mapping class="org.dam2.adp.ecorastro.model.Actividad"/>
+        <mapping class="org.dam2.adp.ecorastro.model.Categoria"/>
+        <mapping class="org.dam2.adp.ecorastro.model.Habito"/>
+        <mapping class="org.dam2.adp.ecorastro.model.Huella"/>
+        <mapping class="org.dam2.adp.ecorastro.model.Recomendacion"/>
+
+
+
+
+
+
+
+
+    </session-factory>
+</hibernate-configuration>
