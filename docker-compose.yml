@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  db_mysql:
+    image: mysql:8.0 #  8.0 por estabilidad
+    container_name: mysql_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: ecorastro_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "3306:3306" # Mapeo Host:Contenedor
+    volumes:
+      - mysql_data:/var/lib/mysql # Persistencia de datos
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  mysql_data:

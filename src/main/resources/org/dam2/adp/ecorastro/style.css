@@ -53,3 +53,25 @@
 .text-field:focused {
     -fx-border-color: -color-secundario; /* Se ilumina azul al escribir */
 }
+
+/* Botones del Menú Lateral */
+.boton-menu {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT; /* Alineamos texto e icono a la izquierda */
+    -fx-padding: 10 15; /* Espacio interno para que respiren */
+}
+
+/* Efecto al pasar el ratón por encima (Hover) */
+.boton-menu:hover {
+    -fx-background-color: derive(-color-secundario, -20%); /* Oscurece un poco el azul */
+    -fx-border-color: transparent transparent transparent white; /* Borde blanco a la izquierda */
+    -fx-border-width: 0 0 0 4; /* Solo borde izquierdo de 4px */
+}
+
+/* Efecto al hacer clic (Pressed) */
+.boton-menu:pressed {
+    -fx-background-color: derive(-color-secundario, -40%);
+}

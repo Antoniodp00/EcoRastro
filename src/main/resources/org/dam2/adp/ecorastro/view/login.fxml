@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="20.0"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.dam2.adp.ecorastro.controller.LoginController"
+      style ="-fx-background-color: -color-fondo;">
+
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+
+    <Label text="EcoRastro" styleClass="titulo">
+        <font>
+            <Font size="32.0" />
+        </font>
+    </Label>
+
+    <Label text="Bienvenido de nuevo" style="-fx-text-fill: -color-texto; -fx-font-size: 14px;"/>
+
+    <VBox spacing="10.0" maxWidth="300.0">
+        <Label text="Correo Electrónico" styleClass="label"/>
+        <TextField fx:id="txtEmail" promptText="ejemplo@email.com" />
+
+        <Label text="Contraseña" styleClass="label"/>
+        <PasswordField fx:id="txtPassword" promptText="Tu contraseña" />
+
+        <Label fx:id="lblError" textFill="RED" visible="false" wrapText="true"/>
+    </VBox>
+
+    <Button text="Iniciar Sesión" onAction="#onLoginClick"
+            styleClass="boton-primario" prefWidth="300.0" prefHeight="40.0"/>
+
+    <Button text="¿No tienes cuenta? Regístrate" onAction="#onRegisterClick"
+            style="-fx-background-color: transparent; -fx-text-fill: -color-secundario; -fx-cursor: hand;"/>
+
+</VBox>
