@@ -57,27 +57,38 @@ public class Navigation {
     }
 
     /**
-     * Cambia la escena actual por una nueva e inyecta el CSS personalizado.
+     * Cambia la escena actual por una nueva.
      * @param fxml El archivo FXML de la escena a cargar.
      */
     public static void switchScene(String fxml) {
         if (primaryStage == null) {
-            logger.log(Level.SEVERE, "Primary stage no está establecido. No se puede cambiar de escena.");
+            logger.log(Level.SEVERE, "¡ERROR! Primary stage es NULL. Llama a Navigation.setStage(stage) en tu Main.");
             return;
         }
         try {
-            logger.log(Level.INFO, "Cambiando a la escena completa: " + fxml);
+            // CORRECCIÓN CLAVE: Ruta absoluta exacta según tu estructura de carpetas
+            // Fíjate que empieza por "/" y sigue toda la ruta de paquetes
+            String ruta = "/org/dam2/adp/ecorastro/view/" + fxml;
 
-            FXMLLoader loader = new FXMLLoader(Navigation.class.getResource("/view/" + fxml));
+            URL resource = Navigation.class.getResource(ruta);
+
+            if (resource == null) {
+                System.err.println(" ERROR: No se encuentra: " + ruta);
+                System.err.println("   Verifica que el archivo " + fxml + " está en src/main/resources/org/dam2/adp/ecorastro/view/");
+                return;
+            }
+
+            logger.log(Level.INFO, "Cambiando escena a: " + ruta);
+
+            FXMLLoader loader = new FXMLLoader(resource);
             Parent root = loader.load();
-
             Scene scene = new Scene(root);
 
             primaryStage.setScene(scene);
 
+            // Ajustes de ventana para Login/Registro
             if (fxml.equals("login.fxml") || fxml.equals("register.fxml")) {
                 primaryStage.setResizable(false);
-                primaryStage.setMaximized(false);
                 primaryStage.sizeToScene();
                 primaryStage.centerOnScreen();
             } else {
@@ -87,7 +98,8 @@ public class Navigation {
 
             primaryStage.show();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Error al cargar FXML para la escena " + fxml, e);
+            logger.log(Level.SEVERE, "Error CRÍTICO al cargar el FXML: " + fxml, e);
+            e.printStackTrace();
         }
     }
 

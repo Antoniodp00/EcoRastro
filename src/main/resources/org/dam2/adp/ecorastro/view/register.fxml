@@ -12,7 +12,8 @@
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.dam2.adp.ecorastro.controller.RegisterController"
-      style="-fx-background-color: -color-fondo;">
+      stylesheets="@../style.css"
+      styleClass="panel-base">
 
     <padding>
         <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
@@ -35,7 +36,7 @@
         <Label text="Confirmar Contraseña" styleClass="label"/>
         <PasswordField fx:id="txtConfirmPassword" promptText="Repite tu contraseña" />
 
-        <Label fx:id="lblMensaje" visible="false" wrapText="true" style="-fx-font-weight: bold;"/>
+        <Label fx:id="lblMensaje" visible="false" wrapText="true" styleClass="mensaje-alerta"/>
     </VBox>
 
     <Button text="Registrarse" onAction="#onRegistrarClick"

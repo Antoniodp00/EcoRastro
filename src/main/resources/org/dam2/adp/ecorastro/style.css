@@ -1,77 +1,198 @@
-/* Defino tus colores como variables globales */
+/* =========================================================
+   NUEVA PALETA DE COLORES (Tema "Corporate Eco")
+   ========================================================= */
 .root {
-    -color-primario: #2ECC71;   /* Verde Esmeralda */
-    -color-secundario: #1ABC9C; /* Azul Cerceta */
-    -color-texto: #2C3E50;      /* Gris Pizarra */
-    -color-fondo: #ECF0F1;      /* Gris Claro */
-    -color-acento: #F1C40F;     /* Amarillo Solar */
+    -color-primario: #FF6F61;   /* Coral Vivo */
+    -color-secundario: #2C3E50; /* Azul Medianoche */
+    -color-terciario: #5D6D7E;  /* Azul Acero */
+    -color-fondo: #F5F5F5;      /* Blanco Humo */
+    -color-acento: #FFCA28;     /* Amarillo Ámbar */
+    -color-texto: #2C3E50;      /* Gris Oscuro */
 
-    /* Aplicamos el fondo general a toda la app */
     -fx-background-color: -color-fondo;
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 14px;
 }
 
-/* Títulos y Etiquetas */
-.label {
-    -fx-text-fill: -color-texto;
-}
+/* =========================================================
+   TEXTOS Y TÍTULOS
+   ========================================================= */
+.label { -fx-text-fill: -color-texto; }
 
 .titulo {
-    -fx-font-size: 24px;
+    -fx-font-size: 26px;
     -fx-font-weight: bold;
-    -fx-text-fill: -color-secundario; /* El azul para títulos */
+    -fx-text-fill: -color-secundario;
 }
 
-/* Botón Principal (Verde) */
+.subtitulo {
+    -fx-font-size: 14px;
+    -fx-text-fill: -color-terciario;
+}
+
+/* =========================================================
+   BOTONES GENÉRICOS
+   ========================================================= */
 .boton-primario {
     -fx-background-color: -color-primario;
     -fx-text-fill: white;
     -fx-background-radius: 5;
     -fx-font-weight: bold;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
 }
+.boton-primario:hover { -fx-background-color: derive(-color-primario, -15%); }
 
-.boton-primario:hover {
-    -fx-background-color: derive(-color-primario, -10%); /* Un poco más oscuro al pasar el ratón */
-}
-
-/* Botón Secundario o de Acción (Azul) */
 .boton-secundario {
-    -fx-background-color: -color-secundario;
+    -fx-background-color: -color-terciario;
     -fx-text-fill: white;
     -fx-background-radius: 5;
+    -fx-cursor: hand;
 }
+.boton-secundario:hover { -fx-background-color: derive(-color-terciario, -15%); }
 
-/* Campos de Texto */
-.text-field {
+/* =========================================================
+   FORMULARIOS
+   ========================================================= */
+.text-field, .password-field, .combo-box {
     -fx-background-color: white;
     -fx-border-color: #BDC3C7;
-    -fx-border-radius: 3;
-    -fx-background-radius: 3;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 8;
+}
+.text-field:focused, .password-field:focused, .combo-box:focused {
+    -fx-border-color: -color-primario;
+    -fx-background-color: white;
 }
 
-.text-field:focused {
-    -fx-border-color: -color-secundario; /* Se ilumina azul al escribir */
+/* =========================================================
+   ESTRUCTURA Y PANELES (Nuevos para limpiar FXML)
+   ========================================================= */
+.panel-base {
+    -fx-background-color: -color-fondo;
 }
 
-/* Botones del Menú Lateral */
+.sidebar {
+    -fx-background-color: -color-secundario;
+}
+
+.scroll-transparente {
+    -fx-background-color: transparent;
+    -fx-background: transparent; /* Necesario para quitar el gris del scrollpane */
+}
+.scroll-transparente > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* =========================================================
+   MENÚ LATERAL
+   ========================================================= */
 .boton-menu {
     -fx-background-color: transparent;
-    -fx-text-fill: white;
+    -fx-text-fill: #ECF0F1;
     -fx-font-size: 14px;
     -fx-cursor: hand;
-    -fx-alignment: CENTER_LEFT; /* Alineamos texto e icono a la izquierda */
-    -fx-padding: 10 15; /* Espacio interno para que respiren */
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 12 20;
 }
-
-/* Efecto al pasar el ratón por encima (Hover) */
 .boton-menu:hover {
-    -fx-background-color: derive(-color-secundario, -20%); /* Oscurece un poco el azul */
-    -fx-border-color: transparent transparent transparent white; /* Borde blanco a la izquierda */
-    -fx-border-width: 0 0 0 4; /* Solo borde izquierdo de 4px */
+    -fx-background-color: derive(-color-secundario, 15%);
+    -fx-border-color: transparent transparent transparent -color-primario;
+    -fx-border-width: 0 0 0 5;
+    -fx-padding: 12 15;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.boton-menu:pressed { -fx-background-color: derive(-color-secundario, -10%); }
+
+/* Botón de Cerrar Sesión (Rojo) */
+.boton-logout {
+    -fx-background-color: #E74C3C;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+    -fx-padding: 10;
+}
+.boton-logout:hover { -fx-background-color: derive(#E74C3C, -15%); }
+
+/* =========================================================
+   DASHBOARD / TARJETAS (Lo que faltaba)
+   ========================================================= */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-padding: 20;
 }
 
-/* Efecto al hacer clic (Pressed) */
-.boton-menu:pressed {
-    -fx-background-color: derive(-color-secundario, -40%);
+.card-titulo {
+    -fx-font-size: 14px;
+    -fx-text-fill: -color-terciario;
+    -fx-font-weight: bold;
 }
+
+.card-numero {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-secundario;
+}
+
+/* Variante para cuando el número debe ser Coral (ej: Árboles) */
+.card-numero-destacado {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-primario;
+}
+
+.card-unidad {
+    -fx-font-size: 14px;
+    -fx-text-fill: -color-terciario;
+}
+
+/* Tarjeta azul del Eco-Tip */
+.card-azul {
+    -fx-background-color: -color-secundario;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+.titulo-tip {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+}
+
+.texto-tip {
+    -fx-padding: 10 0 0 0;
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
+
+.boton-translucido {
+    -fx-background-color: rgba(255,255,255,0.2);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+}
+.boton-translucido:hover {
+    -fx-background-color: rgba(255,255,255,0.3);
+}
+
+/* Gráfico de Tarta */
+.chart-pie-label { -fx-fill: -color-secundario; -fx-font-size: 11px; }
+.default-color0.chart-pie { -fx-pie-color: -color-primario; }
+.default-color1.chart-pie { -fx-pie-color: -color-secundario; }
+.default-color2.chart-pie { -fx-pie-color: -color-acento; }
+.default-color3.chart-pie { -fx-pie-color: -color-terciario; }
+
+/* =========================================================
+   ALERTAS
+   ========================================================= */
+.mensaje-alerta { -fx-font-weight: bold; -fx-font-size: 13px; -fx-alignment: CENTER; }
+.dialog-pane { -fx-background-color: white; -fx-border-color: -color-secundario; -fx-border-width: 2px; }
+.dialog-pane .header-panel { -fx-background-color: -color-secundario; }
+.dialog-pane .header-panel .label { -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; }
+.dialog-pane .button-bar .button { -fx-background-color: -color-terciario; -fx-text-fill: white; }
+.dialog-pane .button-bar .button:hover { -fx-background-color: -color-primario; }

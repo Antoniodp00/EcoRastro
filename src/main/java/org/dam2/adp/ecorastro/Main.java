@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.dam2.adp.ecorastro.util.Navigation;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -11,11 +12,10 @@ import java.util.Objects;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-      FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/login.fxml"));
-      Scene scene = new Scene(loader.load(),400,500);
+        Navigation.setStage(stage);
 
-      String css = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
-      scene.getStylesheets().add(css);
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/login.fxml"));
+        Scene scene = new Scene(loader.load(),400,500);
 
       stage.setTitle("EcoRastro");
       stage.setScene(scene);
