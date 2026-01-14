@@ -20,4 +20,8 @@ public class MainController {
 
     public void cerrarSesion(ActionEvent actionEvent) {
     }
+
+    public void loadView(String fxml) {
+        
+    }
 }

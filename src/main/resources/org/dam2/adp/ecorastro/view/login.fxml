@@ -36,10 +36,10 @@
         <Label fx:id="lblError" textFill="RED" visible="false" wrapText="true"/>
     </VBox>
 
-    <Button text="Iniciar Sesión" onAction="#onLoginClick"
+    <Button text="Iniciar Sesión" onAction="#onLoginClick" fx:id="btnLogin"
             styleClass="boton-primario" prefWidth="300.0" prefHeight="40.0"/>
 
-    <Button text="¿No tienes cuenta? Regístrate" onAction="#onRegisterClick"
+    <Button text="¿No tienes cuenta? Regístrate" onAction="#onRegisterClick" fx:id="btnRegister"
             style="-fx-background-color: transparent; -fx-text-fill: -color-secundario; -fx-cursor: hand;"/>
 
 </VBox>
