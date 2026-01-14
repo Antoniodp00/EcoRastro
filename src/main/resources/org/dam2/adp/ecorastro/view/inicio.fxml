@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.dam2.adp.ecorastro.controller.InicioController"
+            prefHeight="400.0" prefWidth="600.0"
+            stylesheets="@../style.css">
+
+    <ScrollPane fitToWidth="true" fitToHeight="true"
+                styleClass="scroll-transparente"
+                AnchorPane.topAnchor="0.0"
+                AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0"
+                AnchorPane.rightAnchor="0.0">
+        <content>
+            <VBox spacing="30.0" styleClass="panel-base">
+                <padding>
+                    <Insets top="30" right="30" bottom="30" left="30"/>
+                </padding>
+
+                <VBox spacing="5">
+                    <Label text="Panel de Control" styleClass="titulo"/>
+                    <Label text="Resumen de tu impacto ecológico este mes" styleClass="subtitulo"/>
+                </VBox>
+
+                <HBox spacing="20.0" alignment="CENTER_LEFT">
+
+                    <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+                        <Label text="HUELLA TOTAL" styleClass="card-titulo"/>
+                        <HBox alignment="BASELINE_LEFT" spacing="5">
+                            <Label fx:id="lblHuellaTotal" text="0.0" styleClass="card-numero"/>
+                            <Label text="kg CO₂" styleClass="card-unidad"/>
+                        </HBox>
+                    </VBox>
+
+                    <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+                        <Label text="ÁRBOLES NECESARIOS" styleClass="card-titulo"/>
+                        <HBox alignment="BASELINE_LEFT" spacing="5">
+                            <Label text="0" styleClass="card-numero-destacado"/>
+                            <Label text="árboles" styleClass="card-unidad"/>
+                        </HBox>
+                    </VBox>
+
+                    <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+                        <Label text="REGISTROS HOY" styleClass="card-titulo"/>
+                        <HBox alignment="BASELINE_LEFT" spacing="5">
+                            <Label text="0" styleClass="card-numero"/>
+                            <Label text="acts." styleClass="card-unidad"/>
+                        </HBox>
+                    </VBox>
+
+                </HBox>
+
+                <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+
+                    <VBox styleClass="card" HBox.hgrow="ALWAYS" prefHeight="300">
+                        <Label text="Distribución por Categoría" styleClass="card-titulo"/>
+                        <PieChart fx:id="pieChart" legendSide="RIGHT"/>
+                    </VBox>
+
+                    <VBox styleClass="card-azul" prefWidth="250">
+                        <Label text="💡 ECO-TIP" styleClass="titulo-tip"/>
+
+                        <Label text="Reducir el consumo de carne un día a la semana ahorra 170kg de CO2 al año."
+                               wrapText="true" VBox.vgrow="ALWAYS" styleClass="texto-tip"/>
+
+                        <Button text="Ver más tips" styleClass="boton-translucido"/>
+                    </VBox>
+
+                </HBox>
+
+            </VBox>
+        </content>
+    </ScrollPane>
+</AnchorPane>

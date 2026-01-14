@@ -5,9 +5,11 @@ import org.dam2.adp.ecorastro.model.Usuario;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 public class UsuarioDAO {
 
-    private final String GET_USUARIO_BY_EMAIL = "FROM Usuario WHERE email = :email";
+    private final String GET_ALL_HQL = "FROM Usuario";
 
     public boolean addUsuario(Usuario usuario) {
 
@@ -30,6 +32,44 @@ public class UsuarioDAO {
         return insertado;
     }
 
+
+    public boolean updateUsuario(Usuario usuario) {
+        boolean actualizado = false;
+        Transaction tx = null;
+
+        try (Session session = Connection.getInstance().getSession()) {
+            tx = session.beginTransaction();
+            session.merge(usuario);
+            tx.commit();
+            actualizado = true;
+        }catch (Exception e) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+        return actualizado;
+    }
+
+
+    public boolean deleteUsuario(Usuario usuario) {
+        boolean eliminado = false;
+        Transaction tx = null;
+
+        try (Session session = Connection.getInstance().getSession()) {
+            tx = session.beginTransaction();
+            session.remove(usuario);
+            tx.commit();
+            eliminado = true;
+        }catch (Exception e) {
+            if (tx != null && tx.isActive()) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+        return eliminado;
+    }
+
     public Usuario getUsuarioById(int id){
         try(Session session = Connection.getInstance().getSession()){
             return session.get(Usuario.class, id);
@@ -38,8 +78,10 @@ public class UsuarioDAO {
 
     public Usuario getUsuarioByEmail(String email){
         try(Session session = Connection.getInstance().getSession()){
-            return (Usuario) session.createQuery(GET_USUARIO_BY_EMAIL, Usuario.class)
-                    .setParameter("email", email);
+            return session.createQuery("FROM Usuario WHERE email = :email", Usuario.class)
+                    .setParameter("email", email)
+                    .uniqueResult();
         }
     }
+
 }

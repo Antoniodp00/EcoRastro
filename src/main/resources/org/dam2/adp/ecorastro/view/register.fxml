@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="15.0"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.dam2.adp.ecorastro.controller.RegisterController"
+      stylesheets="@../style.css"
+      styleClass="panel-base">
+
+    <padding>
+        <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+    </padding>
+
+    <Label text="Crear Cuenta" styleClass="titulo">
+        <font> <Font size="28.0" /> </font>
+    </Label>
+
+    <VBox spacing="10.0" maxWidth="300.0">
+        <Label text="Nombre Completo" styleClass="label"/>
+        <TextField fx:id="txtNombre" promptText="Tu nombre" />
+
+        <Label text="Correo Electrónico" styleClass="label"/>
+        <TextField fx:id="txtEmail" promptText="ejemplo@email.com" />
+
+        <Label text="Contraseña" styleClass="label"/>
+        <PasswordField fx:id="txtPassword" promptText="Mínimo 4 caracteres" />
+
+        <Label text="Confirmar Contraseña" styleClass="label"/>
+        <PasswordField fx:id="txtConfirmPassword" promptText="Repite tu contraseña" />
+
+        <Label fx:id="lblMensaje" visible="false" wrapText="true" styleClass="mensaje-alerta"/>
+    </VBox>
+
+    <Button text="Registrarse" onAction="#onRegistrarClick"
+            styleClass="boton-primario" prefWidth="300.0" prefHeight="40.0"/>
+
+    <Button text="Volver al Login" onAction="#onVolverClick"
+            styleClass="boton-secundario" prefWidth="300.0"/>
+
+</VBox>

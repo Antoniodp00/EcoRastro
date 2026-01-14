@@ -22,9 +22,11 @@ module org.dam2.adp.ecorastro {
     // 2. Permite conectarse a SQL y usar nombres JNDI
     requires java.naming;
     requires java.sql;
+    requires jbcrypt;
 
     // 3. Permite abrir tus paquetes a JavaFX y Hibernate
     opens org.dam2.adp.ecorastro to javafx.fxml;
+    opens org.dam2.adp.ecorastro.controller to javafx.fxml;
     exports org.dam2.adp.ecorastro;
 
     // AÑADE ESTO: Abre tus modelos para que Hibernate pueda leer las entidades

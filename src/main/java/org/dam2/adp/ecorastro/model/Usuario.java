@@ -23,7 +23,7 @@ public class Usuario {
     @Column(name = "email", nullable = false, length = 150)
     private String email;
 
-    @Column(name = "contrasena", nullable = false)
+    @Column(name = "contrasena", nullable = false, length = 60)
     private String contrasena;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
