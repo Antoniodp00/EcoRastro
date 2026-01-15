@@ -96,4 +96,15 @@ public class Huella {
         this.fecha = fecha;
     }
 
+    @Override
+    public String toString() {
+        return "Huella{" +
+                "id=" + id +
+                ", valor=" + valor +
+                ", unidad='" + unidad + '\'' +
+                ", fecha=" + fecha +
+                ", idUsuario=" + (idUsuario != null ? idUsuario.getId() : "null") +
+                ", idActividad=" + (idActividad != null ? idActividad.getId() : "null") +
+                '}';
+    }
 }
