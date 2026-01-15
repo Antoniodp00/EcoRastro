@@ -1,14 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<ScrollPane fitToWidth="true" fitToHeight="true"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.dam2.adp.ecorastro.controller.RegisterHuellaController"
-            prefHeight="400.0" prefWidth="600.0">
+            stylesheets="@../style.css"
+            styleClass="scroll-transparente">
 
-</AnchorPane>
+    <content>
+        <VBox alignment="TOP_CENTER" spacing="30.0" styleClass="panel-base">
+            <padding>
+                <Insets top="40" right="20" bottom="40" left="20"/>
+            </padding>
+
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="👣" style="-fx-font-size: 48px;"/>
+                <Label text="Nueva Huella" styleClass="titulo"/>
+                <Label text="Registra tu actividad para calcular el impacto" styleClass="subtitulo"/>
+            </VBox>
+
+            <VBox styleClass="card" maxWidth="500" spacing="20">
+                <padding> <Insets top="30" right="30" bottom="30" left="30"/> </padding>
+
+                <VBox spacing="8">
+                    <Label text="¿Qué actividad realizaste?" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
+                    <ComboBox fx:id="cmbActividad" promptText="Selecciona una opción..." maxWidth="Infinity" style="-fx-font-size: 14px;"/>
+                </VBox>
+
+                <VBox spacing="8">
+                    <Label text="Cantidad consumida" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <TextField fx:id="txtValor" promptText="Ej: 10.5" HBox.hgrow="ALWAYS" style="-fx-font-size: 14px;"/>
+
+                        <Label fx:id="lblUnidad" text="unidades"
+                               style="-fx-text-fill: -color-terciario; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-color: #ECF0F1; -fx-padding: 5 10; -fx-background-radius: 4;"/>
+                    </HBox>
+                </VBox>
+
+                <VBox spacing="8">
+                    <Label text="Fecha del registro" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
+                    <DatePicker fx:id="dpFecha" maxWidth="Infinity" style="-fx-font-size: 14px;"/>
+                </VBox>
+
+                <Region prefHeight="10"/>
+
+                <HBox spacing="15" alignment="CENTER">
+                    <Button text="Cancelar" styleClass="boton-secundario" prefWidth="120" prefHeight="40"/>
+
+                    <Button text="Guardar Registro" onAction="#onGuardarClick"
+                            styleClass="boton-primario" prefWidth="200" prefHeight="40"
+                            style="-fx-font-size: 15px;"/>
+                </HBox>
+
+            </VBox>
+
+            <HBox alignment="CENTER" maxWidth="500" style="-fx-background-color: rgba(44, 62, 80, 0.1); -fx-background-radius: 20; -fx-padding: 10 20;">
+                <Label text="ℹ️  Los datos se sumarán automáticamente a tu análisis mensual."
+                       wrapText="true" textAlignment="CENTER" style="-fx-text-fill: -color-terciario; -fx-font-size: 12px;"/>
+            </HBox>
+
+        </VBox>
+    </content>
+</ScrollPane>
