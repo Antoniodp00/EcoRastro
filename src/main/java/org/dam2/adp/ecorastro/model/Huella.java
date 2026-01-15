@@ -7,6 +7,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "huella", schema = "ecorastro_db")
@@ -34,6 +36,17 @@ public class Huella {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "fecha")
     private Instant fecha;
+
+    public Huella() {
+    }
+
+    public Huella(Usuario idUsuario, Actividad idActividad, BigDecimal valor, String unidad, Instant fecha) {
+        this.idUsuario = idUsuario;
+        this.idActividad = idActividad;
+        this.valor = valor;
+        this.unidad = unidad;
+        this.fecha = fecha;
+    }
 
     public Integer getId() {
         return id;

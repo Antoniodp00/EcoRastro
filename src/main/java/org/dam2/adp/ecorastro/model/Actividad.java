@@ -3,9 +3,7 @@ package org.dam2.adp.ecorastro.model;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "actividad", schema = "ecorastro_db")

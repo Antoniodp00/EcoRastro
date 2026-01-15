@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.chart.PieChart?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<ScrollPane fitToWidth="true" fitToHeight="true"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.dam2.adp.ecorastro.controller.InicioController"
-            prefHeight="400.0" prefWidth="600.0"
-            stylesheets="@../style.css">
+            styleClass="scroll-transparente">
 
-    <ScrollPane fitToWidth="true" fitToHeight="true"
-                styleClass="scroll-transparente"
-                AnchorPane.topAnchor="0.0"
-                AnchorPane.bottomAnchor="0.0"
-                AnchorPane.leftAnchor="0.0"
-                AnchorPane.rightAnchor="0.0">
-        <content>
-            <VBox spacing="30.0" styleClass="panel-base">
-                <padding>
-                    <Insets top="30" right="30" bottom="30" left="30"/>
-                </padding>
+    <content>
+        <VBox spacing="25.0" styleClass="panel-base">
+            <padding> <Insets top="30" right="30" bottom="30" left="30"/> </padding>
 
-                <VBox spacing="5">
-                    <Label text="Panel de Control" styleClass="titulo"/>
-                    <Label text="Resumen de tu impacto ecológico este mes" styleClass="subtitulo"/>
+            <HBox spacing="20" alignment="CENTER_LEFT">
+                <VBox>
+                    <Label text="Resumen General" styleClass="titulo"/>
+                    <Label text="Así va tu impacto esta semana" styleClass="subtitulo"/>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS"/> <VBox styleClass="card" alignment="CENTER" minWidth="200">
+                <Label text="TOTAL EMISIONES" styleClass="card-titulo"/>
+                <Label fx:id="lblHuellaTotal" text="0.00 kg" styleClass="card-numero-destacado"/>
+            </VBox>
+            </HBox>
+
+            <HBox spacing="20" VBox.vgrow="ALWAYS">
+
+                <VBox spacing="15" prefWidth="300" minWidth="280">
+                    <Label text="Acciones Rápidas" style="-fx-font-weight:bold; -fx-text-fill: -color-terciario;"/>
+
+                    <HBox styleClass="card-nav, nav-huella" onMouseClicked="#irARegistrarHuella" alignment="CENTER_LEFT" spacing="15">
+                        <Label text="👣" style="-fx-font-size: 30px;"/>
+                        <VBox>
+                            <Label text="Registrar Huella" styleClass="card-nav-titulo" style="-fx-font-size: 16px;"/>
+                            <Label text="Añade transporte o consumo" styleClass="card-nav-desc"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox styleClass="card-nav, nav-habitos" onMouseClicked="#irAHabitos" alignment="CENTER_LEFT" spacing="15">
+                        <Label text="📅" style="-fx-font-size: 30px;"/>
+                        <VBox>
+                            <Label text="Mis Hábitos" styleClass="card-nav-titulo" style="-fx-font-size: 16px;"/>
+                            <Label text="Gestiona tus rutinas" styleClass="card-nav-desc"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox styleClass="card-nav, nav-analisis" onMouseClicked="#irAAnalisis" alignment="CENTER_LEFT" spacing="15">
+                        <Label text="📊" style="-fx-font-size: 30px;"/>
+                        <VBox>
+                            <Label text="Ver Análisis" styleClass="card-nav-titulo" style="-fx-font-size: 16px;"/>
+                            <Label text="Estadísticas detalladas" styleClass="card-nav-desc"/>
+                        </VBox>
+                    </HBox>
                 </VBox>
 
-                <HBox spacing="20.0" alignment="CENTER_LEFT">
+                <VBox styleClass="card" HBox.hgrow="ALWAYS">
+                    <Label text="Tú vs La Comunidad" styleClass="card-titulo"/>
+                    <BarChart fx:id="barChart" legendSide="BOTTOM" animated="false" VBox.vgrow="ALWAYS">
+                        <xAxis> <CategoryAxis label=""/> </xAxis>
+                        <yAxis> <NumberAxis label="kg CO₂"/> </yAxis>
+                    </BarChart>
+                </VBox>
+            </HBox>
 
-                    <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
-                        <Label text="HUELLA TOTAL" styleClass="card-titulo"/>
-                        <HBox alignment="BASELINE_LEFT" spacing="5">
-                            <Label fx:id="lblHuellaTotal" text="0.0" styleClass="card-numero"/>
-                            <Label text="kg CO₂" styleClass="card-unidad"/>
-                        </HBox>
-                    </VBox>
+            <HBox styleClass="card-azul" alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 15 25;">
+                <Label text="💡" style="-fx-font-size: 30px; -fx-text-fill:white;"/>
+                <VBox>
+                    <Label text="CONSEJO DEL DÍA" style="-fx-text-fill: #FFCA28; -fx-font-weight: bold;"/>
+                    <Label fx:id="lblConsejo" text="Cargando consejo..." textFill="WHITE" wrapText="true" style="-fx-font-size: 14px;"/>
+                </VBox>
+            </HBox>
 
-                    <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
-                        <Label text="ÁRBOLES NECESARIOS" styleClass="card-titulo"/>
-                        <HBox alignment="BASELINE_LEFT" spacing="5">
-                            <Label text="0" styleClass="card-numero-destacado"/>
-                            <Label text="árboles" styleClass="card-unidad"/>
-                        </HBox>
-                    </VBox>
-
-                    <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
-                        <Label text="REGISTROS HOY" styleClass="card-titulo"/>
-                        <HBox alignment="BASELINE_LEFT" spacing="5">
-                            <Label text="0" styleClass="card-numero"/>
-                            <Label text="acts." styleClass="card-unidad"/>
-                        </HBox>
-                    </VBox>
-
-                </HBox>
-
-                <HBox spacing="20.0" VBox.vgrow="ALWAYS">
-
-                    <VBox styleClass="card" HBox.hgrow="ALWAYS" prefHeight="300">
-                        <Label text="Distribución por Categoría" styleClass="card-titulo"/>
-                        <PieChart fx:id="pieChart" legendSide="RIGHT"/>
-                    </VBox>
-
-                    <VBox styleClass="card-azul" prefWidth="250">
-                        <Label text="💡 ECO-TIP" styleClass="titulo-tip"/>
-
-                        <Label text="Reducir el consumo de carne un día a la semana ahorra 170kg de CO2 al año."
-                               wrapText="true" VBox.vgrow="ALWAYS" styleClass="texto-tip"/>
-
-                        <Button text="Ver más tips" styleClass="boton-translucido"/>
-                    </VBox>
-
-                </HBox>
-
-            </VBox>
-        </content>
-    </ScrollPane>
-</AnchorPane>
+        </VBox>
+    </content>
+</ScrollPane>
