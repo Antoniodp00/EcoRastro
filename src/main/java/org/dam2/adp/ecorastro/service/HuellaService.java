@@ -1,5 +1,6 @@
 package org.dam2.adp.ecorastro.service;
 
+import org.dam2.adp.ecorastro.DAO.ActividadDAO;
 import org.dam2.adp.ecorastro.DAO.HuellaDAO;
 import org.dam2.adp.ecorastro.model.Actividad;
 import org.dam2.adp.ecorastro.model.Huella;
@@ -9,9 +10,11 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 public class HuellaService {
     private final HuellaDAO huellaDAO = new HuellaDAO();
+    private final ActividadDAO actividadDAO = new ActividadDAO();
 
     public boolean addHuella(Usuario usuario, Actividad actividad, double valorConsumo,  LocalDate fecha) {
         boolean insertado;
@@ -27,9 +30,21 @@ public class HuellaService {
         return insertado;
     }
 
+    public boolean deleteHuella(Huella huella) {
+        return huellaDAO.deleteHuella(huella);
+    }
+
+
     public BigDecimal calcularImpacto(Huella huella){
         return huella.getValor().multiply(huella.getIdActividad().getIdCategoria().getFactorEmision());
     }
 
+    public List<Actividad> getAllActividades() {
+        return actividadDAO.getAllActividades();
+    }
+
+    public List<Huella> getHuellasPorUsuario(int idUsuario) {
+        return huellaDAO.getHuellasPorUsuario(idUsuario);
+    }
 
 }

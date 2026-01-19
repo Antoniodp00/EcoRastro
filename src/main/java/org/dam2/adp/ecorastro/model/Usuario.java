@@ -100,4 +100,13 @@ public class Usuario {
         this.huellas = huellas;
     }
 
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", email='" + email + '\'' +
+                ", fechaRegistro=" + fechaRegistro +
+                '}';
+    }
 }

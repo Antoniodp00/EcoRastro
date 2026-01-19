@@ -1,279 +1,491 @@
 /* =========================================================
-   NUEVA PALETA DE COLORES (Tema "Corporate Eco")
+   TEMA: HYDRO-TECH (Agua y Energía Limpia)
+   PRINCIPIOS: Accesibilidad, Jerarquía y Feedback
    ========================================================= */
 .root {
-    -color-primario: #FF6F61;   /* Coral Vivo */
-    -color-secundario: #2C3E50; /* Azul Medianoche */
-    -color-terciario: #5D6D7E;  /* Azul Acero */
-    -color-fondo: #F5F5F5;      /* Blanco Humo */
-    -color-acento: #FFCA28;     /* Amarillo Ámbar */
-    -color-texto: #2C3E50;      /* Gris Oscuro */
+    /* --- PALETA DE COLORES --- */
+    -color-fondo: #0F172A;      /* Azul Abismo */
+    -color-blanco: #1E293B;     /* Azul Pizarra */
+    -color-primario: #0EA5E9;   /* Cian Eléctrico */
+    -color-primario-hover: #38BDF8;
+    -color-primario-texto: #0F172A;
+    -color-texto-principal: #F8FAFC;
+    -color-texto-secundario: #94A3B8;
+    -color-error: #EF4444;
+    -color-acento: #F59E0B;     /* Ámbar */
 
-    -fx-background-color: -color-fondo;
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-family: 'Segoe UI', sans-serif;
     -fx-font-size: 14px;
 }
 
 /* =========================================================
-   TEXTOS Y TÍTULOS
+   JERARQUÍA VISUAL
    ========================================================= */
-.label { -fx-text-fill: -color-texto; }
+.label { -fx-text-fill: -color-texto-principal; }
 
 .titulo {
-    -fx-font-size: 26px;
+    -fx-font-size: 28px;
     -fx-font-weight: bold;
-    -fx-text-fill: -color-secundario;
+    -fx-text-fill: -color-texto-principal;
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.5), 0, 2, 0, 1);
 }
 
 .subtitulo {
-    -fx-font-size: 14px;
-    -fx-text-fill: -color-terciario;
+    -fx-font-size: 15px;
+    -fx-text-fill: -color-texto-secundario;
+    -fx-font-weight: normal;
 }
 
 /* =========================================================
-   BOTONES GENÉRICOS
+   INTERACTIVIDAD (Botones)
    ========================================================= */
 .boton-primario {
     -fx-background-color: -color-primario;
-    -fx-text-fill: white;
-    -fx-background-radius: 5;
+    -fx-text-fill: -color-primario-texto;
+    -fx-background-radius: 6;
     -fx-font-weight: bold;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
+    -fx-padding: 10 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(14, 165, 233, 0.3), 10, 0, 0, 0);
 }
-.boton-primario:hover { -fx-background-color: derive(-color-primario, -15%); }
+.boton-primario:hover {
+    -fx-background-color: -color-primario-hover;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+.boton-primario:pressed {
+    -fx-background-color: derive(-color-primario, -10%);
+    -fx-scale-x: 0.98;
+}
 
 .boton-secundario {
-    -fx-background-color: -color-terciario;
-    -fx-text-fill: white;
-    -fx-background-radius: 5;
+    -fx-background-color: transparent;
+    -fx-border-color: -color-texto-secundario;
+    -fx-border-radius: 6;
+    -fx-text-fill: -color-texto-secundario;
     -fx-cursor: hand;
+    -fx-padding: 9 19;
 }
-.boton-secundario:hover { -fx-background-color: derive(-color-terciario, -15%); }
+.boton-secundario:hover {
+    -fx-border-color: -color-primario;
+    -fx-text-fill: -color-primario;
+    -fx-background-color: rgba(14, 165, 233, 0.1);
+}
 
 /* =========================================================
-   FORMULARIOS
+   PREVENCIÓN DE ERRORES (Inputs)
    ========================================================= */
 .text-field, .password-field, .combo-box {
-    -fx-background-color: white;
-    -fx-border-color: #BDC3C7;
-    -fx-border-radius: 4;
-    -fx-background-radius: 4;
-    -fx-padding: 8;
+    -fx-background-color: -color-fondo;
+    -fx-text-fill: -color-texto-principal;
+    -fx-prompt-text-fill: -color-texto-secundario;
+    -fx-border-color: -color-texto-secundario;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 10;
 }
 .text-field:focused, .password-field:focused, .combo-box:focused {
     -fx-border-color: -color-primario;
-    -fx-background-color: white;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(14, 165, 233, 0.4), 8, 0, 0, 0);
+}
+.combo-box .list-cell {
+    -fx-text-fill: -color-texto-principal;
+    -fx-background-color: -color-blanco;
+}
+.combo-box .list-cell:hover {
+    -fx-background-color: -color-primario;
+    -fx-text-fill: -color-primario-texto;
 }
 
 /* =========================================================
-   ESTRUCTURA Y PANELES (Nuevos para limpiar FXML)
+   ESTRUCTURA Y LAYOUT
    ========================================================= */
-.panel-base {
-    -fx-background-color: -color-fondo;
-}
-
-.sidebar {
-    -fx-background-color: -color-secundario;
-}
+.panel-base { -fx-background-color: -color-fondo; }
 
 .scroll-transparente {
     -fx-background-color: transparent;
-    -fx-background: transparent; /* Necesario para quitar el gris del scrollpane */
+    -fx-background: transparent;
 }
 .scroll-transparente > .viewport {
     -fx-background-color: transparent;
 }
 
-/* =========================================================
-   MENÚ LATERAL
-   ========================================================= */
-.boton-menu {
+/* Header Panel */
+.header-panel {
+    -fx-background-color: -color-blanco;
+    -fx-padding: 15 30;
+    -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.5), 0, 4, 0, 0);
+}
+.header-logo {
+    -fx-text-fill: -color-primario;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(14, 165, 233, 0.6), 10, 0, 0, 0);
+}
+.header-user {
+    -fx-text-fill: -color-texto-secundario;
+    -fx-font-size: 14px;
+    -fx-padding: 0 15 0 0;
+}
+.boton-icon {
     -fx-background-color: transparent;
-    -fx-text-fill: #ECF0F1;
+    -fx-text-fill: -color-texto-secundario;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
     -fx-font-size: 14px;
-    -fx-cursor: hand;
-    -fx-alignment: CENTER_LEFT;
-    -fx-padding: 12 20;
 }
-.boton-menu:hover {
-    -fx-background-color: derive(-color-secundario, 15%);
-    -fx-border-color: transparent transparent transparent -color-primario;
-    -fx-border-width: 0 0 0 5;
-    -fx-padding: 12 15;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
+.boton-icon:hover {
+    -fx-text-fill: -color-primario;
+    -fx-background-color: rgba(255,255,255,0.05);
+    -fx-background-radius: 4;
 }
-.boton-menu:pressed { -fx-background-color: derive(-color-secundario, -10%); }
 
-/* Botón de Cerrar Sesión (Rojo) */
-.boton-logout {
-    -fx-background-color: #E74C3C;
-    -fx-text-fill: white;
-    -fx-cursor: hand;
-    -fx-alignment: CENTER;
-    -fx-padding: 10;
+/* Tarjetas */
+.card {
+    -fx-background-color: -color-blanco;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 4);
+    -fx-padding: 25;
 }
-.boton-logout:hover { -fx-background-color: derive(#E74C3C, -15%); }
+.card-titulo {
+    -fx-font-size: 13px;
+    -fx-text-fill: -color-primario;
+    -fx-font-weight: bold;
+    -fx-text-transform: uppercase;
+    -fx-letter-spacing: 1px;
+}
+.card-numero {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-texto-principal;
+}
+.card-numero-destacado {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-primario;
+}
+.card-azul {
+    -fx-background-color: linear-gradient(to right, #1E293B, #0F172A);
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+    -fx-border-color: -color-primario;
+    -fx-border-width: 0 0 0 4;
+}
+.titulo-tip {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: -color-acento;
+}
+.texto-tip {
+    -fx-text-fill: -color-texto-principal;
+    -fx-font-size: 14px;
+}
 
 /* =========================================================
-   DASHBOARD / TARJETAS (Lo que faltaba)
+   ELEMENTOS ESPECÍFICOS (CORREGIDOS)
    ========================================================= */
-.card {
-    -fx-background-color: white;
-    -fx-background-radius: 10;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
-    -fx-padding: 20;
-}
+.icono-gigante { -fx-font-size: 48px; -fx-text-fill: -color-texto-secundario; }
+.label-formulario { -fx-font-weight: bold; -fx-text-fill: -color-texto-principal; }
 
-.card-titulo {
-    -fx-font-size: 14px;
-    -fx-text-fill: -color-terciario;
+.etiqueta-unidad {
+    -fx-text-fill: -color-primario;
     -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-color: rgba(14, 165, 233, 0.1);
+    -fx-padding: 5 10;
+    -fx-background-radius: 4;
+}
+.boton-enlace {
+    -fx-background-color: transparent;
+    -fx-text-fill: -color-texto-secundario;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+.boton-enlace:hover {
+    -fx-text-fill: -color-primario;
+    -fx-underline: true;
 }
 
-.card-numero {
-    -fx-font-size: 32px;
-    -fx-font-weight: bold;
-    -fx-text-fill: -color-secundario;
+/* Cards de Navegación */
+.card-nav {
+    -fx-background-color: -color-blanco;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 15;
+    -fx-border-width: 0 0 0 4; /* Borde izquierdo de 4px */
+    -fx-border-color: -color-texto-secundario; /* Color por defecto */
+}
+.card-nav:hover {
+    -fx-background-color: derive(-color-blanco, 5%);
+    -fx-border-color: -color-primario;
+    -fx-effect: dropshadow(three-pass-box, rgba(14, 165, 233, 0.2), 10, 0, 0, 0);
+}
+.card-nav-titulo { -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: -color-texto-principal; }
+.card-nav-desc { -fx-font-size: 13px; -fx-text-fill: -color-texto-secundario; }
+.icono-navegacion { -fx-font-size: 30px; -fx-text-fill: -color-texto-secundario; }
+.card-nav:hover .icono-navegacion { -fx-text-fill: -color-primario; }
+
+/* Alertas */
+.dialog-pane {
+    -fx-background-color: -color-blanco;
+    -fx-border-color: -color-texto-secundario;
+}
+.dialog-pane .header-panel { -fx-background-color: -color-blanco; }
+.dialog-pane .label, .dialog-pane .content.label { -fx-text-fill: -color-texto-principal; }
+
+/* =========================================================
+   ELEMENTOS RELLENADOS (LO QUE FALTABA)
+   ========================================================= */
+
+/* Icono del consejo (Bombilla) */
+.icono-tip {
+    -fx-font-size: 30px;
+    -fx-text-fill: -color-acento; /* Amarillo Ámbar */
 }
 
-/* Variante para cuando el número debe ser Coral (ej: Árboles) */
-.card-numero-destacado {
-    -fx-font-size: 32px;
+/* Bordes de color para las tarjetas de navegación */
+.nav-huella {
+    -fx-border-color: transparent transparent transparent -color-primario; /* Cian */
+}
+.nav-habitos {
+    -fx-border-color: transparent transparent transparent -color-acento; /* Ámbar */
+}
+.nav-analisis {
+    -fx-border-color: transparent transparent transparent -color-texto-secundario; /* Gris */
+}
+
+/* Subtítulos de sección (ej: "Acciones Rápidas") */
+.subtitulo-seccion {
     -fx-font-weight: bold;
     -fx-text-fill: -color-primario;
 }
 
+/* Unidad pequeña en tarjeta de totales ("CO2") */
 .card-unidad {
     -fx-font-size: 14px;
-    -fx-text-fill: -color-terciario;
+    -fx-text-fill: -color-texto-secundario;
 }
 
-/* Tarjeta azul del Eco-Tip */
-.card-azul {
-    -fx-background-color: -color-secundario;
-    -fx-background-radius: 10;
-    -fx-padding: 20;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+/* Elementos de formularios modal */
+.input-formulario {
+    -fx-font-size: 14px;
 }
-
-.titulo-tip {
+.boton-accion {
+    -fx-font-size: 15px;
+}
+.mensaje-alerta {
     -fx-font-weight: bold;
-    -fx-font-size: 16px;
-    -fx-text-fill: white;
-}
-
-.texto-tip {
-    -fx-padding: 10 0 0 0;
-    -fx-font-size: 14px;
-    -fx-text-fill: white;
-}
-
-.boton-translucido {
-    -fx-background-color: rgba(255,255,255,0.2);
-    -fx-text-fill: white;
-    -fx-cursor: hand;
-    -fx-background-radius: 5;
-}
-.boton-translucido:hover {
-    -fx-background-color: rgba(255,255,255,0.3);
-}
-
-/* Gráfico de Tarta */
-.chart-pie-label { -fx-fill: -color-secundario; -fx-font-size: 11px; }
-.default-color0.chart-pie { -fx-pie-color: -color-primario; }
-.default-color1.chart-pie { -fx-pie-color: -color-secundario; }
-.default-color2.chart-pie { -fx-pie-color: -color-acento; }
-.default-color3.chart-pie { -fx-pie-color: -color-terciario; }
-
-/* =========================================================
-   ALERTAS
-   ========================================================= */
-.mensaje-alerta { -fx-font-weight: bold; -fx-font-size: 13px; -fx-alignment: CENTER; }
-.dialog-pane { -fx-background-color: white; -fx-border-color: -color-secundario; -fx-border-width: 2px; }
-.dialog-pane .header-panel { -fx-background-color: -color-secundario; }
-.dialog-pane .header-panel .label { -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px; }
-.dialog-pane .button-bar .button { -fx-background-color: -color-terciario; -fx-text-fill: white; }
-.dialog-pane .button-bar .button:hover { -fx-background-color: -color-primario; }
-
-/* =========================================================
-   NUEVO HEADER SUPERIOR (Sustituye al Sidebar)
-   ========================================================= */
-.header-panel {
-    -fx-background-color: -color-secundario; /* Azul Medianoche */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 0, 0, 0, 2);
-    -fx-padding: 10 30;
-}
-
-.header-logo {
-    -fx-text-fill: white;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-}
-
-.header-user {
-    -fx-text-fill: #BDC3C7;
-    -fx-font-size: 14px;
-}
-
-/* Botón "Home" o "Salir" del Header */
-.boton-icon {
-    -fx-background-color: transparent;
-    -fx-text-fill: white;
-    -fx-cursor: hand;
-    -fx-font-size: 14px;
-    -fx-border-color: rgba(255,255,255,0.3);
-    -fx-border-radius: 4;
-    -fx-padding: 5 10;
-}
-.boton-icon:hover {
-    -fx-background-color: rgba(255,255,255,0.1);
-    -fx-border-color: white;
-}
-
-/* =========================================================
-   TARJETAS DE NAVEGACIÓN (Accesos Directos)
-   ========================================================= */
-.card-nav {
-    -fx-background-color: white;
-    -fx-background-radius: 12;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 0);
-    -fx-cursor: hand;
+    -fx-font-size: 13px;
     -fx-alignment: CENTER;
-    -fx-padding: 20;
-    -fx-min-width: 200px;
-    -fx-min-height: 180px;
-    -fx-border-width: 0 0 4 0; /* Borde inferior de color */
-    -fx-border-color: transparent; /* Por defecto transparente */
 }
 
-/* Colores específicos para cada tarjeta */
-.nav-huella:hover { -fx-border-color: transparent transparent -color-primario transparent; } /* Coral */
-.nav-habitos:hover { -fx-border-color: transparent transparent -color-acento transparent; }   /* Amarillo */
-.nav-analisis:hover { -fx-border-color: transparent transparent -color-terciario transparent; } /* Azul Acero */
+/* =========================================================
+   GRÁFICO DE BARRAS (MODO ALTA RESOLUCIÓN)
+   ========================================================= */
 
-.card-nav:hover {
-    -fx-background-color: #FAFAFA;
-    -fx-translate-y: -3; /* Efecto de "levantarse" */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 15, 0, 0, 5);
+/* 1. Fondo y Líneas */
+.chart {
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
+}
+.chart-content, .chart-plot-background {
+    -fx-background-color: transparent;
+}
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: #334155;
+    -fx-stroke-dash-array: 3 5;
+    -fx-stroke-width: 1px;
 }
 
-.card-nav-titulo {
-    -fx-font-size: 18px;
+/* 2. Ejes */
+.axis {
+    -fx-tick-label-fill: -color-texto-secundario;
+    -fx-font-size: 11px;
+    -fx-tick-length: 5;
+    -fx-minor-tick-length: 0;
+}
+.axis:bottom {
+    -fx-border-color: -color-texto-secundario;
+    -fx-border-width: 1 0 0 0;
+}
+.axis:left {
+    -fx-border-color: transparent;
+}
+
+/* 3. Leyenda */
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+}
+.chart-legend-item {
+    -fx-text-fill: -color-texto-secundario;
     -fx-font-weight: bold;
-    -fx-text-fill: -color-secundario;
 }
 
-.card-nav-desc {
+/* 5. COLORES DE LAS BARRAS (Corrección de Visibilidad) */
+
+/* 5. COLORES DE LAS BARRAS (MODO SEGURO - COLORES PLANOS) */
+
+/* BARRA 1: TÚ (Cian sólido) */
+.default-color0.chart-bar {
+    -fx-bar-fill: -color-primario; /* #0EA5E9 */
+    -fx-background-radius: 4 4 0 0;
+    -fx-effect: null; /* Quitamos sombras por ahora */
+}
+
+/* BARRA 2: COMUNIDAD (Ámbar sólido) */
+.default-color1.chart-bar {
+    -fx-bar-fill: -color-acento; /* #F59E0B */
+    -fx-background-radius: 4 4 0 0;
+    -fx-effect: null;
+}
+
+/* Asegurar que el fondo del gráfico no tapa las barras */
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+.chart-content {
+    -fx-padding: 0;
+}
+
+/* =========================================================
+   NUEVOS ESTILOS: NIVEL Y SIDEBAR
+   ========================================================= */
+.sidebar-container {
+    -fx-min-width: 380px;
+    -fx-max-width: 450px;
+}
+.barra-progreso {
+    -fx-accent: -color-primario;
+    -fx-control-inner-background: -color-fondo;
+    -fx-pref-height: 10px;
+}
+.barra-progreso > .track {
+    -fx-background-color: rgba(255,255,255,0.05);
+    -fx-background-radius: 10;
+}
+.barra-progreso > .bar {
+    -fx-background-color: -color-primario;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(14, 165, 233, 0.4), 5, 0, 0, 0);
+}
+.texto-progreso {
+    -fx-font-size: 11px;
+    -fx-text-fill: -color-texto-secundario;
+    -fx-font-style: italic;
+}
+.icono-nivel {
+    -fx-font-size: 38px;
+    -fx-text-fill: -color-acento;
+    -fx-effect: dropshadow(one-pass-box, rgba(245, 158, 11, 0.3), 0, 0, 10, 0);
+}
+
+/* =========================================================
+   TABLA PREMIUM "HYDRO-GRID"
+   ========================================================= */
+
+.tabla-moderna {
+    -fx-background-color: transparent;
+    -fx-base: -color-fondo; /* Base oscura para componentes internos */
+    -fx-control-inner-background: -color-fondo;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+/* 1. CABECERA (Limpia y Minimalista) */
+.tabla-moderna .column-header-background {
+    -fx-background-color: -color-blanco; /* Fondo de la cabecera */
+    -fx-border-color: transparent transparent -color-texto-secundario transparent;
+    -fx-border-width: 0 0 1 0; /* Solo línea sutil abajo */
+    -fx-pref-height: 45px; /* Cabecera más alta */
+}
+
+.tabla-moderna .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.tabla-moderna .column-header .label {
+    -fx-text-fill: -color-primario; /* Texto CIAN */
+    -fx-font-weight: bold;
     -fx-font-size: 12px;
-    -fx-text-fill: -color-terciario;
-    -fx-text-alignment: CENTER;
-    -fx-wrap-text: true;
+    -fx-text-transform: uppercase; /* Estilo profesional */
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0 10 0 10;
 }
 
-/* Iconos grandes (Emojis por ahora, o FontAwesome si tienes) */
-.card-nav-icon {
-    -fx-font-size: 40px;
-    -fx-padding: 0 0 10 0;
+/* Eliminar el "filler" (hueco feo arriba a la derecha) */
+.tabla-moderna .filler {
+    -fx-background-color: -color-blanco;
+    -fx-border-color: transparent transparent -color-texto-secundario transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* 2. FILAS Y CELDAS (Espaciosas) */
+.tabla-moderna .table-row-cell {
+    -fx-background-color: -color-fondo; /* Fondo oscuro */
+    -fx-border-color: transparent transparent rgba(148, 163, 184, 0.1) transparent; /* Separador casi invisible */
+    -fx-border-width: 0 0 1 0;
+    -fx-pref-height: 40px; /* Filas más altas para que respiren */
+}
+
+.tabla-moderna .table-cell {
+    -fx-text-fill: -color-texto-principal;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0 15;
+    -fx-border-color: transparent; /* Quitar líneas verticales */
+}
+
+/* Efecto Hover (Pasar el ratón por la fila) */
+.tabla-moderna .table-row-cell:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.03); /* Brillo muy sutil */
+    -fx-cursor: hand;
+}
+
+/* Fila Seleccionada */
+.tabla-moderna .table-row-cell:selected {
+    -fx-background-color: rgba(14, 165, 233, 0.15); /* Fondo Cian Transparente */
+    -fx-background-insets: 0;
+}
+.tabla-moderna .table-row-cell:selected .table-cell {
+    -fx-text-fill: -color-primario; /* Texto se ilumina en cian */
+}
+
+/* 3. SCROLLBARS (Personalizados y Oscuros) */
+.tabla-moderna .scroll-bar:vertical,
+.tabla-moderna .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+.tabla-moderna .scroll-bar:vertical .track,
+.tabla-moderna .scroll-bar:horizontal .track {
+    -fx-background-color: rgba(0,0,0,0.2);
+    -fx-background-radius: 10;
+}
+.tabla-moderna .scroll-bar:vertical .thumb,
+.tabla-moderna .scroll-bar:horizontal .thumb {
+    -fx-background-color: -color-blanco; /* Barra gris oscura */
+    -fx-background-radius: 10;
+}
+.tabla-moderna .scroll-bar .thumb:hover {
+    -fx-background-color: -color-primario; /* Se ilumina al agarrarla */
+}
+
+/* Ocultar botones de flecha del scrollbar */
+.tabla-moderna .scroll-bar .increment-button,
+.tabla-moderna .scroll-bar .decrement-button {
+    -fx-padding: 0;
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
+    -fx-opacity: 0;
+}
+
+/* 4. MENSAJE "SIN CONTENIDO" */
+.tabla-moderna .placeholder .label {
+    -fx-text-fill: -color-texto-secundario;
+    -fx-font-size: 14px;
+    -fx-opacity: 0.7;
 }

@@ -13,7 +13,7 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.dam2.adp.ecorastro.controller.LoginController"
       stylesheets="@../style.css"
-      style ="-fx-background-color: -color-fondo;">
+      styleClass="panel-base">
 
     <padding>
         <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
@@ -25,22 +25,22 @@
         </font>
     </Label>
 
-    <Label text="Bienvenido de nuevo" style="-fx-text-fill: -color-texto; -fx-font-size: 14px;"/>
+    <Label text="Bienvenido de nuevo" styleClass="subtitulo"/>
 
     <VBox spacing="10.0" maxWidth="300.0">
-        <Label text="Correo Electrónico" styleClass="label"/>
-        <TextField fx:id="txtEmail" promptText="ejemplo@email.com" />
+        <Label text="Correo Electrónico" styleClass="label-formulario"/>
+        <TextField fx:id="txtEmail" promptText="ejemplo@email.com" styleClass="input-formulario"/>
 
-        <Label text="Contraseña" styleClass="label"/>
-        <PasswordField fx:id="txtPassword" promptText="Tu contraseña" />
+        <Label text="Contraseña" styleClass="label-formulario"/>
+        <PasswordField fx:id="txtPassword" promptText="Tu contraseña" styleClass="input-formulario"/>
 
-        <Label fx:id="lblError" textFill="RED" visible="false" wrapText="true"/>
+        <Label fx:id="lblError" textFill="RED" visible="false" wrapText="true" style="-fx-font-size: 12px;"/>
     </VBox>
 
     <Button text="Iniciar Sesión" onAction="#onLoginClick" fx:id="btnLogin"
-            styleClass="boton-primario" prefWidth="300.0" prefHeight="40.0"/>
+            styleClass="boton-primario, boton-accion" prefWidth="300.0" prefHeight="40.0"/>
 
     <Button text="¿No tienes cuenta? Regístrate" onAction="#onRegisterClick" fx:id="btnRegister"
-            style="-fx-background-color: transparent; -fx-text-fill: -color-secundario; -fx-cursor: hand;"/>
+            styleClass="boton-enlace"/>
 
 </VBox>

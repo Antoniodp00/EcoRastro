@@ -18,58 +18,53 @@
             stylesheets="@../style.css"
             styleClass="scroll-transparente">
 
-    <content>
-        <VBox alignment="TOP_CENTER" spacing="30.0" styleClass="panel-base">
+    <VBox alignment="TOP_CENTER" spacing="30.0" styleClass="panel-base">
+        <padding>
+            <Insets top="40" right="20" bottom="40" left="20"/>
+        </padding>
+
+        <VBox alignment="CENTER" spacing="5">
+            <Label text="👣" styleClass="icono-gigante"/>
+            <Label text="Nueva Huella" styleClass="titulo"/>
+            <Label text="Registra tu actividad para calcular el impacto" styleClass="subtitulo"/>
+        </VBox>
+
+        <VBox styleClass="card" maxWidth="500" spacing="20">
             <padding>
-                <Insets top="40" right="20" bottom="40" left="20"/>
+                <Insets top="30" right="30" bottom="30" left="30"/>
             </padding>
 
-            <VBox alignment="CENTER" spacing="5">
-                <Label text="👣" style="-fx-font-size: 48px;"/>
-                <Label text="Nueva Huella" styleClass="titulo"/>
-                <Label text="Registra tu actividad para calcular el impacto" styleClass="subtitulo"/>
+            <VBox spacing="8">
+                <Label text="¿Qué actividad realizaste?" styleClass="label-formulario"/>
+                <ComboBox fx:id="cmbActividad" promptText="Selecciona una opción..." maxWidth="Infinity"
+                          styleClass="input-formulario"/>
             </VBox>
 
-            <VBox styleClass="card" maxWidth="500" spacing="20">
-                <padding> <Insets top="30" right="30" bottom="30" left="30"/> </padding>
-
-                <VBox spacing="8">
-                    <Label text="¿Qué actividad realizaste?" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
-                    <ComboBox fx:id="cmbActividad" promptText="Selecciona una opción..." maxWidth="Infinity" style="-fx-font-size: 14px;"/>
-                </VBox>
-
-                <VBox spacing="8">
-                    <Label text="Cantidad consumida" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
-                    <HBox spacing="10" alignment="CENTER_LEFT">
-                        <TextField fx:id="txtValor" promptText="Ej: 10.5" HBox.hgrow="ALWAYS" style="-fx-font-size: 14px;"/>
-
-                        <Label fx:id="lblUnidad" text="unidades"
-                               style="-fx-text-fill: -color-terciario; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-color: #ECF0F1; -fx-padding: 5 10; -fx-background-radius: 4;"/>
-                    </HBox>
-                </VBox>
-
-                <VBox spacing="8">
-                    <Label text="Fecha del registro" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
-                    <DatePicker fx:id="dpFecha" maxWidth="Infinity" style="-fx-font-size: 14px;"/>
-                </VBox>
-
-                <Region prefHeight="10"/>
-
-                <HBox spacing="15" alignment="CENTER">
-                    <Button text="Cancelar" styleClass="boton-secundario" prefWidth="120" prefHeight="40"/>
-
-                    <Button text="Guardar Registro" onAction="#onGuardarClick"
-                            styleClass="boton-primario" prefWidth="200" prefHeight="40"
-                            style="-fx-font-size: 15px;"/>
+            <VBox spacing="8">
+                <Label text="Cantidad consumida" styleClass="label-formulario"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="txtValor" promptText="Ej: 10.5" HBox.hgrow="ALWAYS"
+                               styleClass="input-formulario"/>
+                    <Label fx:id="lblUnidad" text="unidades" styleClass="etiqueta-unidad"/>
                 </HBox>
-
             </VBox>
 
-            <HBox alignment="CENTER" maxWidth="500" style="-fx-background-color: rgba(44, 62, 80, 0.1); -fx-background-radius: 20; -fx-padding: 10 20;">
-                <Label text="ℹ️  Los datos se sumarán automáticamente a tu análisis mensual."
-                       wrapText="true" textAlignment="CENTER" style="-fx-text-fill: -color-terciario; -fx-font-size: 12px;"/>
+            <VBox spacing="8">
+                <Label text="Fecha del registro" styleClass="label-formulario"/>
+                <DatePicker fx:id="dpFecha" maxWidth="Infinity" styleClass="input-formulario"/>
+            </VBox>
+
+            <Region prefHeight="10"/>
+
+            <HBox spacing="15" alignment="CENTER">
+                <Button text="Cancelar" onAction="#onCancelarClick"
+                        styleClass="boton-secundario, boton-accion" prefWidth="120" prefHeight="40"/>
+
+                <Button text="Guardar Registro" onAction="#onGuardarClick"
+                        styleClass="boton-primario, boton-accion" prefWidth="200" prefHeight="40"/>
             </HBox>
 
         </VBox>
-    </content>
+    </VBox>
 </ScrollPane>
+

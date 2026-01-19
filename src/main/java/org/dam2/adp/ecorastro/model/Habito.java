@@ -32,6 +32,18 @@ public class Habito {
     @Column(name = "ultima_fecha")
     private Instant ultimaFecha;
 
+    public Habito() {
+        this.id = new HabitoId();
+    }
+
+    public Habito(Usuario usuario, Actividad actividad, int frecuencia, String tipo) {
+        this.idUsuario = usuario;
+        this.idActividad = actividad;
+        this.frecuencia = frecuencia;
+        this.tipo = tipo;
+       this.ultimaFecha = Instant.now();
+    }
+
     public HabitoId getId() {
         return id;
     }
