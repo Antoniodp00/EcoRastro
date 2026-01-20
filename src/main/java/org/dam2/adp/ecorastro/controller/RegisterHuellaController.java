@@ -26,6 +26,15 @@ public class RegisterHuellaController {
     public void initialize() {
         dpFecha.setValue(LocalDate.now());
 
+
+        dpFecha.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.isAfter(LocalDate.now()));
+            }
+        });
+
         cargarActividades();
 
         cmbActividad.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -73,6 +82,11 @@ public class RegisterHuellaController {
 
            double valorConsumo = Double.parseDouble(valorTexto);
            LocalDate fecha = dpFecha.getValue();
+
+           if (fecha.isAfter(LocalDate.now())) {
+               AlertUtils.error("No puedes registrar una huella con fecha futura.");
+               return;
+           }
 
            boolean insertado = huellaService.addHuella(
                    SessionManager.getInstance().getUsuarioActual(),

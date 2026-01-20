@@ -85,8 +85,18 @@ public class AnalisisController {
      */
     private void cargarHuellasDesdeService(int idUsuario) {
         String rango = cmbRango.getValue();
+
+        // --- CORRECCIÓN CLAVE ---
+        // Si dice "Todo", usamos EL MISMO MÉTODO que Inicio para que cuadre al céntimo.
+        if ("Todo el historial".equals(rango)) {
+            huellasFiltradas = huellaService.getHuellasPorUsuario(idUsuario);
+            return;
+        }
+        // ------------------------
+
         LocalDate ref = dpFecha.getValue() != null ? dpFecha.getValue() : LocalDate.now();
-        LocalDate inicio, fin;
+        LocalDate inicio = ref;
+        LocalDate fin = ref;
 
         switch (rango) {
             case "Día Concreto":
@@ -94,20 +104,15 @@ public class AnalisisController {
                 fin = ref;
                 break;
             case "Semana Seleccionada":
-                inicio = ref.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1); // Lunes
-                fin = ref.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 7);    // Domingo
+                inicio = ref.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
+                fin = ref.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 7);
                 break;
             case "Mes Seleccionado":
                 inicio = ref.with(TemporalAdjusters.firstDayOfMonth());
                 fin = ref.with(TemporalAdjusters.lastDayOfMonth());
                 break;
-            default: // "Todo el historial"
-                inicio = LocalDate.of(2000, 1, 1);
-                fin = LocalDate.now().plusDays(1);
-                break;
         }
 
-        // Llamada al Service -> DAO -> BBDD
         huellasFiltradas = huellaService.getHuellasPorFecha(idUsuario, inicio, fin);
     }
 
