@@ -13,6 +13,11 @@ public class HabitoDAO {
             "JOIN FETCH h.idActividad a " +
             "JOIN FETCH a.idCategoria " +
             "WHERE h.idUsuario.id = :idUsuario";
+    private final String GET_HABITO_MAS_FRECUENTE_HQL = "FROM Habito h " +
+            "JOIN FETCH h.idActividad a " +
+            "JOIN FETCH a.idCategoria " +
+            "WHERE h.idUsuario.id = :uid " +
+            "ORDER BY h.frecuencia DESC";
 
 
     public boolean addHabito(Habito habito) {
@@ -72,5 +77,20 @@ public class HabitoDAO {
                     .getResultList();
         }
 
+    }
+
+    public Habito getHabitoMasFrecuente(int idUsuario) {
+
+        try (Session session = Connection.getInstance().getSession()) {
+            List<Habito> habitos = session.createQuery(GET_HABITO_MAS_FRECUENTE_HQL, Habito.class)
+                    .setParameter("uid", idUsuario)
+                    .setMaxResults(1) // Solo queremos el primero (el más frecuente)
+                    .getResultList();
+
+            return habitos.isEmpty() ? null : habitos.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

@@ -47,4 +47,6 @@ public class HuellaService {
         return huellaDAO.getHuellasPorUsuario(idUsuario);
     }
 
+    public List<Huella> getHuellaPorFecha
+
 }
