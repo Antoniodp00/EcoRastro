@@ -72,6 +72,7 @@
                         <TableColumn fx:id="colActividad" text="ACTIVIDAD" prefWidth="250"/>
                         <TableColumn fx:id="colValor" text="CANTIDAD" prefWidth="100"/>
                         <TableColumn fx:id="colUnidad" text="UNIDAD" prefWidth="100"/>
+                        <TableColumn fx:id="colImpacto" text="IMPACTO" prefWidth="120"/>
                     </columns>
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
