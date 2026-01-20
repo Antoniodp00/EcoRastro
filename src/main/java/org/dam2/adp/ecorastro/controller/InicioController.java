@@ -127,6 +127,7 @@ public class InicioController {
     @FXML
     public void irARegistrarHuella(MouseEvent event) {
         // Asumiendo que quieres ir al formulario de alta rápida
+
         Navigation.navigate("register_huella.fxml");
     }
 
