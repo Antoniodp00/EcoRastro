@@ -28,14 +28,14 @@ public class HistorialHuellasController {
 
     @FXML private TableColumn<Huella, String> colFecha;
     @FXML private TableColumn<Huella, String> colActividad;
-    
-    // Cambiado a String para simplificar el formateo y visualización
     @FXML private TableColumn<Huella, String> colValor;
-    
     @FXML private TableColumn<Huella, String> colUnidad;
 
+    // NUEVA COLUMNA: Para cumplir el requisito "Cálculo de una sola huella"
+    @FXML private TableColumn<Huella, String> colImpacto;
+
     private final HuellaService huellaService = new HuellaService();
-    private ObservableList<Huella> listaHuellas = FXCollections.observableArrayList();
+    private final ObservableList<Huella> listaHuellas = FXCollections.observableArrayList();
 
     public void initialize() {
         configurarColumnas();
@@ -43,9 +43,10 @@ public class HistorialHuellasController {
     }
 
     private void configurarColumnas() {
-        // 1. FECHA
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
                 .withZone(ZoneId.systemDefault());
+
+        // 1. FECHA
         colFecha.setCellValueFactory(cell -> {
             if (cell.getValue().getFecha() != null) {
                 return new SimpleStringProperty(formatter.format(cell.getValue().getFecha()));
@@ -54,42 +55,52 @@ public class HistorialHuellasController {
         });
 
         // 2. ACTIVIDAD
-        colActividad.setCellValueFactory(cell -> {
-            if (cell.getValue().getIdActividad() != null) {
-                return new SimpleStringProperty(cell.getValue().getIdActividad().getNombre());
-            }
-            return new SimpleStringProperty("Desconocida");
-        });
+        colActividad.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().getIdActividad().getNombre())
+        );
 
-        // 3. VALOR (CANTIDAD)
-        // Convertimos directamente a String formateado aquí. Esto es más robusto que usar CellFactory.
+        // 3. VALOR
         colValor.setCellValueFactory(cell -> {
             BigDecimal val = cell.getValue().getValor();
-            if (val != null) {
-                return new SimpleStringProperty(String.format("%.2f", val));
-            }
-            return new SimpleStringProperty("0.00");
+            return new SimpleStringProperty(val != null ? String.format("%.2f", val) : "0.00");
         });
 
         // 4. UNIDAD
-        colUnidad.setCellValueFactory(cell -> {
-            String u = cell.getValue().getUnidad();
-            return new SimpleStringProperty(u != null ? u : "");
+        colUnidad.setCellValueFactory(cell ->
+                new SimpleStringProperty(cell.getValue().getUnidad())
+        );
+
+        // 5. IMPACTO (La Fórmula del PDF: Valor * Factor)
+        colImpacto.setCellValueFactory(cell -> {
+            try {
+                Huella h = cell.getValue();
+                double valor = h.getValor().doubleValue();
+                // Obtenemos el factor de la categoría asociada a la actividad
+                double factor = h.getIdActividad().getIdCategoria().getFactorEmision().doubleValue();
+
+                // Aplicamos la fórmula
+                double impacto = valor * factor;
+
+                return new SimpleStringProperty(String.format("%.2f kg CO₂", impacto));
+            } catch (Exception e) {
+                return new SimpleStringProperty("Err");
+            }
         });
 
-
-
-
+        // ESTILOS
         colFecha.setStyle("-fx-alignment: CENTER-LEFT;");
         colActividad.setStyle("-fx-alignment: CENTER-LEFT;");
-        colValor.setStyle("-fx-alignment: CENTER-RIGHT; -fx-text-fill: -color-primario; -fx-font-weight: bold;");
+        colValor.setStyle("-fx-alignment: CENTER-RIGHT;");
         colUnidad.setStyle("-fx-alignment: CENTER-LEFT; -fx-text-fill: -color-texto-secundario;");
 
+        // Destacamos el impacto en negrita y color primario
+        colImpacto.setStyle("-fx-alignment: CENTER-RIGHT; -fx-text-fill: -color-primario; -fx-font-weight: bold;");
     }
 
     @FXML
     public void cargarDatos() {
         listaHuellas.clear();
+        // Asegúrate de que tu DAO trae las relaciones (Actividad y Categoría) para poder calcular el factor
         List<Huella> datos = huellaService.getHuellasPorUsuario(
                 SessionManager.getInstance().getUsuarioActual().getId()
         );
@@ -122,17 +133,16 @@ public class HistorialHuellasController {
         Huella seleccionada = tablaHuellas.getSelectionModel().getSelectedItem();
 
         if (seleccionada == null) {
-            AlertUtils.error("Por favor, selecciona una fila de la tabla para borrar.");
+            AlertUtils.error("Por favor, selecciona una fila para borrar.");
             return;
         }
 
-        boolean confirm = AlertUtils.confirmacion("Eliminar Registro","¡Atención!" ,"¿Estás seguro de eliminar este registro permanentemente?");
-        if (confirm) {
+        if (AlertUtils.confirmacion("Eliminar", "Confirmar", "¿Borrar este registro?")) {
             if (huellaService.deleteHuella(seleccionada)) {
                 listaHuellas.remove(seleccionada);
-                AlertUtils.info("Registro eliminado correctamente.");
+                AlertUtils.info("Eliminado correctamente.");
             } else {
-                AlertUtils.error("Error al intentar eliminar el registro.");
+                AlertUtils.error("No se pudo eliminar.");
             }
         }
     }

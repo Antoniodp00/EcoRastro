@@ -5,52 +5,97 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
 
+<?import javafx.scene.control.CheckBox?>
 <ScrollPane fitToWidth="true" fitToHeight="true"
             xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.dam2.adp.ecorastro.controller.AnalisisController"
             styleClass="scroll-transparente">
 
-    <content>
-        <VBox spacing="30.0" styleClass="panel-base">
-            <padding> <Insets top="30" right="30" bottom="30" left="30"/> </padding>
+    <VBox spacing="20.0" styleClass="panel-base">
+        <padding>
+            <Insets top="30" right="30" bottom="30" left="30"/>
+        </padding>
 
+        <HBox alignment="CENTER_LEFT" spacing="20">
             <VBox>
-                <Label text="Análisis Detallado" styleClass="titulo"/>
-                <Label text="Visualiza dónde generas más impacto" styleClass="subtitulo"/>
+                <Label text="Análisis de Impacto" styleClass="titulo"/>
+                <Label text="Monitoriza y compara tu huella" styleClass="subtitulo"/>
             </VBox>
 
-            <HBox spacing="20" VBox.vgrow="ALWAYS">
+            <Region HBox.hgrow="ALWAYS"/>
 
-                <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="TOP_CENTER">
-                    <Label text="DISTRIBUCIÓN POR CATEGORÍA" styleClass="card-titulo"/>
-                    <PieChart fx:id="pieChart" VBox.vgrow="ALWAYS" minHeight="300"/>
-                </VBox>
+            <HBox spacing="10" alignment="CENTER_LEFT" style="">
+                <Label text="Ver:" style="-fx-font-weight: bold;"/>
 
-                <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="TOP_CENTER">
-                    <Label text="EVOLUCIÓN MENSUAL" styleClass="card-titulo"/>
-                    <BarChart fx:id="barChart" VBox.vgrow="ALWAYS" minHeight="300" legendSide="BOTTOM">
-                        <xAxis> <CategoryAxis label="Mes"/> </xAxis>
-                        <yAxis> <NumberAxis label="kg CO₂"/> </yAxis>
-                    </BarChart>
-                </VBox>
+                <ComboBox fx:id="cmbRango" prefWidth="120"/>
+                <DatePicker fx:id="dpFecha" prefWidth="120" promptText="Fecha"/>
+
+                <CheckBox fx:id="chkDesglose" text="Desglosar por Categoría" selected="true"/>
+
+                <Separator orientation="VERTICAL"/>
+
+                <Button text="📥 Exportar Informe" onAction="#exportarReporte"/>
             </HBox>
+        </HBox>
 
-            <HBox styleClass="card-azul" spacing="20" alignment="CENTER_LEFT">
-                <Label text="💡" style="-fx-font-size: 30px; -fx-text-fill: white;"/>
-                <VBox>
-                    <Label text="INSIGHT" styleClass="titulo-tip"/>
-                    <Label text="Tu categoría 'Transporte' representa el 60% de tus emisiones. Considera usar bicicleta."
-                           textFill="WHITE" wrapText="true"/>
+        <HBox spacing="20" VBox.vgrow="ALWAYS">
+
+            <VBox spacing="20" HBox.hgrow="ALWAYS">
+                <HBox styleClass="card" spacing="20" alignment="CENTER_LEFT">
+                    <VBox>
+                        <Label text="TOTAL PERIODO" styleClass="card-titulo"/>
+                        <Label fx:id="lblTotalPeriodo" text="0.00 kg" styleClass="card-numero-destacado"/>
+                    </VBox>
+                    <Separator orientation="VERTICAL"/>
+                    <VBox>
+                        <Label text="ACTIVIDAD FRECUENTE" styleClass="card-titulo"/>
+                        <Label fx:id="lblActividadFrecuente" text="-" styleClass="card-numero"
+                               style="-fx-font-size: 18px;"/>
+                    </VBox>
+                </HBox>
+
+                <VBox styleClass="card" VBox.vgrow="ALWAYS">
+                    <Label text="DESGLOSE POR CATEGORÍA" styleClass="card-titulo"/>
+                    <PieChart fx:id="pieChart" VBox.vgrow="ALWAYS" minHeight="250" legendSide="RIGHT"/>
                 </VBox>
-            </HBox>
+            </VBox>
 
-        </VBox>
-    </content>
+            <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="TOP_CENTER">
+                <Label text="TÚ VS LA COMUNIDAD (MEDIA)" styleClass="card-titulo" maxWidth="Infinity"
+                       alignment="CENTER_LEFT"/>
+                <Label text="Comparativa de emisiones por categoría" styleClass="subtitulo" maxWidth="Infinity"
+                       alignment="CENTER_LEFT"/>
+
+                <BarChart fx:id="barChart" VBox.vgrow="ALWAYS" minHeight="400" legendSide="BOTTOM" animated="false">
+                    <xAxis>
+                        <CategoryAxis label=""/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="kg CO₂"/>
+                    </yAxis>
+                </BarChart>
+            </VBox>
+        </HBox>
+
+        <HBox styleClass="card-azul" spacing="20" alignment="CENTER_LEFT">
+            <Label text="🤖" style="-fx-font-size: 34px; -fx-text-fill: white;"/>
+            <VBox>
+                <Label text="ANÁLISIS INTELIGENTE" styleClass="titulo-tip"/>
+                <Label fx:id="lblInsight" text="Analizando tus hábitos..."
+                       textFill="WHITE" wrapText="true" style="-fx-font-size: 14px;"/>
+            </VBox>
+        </HBox>
+
+    </VBox>
 </ScrollPane>

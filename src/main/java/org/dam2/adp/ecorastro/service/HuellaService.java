@@ -9,8 +9,8 @@ import org.dam2.adp.ecorastro.model.Usuario;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class HuellaService {
     private final HuellaDAO huellaDAO = new HuellaDAO();
@@ -45,6 +45,14 @@ public class HuellaService {
 
     public List<Huella> getHuellasPorUsuario(int idUsuario) {
         return huellaDAO.getHuellasPorUsuario(idUsuario);
+    }
+
+    public List<Huella> getHuellasPorFecha(int idUsuario, LocalDate fechaInicio, LocalDate fechaFin) {
+        return huellaDAO.getHuellasPorFecha(idUsuario, fechaInicio, fechaFin);
+    }
+
+    public Map<String, Double> getMediaImpactoPorCategoria() {
+        return huellaDAO.getMediaImpactoPorCategoria();
     }
 
 }
