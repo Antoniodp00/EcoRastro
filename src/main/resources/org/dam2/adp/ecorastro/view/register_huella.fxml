@@ -15,56 +15,57 @@
             xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.dam2.adp.ecorastro.controller.RegisterHuellaController"
-            stylesheets="@../style.css"
             styleClass="scroll-transparente">
 
-    <VBox alignment="TOP_CENTER" spacing="30.0" styleClass="panel-base">
-        <padding>
-            <Insets top="40" right="20" bottom="40" left="20"/>
-        </padding>
+    <content>
+        <VBox alignment="TOP_CENTER" spacing="30.0" styleClass="panel-base">
+            <padding> <Insets top="40" right="20" bottom="40" left="20"/> </padding>
 
-        <VBox alignment="CENTER" spacing="5">
-            <Label text="👣" styleClass="icono-gigante"/>
-            <Label text="Nueva Huella" styleClass="titulo"/>
-            <Label text="Registra tu actividad para calcular el impacto" styleClass="subtitulo"/>
-        </VBox>
-
-        <VBox styleClass="card" maxWidth="500" spacing="20">
-            <padding>
-                <Insets top="30" right="30" bottom="30" left="30"/>
-            </padding>
-
-            <VBox spacing="8">
-                <Label text="¿Qué actividad realizaste?" styleClass="label-formulario"/>
-                <ComboBox fx:id="cmbActividad" promptText="Selecciona una opción..." maxWidth="Infinity"
-                          styleClass="input-formulario"/>
+            <VBox alignment="CENTER" spacing="5">
+                <Label text="👣" style="-fx-font-size: 48px;"/>
+                <Label text="Nueva Huella" styleClass="titulo"/>
+                <Label text="Registra tu actividad para calcular el impacto" styleClass="subtitulo"/>
             </VBox>
 
-            <VBox spacing="8">
-                <Label text="Cantidad consumida" styleClass="label-formulario"/>
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <TextField fx:id="txtValor" promptText="Ej: 10.5" HBox.hgrow="ALWAYS"
-                               styleClass="input-formulario"/>
-                    <Label fx:id="lblUnidad" text="unidades" styleClass="etiqueta-unidad"/>
+            <VBox styleClass="card" maxWidth="500" spacing="20">
+                <padding> <Insets top="30" right="30" bottom="30" left="30"/> </padding>
+
+                <VBox spacing="8">
+                    <Label text="¿Qué actividad realizaste?" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
+                    <ComboBox fx:id="cmbActividad" promptText="Selecciona una opción..." maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="8">
+                    <Label text="Cantidad consumida" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <TextField fx:id="txtValor" promptText="Ej: 10.5" HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="lblUnidad" text="unidades"
+                               style="-fx-text-fill: -color-terciario; -fx-font-weight: bold; -fx-background-color: #ECF0F1; -fx-padding: 8 12; -fx-background-radius: 4;"/>
+                    </HBox>
+                </VBox>
+
+                <VBox spacing="8">
+                    <Label text="Fecha del registro" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
+                    <DatePicker fx:id="dpFecha" maxWidth="Infinity"/>
+                </VBox>
+
+                <Region prefHeight="10"/>
+
+                <HBox spacing="15" alignment="CENTER">
+                    <Button text="Cancelar" onAction="#onCancelarClick"
+                            styleClass="boton-secundario" maxWidth="Infinity" HBox.hgrow="ALWAYS" prefHeight="45"/>
+
+                    <Button text="Guardar Registro" onAction="#onGuardarClick"
+                            styleClass="boton-primario" maxWidth="Infinity" HBox.hgrow="ALWAYS" prefHeight="45"/>
                 </HBox>
+
             </VBox>
 
-            <VBox spacing="8">
-                <Label text="Fecha del registro" styleClass="label-formulario"/>
-                <DatePicker fx:id="dpFecha" maxWidth="Infinity" styleClass="input-formulario"/>
-            </VBox>
-
-            <Region prefHeight="10"/>
-
-            <HBox spacing="15" alignment="CENTER">
-                <Button text="Cancelar" onAction="#onCancelarClick"
-                        styleClass="boton-secundario, boton-accion" prefWidth="120" prefHeight="40"/>
-
-                <Button text="Guardar Registro" onAction="#onGuardarClick"
-                        styleClass="boton-primario, boton-accion" prefWidth="200" prefHeight="40"/>
+            <HBox alignment="CENTER" maxWidth="500" style="-fx-background-color: rgba(44, 62, 80, 0.05); -fx-background-radius: 20; -fx-padding: 10 20;">
+                <Label text="ℹ️  Los datos se sumarán automáticamente a tu análisis mensual."
+                       wrapText="true" textAlignment="CENTER" style="-fx-text-fill: -color-terciario; -fx-font-size: 12px;"/>
             </HBox>
 
         </VBox>
-    </VBox>
+    </content>
 </ScrollPane>
-

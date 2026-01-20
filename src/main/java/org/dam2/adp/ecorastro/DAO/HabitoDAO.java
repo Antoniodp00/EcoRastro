@@ -9,7 +9,10 @@ import org.hibernate.Transaction;
 import java.util.List;
 
 public class HabitoDAO {
-    private final String GET_BY_USER_HQL = "FROM Habito h where h.idUsuario.id = :idUsuario";
+    private final String GET_BY_USER_HQL = "FROM Habito h " +
+            "JOIN FETCH h.idActividad a " +
+            "JOIN FETCH a.idCategoria " +
+            "WHERE h.idUsuario.id = :idUsuario";
 
 
     public boolean addHabito(Habito habito) {
@@ -17,7 +20,7 @@ public class HabitoDAO {
         boolean insertado = false;
         Session session = null;
         try {
-             session = Connection.getInstance().getSession();
+            session = Connection.getInstance().getSession();
             tx = session.beginTransaction();
             session.merge(habito);
             tx.commit();
@@ -29,8 +32,8 @@ public class HabitoDAO {
             }
             e.printStackTrace();
 
-        }finally {
-            if (session != null){
+        } finally {
+            if (session != null) {
                 session.close();
             }
         }
