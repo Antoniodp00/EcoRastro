@@ -9,6 +9,12 @@ import java.util.logging.Logger;
 
 /**
  * Gestiona la sesión del usuario y otros datos de sesión.
+ * <p>
+ * Implementa el patrón Singleton para mantener un estado global accesible desde toda la aplicación.
+ * Almacena el usuario autenticado y permite guardar datos temporales arbitrarios.
+ *
+ * @author TuNombre
+ * @version 1.0
  */
 public class SessionManager {
 
@@ -21,6 +27,7 @@ public class SessionManager {
 
     /**
      * Obtiene la instancia única de SessionManager.
+     *
      * @return la instancia de SessionManager.
      */
     public static SessionManager getInstance() {
@@ -33,6 +40,7 @@ public class SessionManager {
 
     /**
      * Establece el usuario actual de la sesión.
+     *
      * @param usuario el usuario actual.
      */
     public void setUsuarioActual(Usuario usuario) {
@@ -46,6 +54,7 @@ public class SessionManager {
 
     /**
      * Obtiene el usuario actual de la sesión.
+     *
      * @return el usuario actual.
      */
     public Usuario getUsuarioActual() {
@@ -54,6 +63,7 @@ public class SessionManager {
 
     /**
      * Almacena un dato en la sesión.
+     *
      * @param key la clave del dato.
      * @param value el valor del dato.
      */
@@ -64,6 +74,7 @@ public class SessionManager {
 
     /**
      * Obtiene un dato de la sesión.
+     *
      * @param key la clave del dato.
      * @return el valor del dato.
      */
@@ -75,6 +86,7 @@ public class SessionManager {
 
     /**
      * Elimina un dato de la sesión.
+     *
      * @param key la clave del dato a eliminar.
      */
     public void clear(String key) {

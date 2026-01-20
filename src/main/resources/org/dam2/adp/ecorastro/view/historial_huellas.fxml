@@ -21,19 +21,18 @@
 
         <VBox spacing="20.0" styleClass="sidebar-container">
 
-            <Label text="Gestión de Datos" styleClass="titulo" style="-fx-font-size: 20px;"/>
+            <Label text="Gestión de Datos" styleClass="titulo, texto-grande-20"/>
             <Label text="Opciones disponibles" styleClass="subtitulo-seccion"/>
 
             <HBox styleClass="card-nav, nav-huella" onMouseClicked="#irARegistrar" alignment="CENTER_LEFT" spacing="15">
-                <Label text="+" styleClass="icono-navegacion" style="-fx-font-weight: bold;"/>
+                <Label text="+" styleClass="icono-navegacion, texto-negrita"/>
                 <VBox>
                     <Label text="Nueva Huella" styleClass="card-nav-titulo"/>
                     <Label text="Añadir registro" styleClass="card-nav-desc"/>
                 </VBox>
             </HBox>
 
-            <HBox styleClass="card-nav, nav-analisis" onMouseClicked="#cargarDatos" alignment="CENTER_LEFT"
-                  spacing="15">
+            <HBox styleClass="card-nav, nav-analisis" onMouseClicked="#cargarDatos" alignment="CENTER_LEFT" spacing="15">
                 <Label text="🔄" styleClass="icono-navegacion"/>
                 <VBox>
                     <Label text="Actualizar" styleClass="card-nav-titulo"/>
@@ -41,25 +40,23 @@
                 </VBox>
             </HBox>
 
-            <HBox styleClass="card-nav, nav-habitos" onMouseClicked="#eliminarHuella" alignment="CENTER_LEFT"
-                  spacing="15">
-                <Label text="🗑" styleClass="icono-navegacion" style="-fx-text-fill: -color-error;"/>
+            <HBox styleClass="card-nav, nav-habitos" onMouseClicked="#eliminarHuella" alignment="CENTER_LEFT" spacing="15">
+                <Label text="🗑" styleClass="icono-navegacion, icono-error"/>
                 <VBox>
-                    <Label text="Borrar" styleClass="card-nav-titulo" style="-fx-text-fill: -color-error;"/>
+                    <Label text="Borrar" styleClass="card-nav-titulo, texto-error"/>
                     <Label text="Eliminar seleccionado" styleClass="card-nav-desc"/>
                 </VBox>
             </HBox>
 
             <VBox styleClass="card-azul" spacing="5">
-                <Label text="ℹ INFO" styleClass="titulo-tip" style="-fx-font-size: 14px;"/>
-                <Label text="Selecciona una fila de la tabla para eliminarla." wrapText="true" styleClass="texto-tip"
-                       style="-fx-font-size: 12px;"/>
+                <Label text="ℹ INFO" styleClass="titulo-tip, texto-mediano-plus"/>
+                <Label text="Selecciona una fila de la tabla para eliminarla."
+                       wrapText="true" styleClass="texto-tip, texto-pequeno"/>
             </VBox>
 
         </VBox>
 
         <VBox spacing="20" HBox.hgrow="ALWAYS">
-
             <VBox>
                 <Label text="Mis Huellas" styleClass="titulo"/>
                 <Label text="Historial completo de tus registros" styleClass="subtitulo"/>
@@ -79,7 +76,6 @@
                     </columnResizePolicy>
                 </TableView>
             </VBox>
-
         </VBox>
     </HBox>
 </ScrollPane>

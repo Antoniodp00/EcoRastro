@@ -34,11 +34,12 @@
         <Label text="Contraseña" styleClass="label-formulario"/>
         <PasswordField fx:id="txtPassword" promptText="Tu contraseña" styleClass="input-formulario"/>
 
-        <Label fx:id="lblError" textFill="RED" visible="false" wrapText="true" style="-fx-font-size: 12px;"/>
+        <Label fx:id="lblError" visible="false" wrapText="true" styleClass="texto-error, texto-pequeno"/>
     </VBox>
 
     <Button text="Iniciar Sesión" onAction="#onLoginClick" fx:id="btnLogin"
-            styleClass="boton-primario, boton-accion" prefWidth="300.0" prefHeight="40.0"/>
+            styleClass="boton-primario, boton-accion"
+            prefWidth="300.0" prefHeight="40.0"/>
 
     <Button text="¿No tienes cuenta? Regístrate" onAction="#onRegisterClick" fx:id="btnRegister"
             styleClass="boton-enlace"/>

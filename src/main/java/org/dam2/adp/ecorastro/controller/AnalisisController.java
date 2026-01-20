@@ -26,28 +26,78 @@ import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.*;
 
+/**
+ * Controlador para la vista de Análisis y Reportes.
+ * <p>
+ * Muestra gráficos detallados, estadísticas y permite exportar datos.
+ * <p>
+ * Funcionalidades principales:
+ * <ul>
+ * <li>Filtrado de datos por rango de fechas (Día, Semana, Mes, Todo).</li>
+ * <li>Visualización de KPIs (Total CO2, Hábito frecuente).</li>
+ * <li>Gráficos interactivos: Distribución por categoría (PieChart) y Comparativa (BarChart).</li>
+ * <li>Generación de insights y recomendaciones basadas en hábitos.</li>
+ * <li>Exportación de reportes a formato CSV.</li>
+ * </ul>
+ *
+ * @author TuNombre
+ * @version 1.0
+ */
 public class AnalisisController {
 
-    public CheckBox chkDesglose;
     // --- ELEMENTOS FXML ---
+
+    /** Checkbox para alternar entre vista desglosada o global en el gráfico comparativo. */
+    public CheckBox chkDesglose;
+
+    /** Desplegable para seleccionar el rango de tiempo a analizar. */
     @FXML private ComboBox<String> cmbRango;
+
+    /** Selector de fecha para definir el punto de referencia del análisis. */
     @FXML private DatePicker dpFecha;
 
+    /** Etiqueta para mostrar el total de emisiones en el periodo seleccionado. */
     @FXML private Label lblTotalPeriodo;
-    @FXML private Label lblActividadFrecuente; // Se usará para mostrar el Hábito más frecuente
+
+    /** Etiqueta para mostrar la actividad más frecuente (Hábito). */
+    @FXML private Label lblActividadFrecuente;
+
+    /** Etiqueta para mostrar un consejo o insight basado en los datos. */
     @FXML private Label lblInsight;
 
+    /** Gráfico circular para mostrar la distribución de emisiones. */
     @FXML private PieChart pieChart;
+
+    /** Gráfico de barras para comparar emisiones con la media o desglosar por categoría. */
     @FXML private BarChart<String, Number> barChart;
 
     // --- SERVICIOS ---
+
+    /** Servicio para gestionar huellas de carbono. */
     private final HuellaService huellaService = new HuellaService();
+
+    /** Servicio para gestionar hábitos del usuario. */
     private final HabitoService habitoService = new HabitoService();
+
+    /** Servicio para generar recomendaciones. */
     private final RecomendacionService recomendacionService = new RecomendacionService();
 
     // --- DATOS ---
+
+    /** Lista de huellas filtradas según los criterios seleccionados. */
     private List<Huella> huellasFiltradas;
 
+    /**
+     * Inicializa el controlador de análisis.
+     * <p>
+     * Configura los filtros de fecha y rango, y carga los datos iniciales.
+     * <ol>
+     * <li>Configura las opciones del ComboBox de rango.</li>
+     * <li>Establece la fecha actual por defecto.</li>
+     * <li>Añade listeners para recargar datos al cambiar filtros.</li>
+     * <li>Realiza la carga inicial de datos.</li>
+     * </ol>
+     */
     @FXML
     public void initialize() {
         // 1. Configuración de filtros
@@ -66,6 +116,8 @@ public class AnalisisController {
 
     /**
      * Orquestador principal de carga de datos.
+     * <p>
+     * Recupera huellas, actualiza el dashboard y genera insights.
      */
     private void cargarDatos() {
         int idUsuario = SessionManager.getInstance().getUsuarioActual().getId();
@@ -81,7 +133,10 @@ public class AnalisisController {
     }
 
     /**
-     * Calcula las fechas y pide al Service las huellas de ese rango.
+     * Calcula las fechas de inicio y fin según el rango seleccionado
+     * y solicita al servicio las huellas correspondientes.
+     *
+     * @param idUsuario ID del usuario actual.
      */
     private void cargarHuellasDesdeService(int idUsuario) {
         String rango = cmbRango.getValue();
@@ -116,6 +171,9 @@ public class AnalisisController {
         huellasFiltradas = huellaService.getHuellasPorFecha(idUsuario, inicio, fin);
     }
 
+    /**
+     * Actualiza los KPIs y gráficos del dashboard con los datos filtrados.
+     */
     private void actualizarDashboard() {
         if (huellasFiltradas == null) return;
 
@@ -132,7 +190,9 @@ public class AnalisisController {
     }
 
     /**
-     * Genera recomendación basada en el Hábito más frecuente (según PDF).
+     * Genera una recomendación basada en el hábito más frecuente del usuario.
+     *
+     * @param idUsuario ID del usuario.
      */
     private void cargarInsightPorHabito(int idUsuario) {
         Habito habitoFrecuente = habitoService.getHabitoMasFrecuente(idUsuario);
@@ -153,6 +213,9 @@ public class AnalisisController {
         }
     }
 
+    /**
+     * Actualiza el gráfico circular (PieChart) con la distribución de emisiones por categoría.
+     */
     private void actualizarGraficoDistribucion() {
         Map<String, Double> porCategoria = new HashMap<>();
 
@@ -167,6 +230,11 @@ public class AnalisisController {
         pieChart.setData(pieData);
     }
 
+    /**
+     * Actualiza el gráfico de barras comparativo (BarChart).
+     * <p>
+     * Permite alternar entre vista desglosada por categorías o totales globales.
+     */
     private void actualizarGraficoComparativo() {
         // A. Preparar Mis Datos (siempre los calculamos)
         Map<String, Double> misTotales = new HashMap<>();
@@ -213,6 +281,11 @@ public class AnalisisController {
         barChart.getData().addAll(serieYo, serieMedia);
     }
 
+    /**
+     * Exporta los datos filtrados actuales a un archivo CSV.
+     *
+     * @param event Evento de acción.
+     */
     @FXML
     public void exportarReporte(ActionEvent event) {
         if (huellasFiltradas == null || huellasFiltradas.isEmpty()) {

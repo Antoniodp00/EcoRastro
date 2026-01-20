@@ -5,25 +5,41 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entidad que representa una actividad ecológica o contaminante.
+ * <p>
+ * Mapea la tabla 'actividad' del esquema 'ecorastro_db'.
+ * Las actividades pertenecen a una {@link Categoria} y pueden ser registradas
+ * como huellas o hábitos por los usuarios.
+ *
+ * @author TuNombre
+ * @version 1.0
+ */
 @Entity
 @Table(name = "actividad", schema = "ecorastro_db")
 public class Actividad {
+
+    /** Identificador único de la actividad. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_actividad", nullable = false)
     private Integer id;
 
+    /** Nombre descriptivo de la actividad (ej: "Viaje en coche", "Reciclaje de vidrio"). */
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
+    /** Categoría a la que pertenece la actividad. */
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria idCategoria;
 
+    /** Lista de hábitos que referencian esta actividad. */
     @OneToMany(mappedBy = "idActividad")
     private List<Habito> habitos = new ArrayList<>() {
     };
 
+    /** Lista de huellas registradas con esta actividad. */
     @OneToMany(mappedBy = "idActividad")
     private List<Huella> huellas = new ArrayList<>();
 

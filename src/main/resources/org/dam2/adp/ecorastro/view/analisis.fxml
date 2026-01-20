@@ -14,8 +14,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.Region?>
-
 <?import javafx.scene.control.CheckBox?>
+
 <ScrollPane fitToWidth="true" fitToHeight="true"
             xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -35,8 +35,8 @@
 
             <Region HBox.hgrow="ALWAYS"/>
 
-            <HBox spacing="10" alignment="CENTER_LEFT" style="">
-                <Label text="Ver:" style="-fx-font-weight: bold;"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Ver:" styleClass="texto-negrita"/>
 
                 <ComboBox fx:id="cmbRango" prefWidth="120"/>
                 <DatePicker fx:id="dpFecha" prefWidth="120" promptText="Fecha"/>
@@ -60,8 +60,7 @@
                     <Separator orientation="VERTICAL"/>
                     <VBox>
                         <Label text="ACTIVIDAD FRECUENTE" styleClass="card-titulo"/>
-                        <Label fx:id="lblActividadFrecuente" text="-" styleClass="card-numero"
-                               style="-fx-font-size: 18px;"/>
+                        <Label fx:id="lblActividadFrecuente" text="-" styleClass="card-numero, texto-grande-18"/>
                     </VBox>
                 </HBox>
 
@@ -72,10 +71,8 @@
             </VBox>
 
             <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="TOP_CENTER">
-                <Label text="TÚ VS LA COMUNIDAD (MEDIA)" styleClass="card-titulo" maxWidth="Infinity"
-                       alignment="CENTER_LEFT"/>
-                <Label text="Comparativa de emisiones por categoría" styleClass="subtitulo" maxWidth="Infinity"
-                       alignment="CENTER_LEFT"/>
+                <Label text="TÚ VS LA COMUNIDAD (MEDIA)" styleClass="card-titulo" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+                <Label text="Comparativa de emisiones por categoría" styleClass="subtitulo" maxWidth="Infinity" alignment="CENTER_LEFT"/>
 
                 <BarChart fx:id="barChart" VBox.vgrow="ALWAYS" minHeight="400" legendSide="BOTTOM" animated="false">
                     <xAxis>
@@ -89,11 +86,11 @@
         </HBox>
 
         <HBox styleClass="card-azul" spacing="20" alignment="CENTER_LEFT">
-            <Label text="🤖" style="-fx-font-size: 34px; -fx-text-fill: white;"/>
+            <Label text="🤖" styleClass="icono-gigante-34, texto-blanco"/>
             <VBox>
                 <Label text="ANÁLISIS INTELIGENTE" styleClass="titulo-tip"/>
                 <Label fx:id="lblInsight" text="Analizando tus hábitos..."
-                       textFill="WHITE" wrapText="true" style="-fx-font-size: 14px;"/>
+                       wrapText="true" styleClass="texto-blanco, texto-mediano-plus"/>
             </VBox>
         </HBox>
 

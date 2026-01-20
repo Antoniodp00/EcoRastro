@@ -15,6 +15,11 @@ import java.util.logging.Logger;
 
 /**
  * Utilidades para la navegación entre escenas en la aplicación.
+ * <p>
+ * Gestiona el cambio de vistas principales y la carga de contenido dinámico.
+ *
+ * @author TuNombre
+ * @version 1.0
  */
 public class Navigation {
 
@@ -26,6 +31,7 @@ public class Navigation {
 
     /**
      * Establece el escenario principal de la aplicación.
+     *
      * @param stage El escenario principal.
      */
     public static void setStage(Stage stage) {
@@ -35,6 +41,7 @@ public class Navigation {
 
     /**
      * Establece el controlador principal de la aplicación.
+     *
      * @param controller El controlador principal.
      */
     public static void setMainController(MainController controller) {
@@ -44,6 +51,10 @@ public class Navigation {
 
     /**
      * Navega a una vista dentro del área de contenido principal.
+     * <p>
+     * Si el controlador principal está activo, carga la vista en su panel de contenido.
+     * Si no, intenta cambiar la escena completa.
+     *
      * @param fxml El archivo FXML de la vista a cargar.
      */
     public static void navigate(String fxml) {
@@ -58,6 +69,10 @@ public class Navigation {
 
     /**
      * Cambia la escena actual por una nueva.
+     * <p>
+     * Carga un nuevo archivo FXML y reemplaza la escena del escenario principal.
+     * Ajusta el tamaño y propiedades de la ventana según la vista (Login vs Main).
+     *
      * @param fxml El archivo FXML de la escena a cargar.
      */
     public static void switchScene(String fxml) {
@@ -102,8 +117,4 @@ public class Navigation {
             e.printStackTrace();
         }
     }
-
-
-
-
 }

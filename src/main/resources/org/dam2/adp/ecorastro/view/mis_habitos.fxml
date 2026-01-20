@@ -24,37 +24,36 @@
 
             <VBox spacing="15.0" minWidth="300" maxWidth="350" HBox.hgrow="NEVER">
 
-                <Label text="Nuevo Hábito" styleClass="titulo" style="-fx-font-size: 20px;"/>
+                <Label text="Nuevo Hábito" styleClass="titulo, texto-grande-20"/>
                 <Label text="Define tus habitos." styleClass="subtitulo"/>
 
                 <VBox styleClass="card" spacing="15">
                     <VBox spacing="5">
-                        <Label text="Actividad" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
+                        <Label text="Actividad" styleClass="texto-secundario-bold"/>
                         <ComboBox fx:id="cmbActividad" promptText="Selecciona..." maxWidth="Infinity"/>
                     </VBox>
 
                     <HBox spacing="10">
                         <VBox spacing="5" HBox.hgrow="ALWAYS">
-                            <Label text="Frecuencia" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
+                            <Label text="Frecuencia" styleClass="texto-secundario-bold"/>
                             <TextField fx:id="txtFrecuencia" promptText="Ej: 3"/>
                         </VBox>
                         <VBox spacing="5" HBox.hgrow="ALWAYS">
-                            <Label text="Periodo" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
+                            <Label text="Periodo" styleClass="texto-secundario-bold"/>
                             <ComboBox fx:id="cmbTipo" promptText="Ej: Semanal" maxWidth="Infinity"/>
                         </VBox>
                     </HBox>
 
                     <Button text="Añadir Hábito" onAction="#guardarHabito"
-                            styleClass="boton-primario" maxWidth="Infinity" style="-fx-padding: 10;"/>
+                            styleClass="boton-primario, padding-10" maxWidth="Infinity"/>
                 </VBox>
 
                 <Separator style="-fx-opacity: 0.1;"/>
 
-                <HBox styleClass="card-nav" onMouseClicked="#eliminarHabito" alignment="CENTER_LEFT" spacing="15"
-                      style="-fx-border-color: transparent transparent transparent -color-primario;">
-                    <Label text="🗑" style="-fx-font-size: 24px; -fx-text-fill: -color-primario;"/>
+                <HBox styleClass="card-nav, borde-primario" onMouseClicked="#eliminarHabito" alignment="CENTER_LEFT" spacing="15">
+                    <Label text="🗑" styleClass="icono-grande, icono-primario"/>
                     <VBox>
-                        <Label text="Eliminar" styleClass="card-nav-titulo" style="-fx-font-size: 16px;"/>
+                        <Label text="Eliminar" styleClass="card-nav-titulo"/>
                         <Label text="Borrar seleccionado" styleClass="card-nav-desc"/>
                     </VBox>
                 </HBox>

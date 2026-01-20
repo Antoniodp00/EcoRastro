@@ -27,23 +27,25 @@
                     <Label text="TOTAL EMISIONES" styleClass="card-titulo"/>
                     <HBox alignment="CENTER_LEFT" spacing="10">
                         <Label fx:id="lblHuellaTotal" text="0.00 kg" styleClass="card-numero-destacado"/>
-                        <Label text="" styleClass="card-unidad" style="-fx-padding: 12 0 0 0;"/>
+                        <Label text="" styleClass="card-unidad, padding-top-12"/>
                     </HBox>
                 </VBox>
 
                 <VBox styleClass="card" spacing="10">
                     <HBox spacing="15" alignment="CENTER_LEFT">
-                        <Label text="🌱" styleClass="icono-nivel"/>
+                        <Label fx:id="lblIconoNivel" text="🌱" styleClass="icono-nivel"/>
                         <VBox spacing="2">
                             <Label text="NIVEL ACTUAL" styleClass="card-titulo"/>
-                            <Label fx:id="lblNivel" text="Brote Verde" styleClass="card-numero" style="-fx-font-size: 20px;"/>
+                            <Label fx:id="lblNivel" text="Bajo Consumo" styleClass="card-numero, texto-grande-20"/>
                         </VBox>
                     </HBox>
 
                     <VBox spacing="5">
-                        <Label text="Siguiente: Árbol Joven" styleClass="subtitulo" style="-fx-font-size: 12px;"/>
+                        <Label fx:id="lblSiguienteNivel" text="Objetivo: Mantener" styleClass="subtitulo, texto-pequeno"/>
+
                         <ProgressBar fx:id="pbNivel" progress="0.65" maxWidth="Infinity" styleClass="barra-progreso"/>
-                        <Label text="Faltan 35 kg de ahorro" styleClass="texto-progreso" alignment="CENTER_RIGHT" maxWidth="Infinity"/>
+
+                        <Label fx:id="lblAhorroRestante" text="¡Vas genial!" styleClass="texto-progreso" alignment="CENTER_RIGHT" maxWidth="Infinity"/>
                     </VBox>
                 </VBox>
 
@@ -78,15 +80,14 @@
                 <HBox styleClass="card-azul" alignment="CENTER_LEFT" spacing="15">
                     <Label text="💡" styleClass="icono-tip"/>
                     <VBox>
-                        <Label text="CONSEJO DEL DÍA" styleClass="titulo-tip" style="-fx-font-size: 13px;"/>
-                        <Label fx:id="lblConsejo" text="Cargando consejo..." wrapText="true" styleClass="texto-tip" style="-fx-font-size: 12px;"/>
+                        <Label text="CONSEJO DEL DÍA" styleClass="titulo-tip, texto-mediano"/>
+                        <Label fx:id="lblConsejo" text="Cargando consejo..." wrapText="true" styleClass="texto-tip, texto-pequeno"/>
                     </VBox>
                 </HBox>
 
             </VBox>
 
             <VBox spacing="20" HBox.hgrow="ALWAYS">
-
                 <VBox>
                     <Label text="Resumen General" styleClass="titulo"/>
                     <Label text="Así va tu impacto comparado con la media" styleClass="subtitulo"/>
@@ -103,7 +104,6 @@
                         </BarChart>
                     </StackPane>
                 </VBox>
-
             </VBox>
         </HBox>
     </content>

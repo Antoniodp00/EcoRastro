@@ -490,3 +490,95 @@
     -fx-opacity: 0.7;
 }
 
+/* =========================================================
+   CLASES DE UTILIDAD (Refactorización FXML -> CSS)
+   Nuevas clases para eliminar estilos en línea
+   ========================================================= */
+
+/* --- BOTONES ESPECÍFICOS --- */
+.boton-peligro {
+    -fx-border-color: -color-error;
+    -fx-text-fill: -color-error;
+}
+.boton-peligro:hover {
+    -fx-background-color: rgba(239, 68, 68, 0.1);
+    -fx-cursor: hand;
+}
+
+/* --- TEXTOS Y TIPOGRAFÍA --- */
+.texto-negrita {
+    -fx-font-weight: bold;
+}
+.texto-blanco {
+    -fx-text-fill: white;
+}
+.texto-secundario-bold {
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-texto-secundario; /* Antes era -color-secundario (corregido) */
+}
+.texto-terciario {
+    -fx-text-fill: -color-terciario;
+}
+.texto-error {
+    -fx-text-fill: -color-error;
+}
+
+/* Tamaños de fuente */
+.texto-pequeno {
+    -fx-font-size: 12px;
+}
+.texto-mediano {
+    -fx-font-size: 13px;
+}
+.texto-mediano-plus {
+    -fx-font-size: 14px;
+}
+.texto-grande-18 {
+    -fx-font-size: 18px;
+}
+.texto-grande-20 {
+    -fx-font-size: 20px;
+}
+
+/* --- ICONOS --- */
+.icono-grande {
+    -fx-font-size: 24px;
+}
+.icono-gigante-34 {
+    -fx-font-size: 34px;
+}
+.icono-gigante-extra {
+    -fx-font-size: 48px;
+}
+.icono-primario {
+    -fx-text-fill: -color-primario;
+}
+.icono-error {
+    -fx-text-fill: -color-error;
+}
+
+/* --- CONTENEDORES Y BORDES --- */
+.padding-top-12 {
+    -fx-padding: 12 0 0 0;
+}
+.padding-10 {
+    -fx-padding: 10;
+}
+.borde-primario {
+    -fx-border-color: transparent transparent transparent -color-primario;
+}
+.fondo-info-suave {
+    -fx-background-color: rgba(44, 62, 80, 0.05);
+    -fx-background-radius: 20;
+    -fx-padding: 10 20;
+}
+
+/* --- COMPONENTES COMPLEJOS --- */
+.etiqueta-unidad-detalle {
+    -fx-text-fill: -color-terciario;
+    -fx-font-weight: bold;
+    -fx-background-color: #ECF0F1;
+    -fx-padding: 8 12;
+    -fx-background-radius: 4;
+}
+

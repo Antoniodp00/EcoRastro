@@ -7,10 +7,24 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
+/**
+ * Clase de Acceso a Datos (DAO) para la entidad {@link Usuario}.
+ * <p>
+ * Gestiona las operaciones CRUD relacionadas con los usuarios del sistema.
+ *
+ * @author TuNombre
+ * @version 1.0
+ */
 public class UsuarioDAO {
 
     private final String GET_ALL_HQL = "FROM Usuario";
 
+    /**
+     * Inserta un nuevo usuario en la base de datos.
+     *
+     * @param usuario El objeto Usuario a persistir.
+     * @return true si la inserción fue exitosa, false en caso contrario.
+     */
     public boolean addUsuario(Usuario usuario) {
 
         boolean insertado = false;
@@ -32,7 +46,12 @@ public class UsuarioDAO {
         return insertado;
     }
 
-
+    /**
+     * Actualiza los datos de un usuario existente.
+     *
+     * @param usuario El objeto Usuario con los datos modificados.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     */
     public boolean updateUsuario(Usuario usuario) {
         boolean actualizado = false;
         Transaction tx = null;
@@ -51,7 +70,12 @@ public class UsuarioDAO {
         return actualizado;
     }
 
-
+    /**
+     * Elimina un usuario de la base de datos.
+     *
+     * @param usuario El objeto Usuario a eliminar.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
     public boolean deleteUsuario(Usuario usuario) {
         boolean eliminado = false;
         Transaction tx = null;
@@ -70,12 +94,26 @@ public class UsuarioDAO {
         return eliminado;
     }
 
+    /**
+     * Recupera un usuario por su ID.
+     *
+     * @param id El ID del usuario.
+     * @return El objeto Usuario encontrado o null.
+     */
     public Usuario getUsuarioById(int id){
         try(Session session = Connection.getInstance().getSession()){
             return session.get(Usuario.class, id);
         }
     }
 
+    /**
+     * Busca un usuario por su correo electrónico.
+     * <p>
+     * Útil para el proceso de login y validación de duplicados.
+     *
+     * @param email El correo electrónico a buscar.
+     * @return El objeto Usuario encontrado o null si no existe.
+     */
     public Usuario getUsuarioByEmail(String email){
         try(Session session = Connection.getInstance().getSession()){
             return session.createQuery("FROM Usuario WHERE email = :email", Usuario.class)
@@ -83,5 +121,4 @@ public class UsuarioDAO {
                     .uniqueResult();
         }
     }
-
 }

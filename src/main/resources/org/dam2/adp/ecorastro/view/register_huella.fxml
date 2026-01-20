@@ -22,7 +22,7 @@
             <padding> <Insets top="40" right="20" bottom="40" left="20"/> </padding>
 
             <VBox alignment="CENTER" spacing="5">
-                <Label text="👣" style="-fx-font-size: 48px;"/>
+                <Label text="👣" styleClass="icono-gigante-extra"/>
                 <Label text="Nueva Huella" styleClass="titulo"/>
                 <Label text="Registra tu actividad para calcular el impacto" styleClass="subtitulo"/>
             </VBox>
@@ -31,21 +31,20 @@
                 <padding> <Insets top="30" right="30" bottom="30" left="30"/> </padding>
 
                 <VBox spacing="8">
-                    <Label text="¿Qué actividad realizaste?" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
+                    <Label text="¿Qué actividad realizaste?" styleClass="texto-secundario-bold"/>
                     <ComboBox fx:id="cmbActividad" promptText="Selecciona una opción..." maxWidth="Infinity"/>
                 </VBox>
 
                 <VBox spacing="8">
-                    <Label text="Cantidad consumida" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
+                    <Label text="Cantidad consumida" styleClass="texto-secundario-bold"/>
                     <HBox spacing="10" alignment="CENTER_LEFT">
                         <TextField fx:id="txtValor" promptText="Ej: 10.5" HBox.hgrow="ALWAYS"/>
-                        <Label fx:id="lblUnidad" text="unidades"
-                               style="-fx-text-fill: -color-terciario; -fx-font-weight: bold; -fx-background-color: #ECF0F1; -fx-padding: 8 12; -fx-background-radius: 4;"/>
+                        <Label fx:id="lblUnidad" text="unidades" styleClass="etiqueta-unidad-detalle"/>
                     </HBox>
                 </VBox>
 
                 <VBox spacing="8">
-                    <Label text="Fecha del registro" style="-fx-font-weight: bold; -fx-text-fill: -color-secundario;"/>
+                    <Label text="Fecha del registro" styleClass="texto-secundario-bold"/>
                     <DatePicker fx:id="dpFecha" maxWidth="Infinity"/>
                 </VBox>
 
@@ -61,9 +60,10 @@
 
             </VBox>
 
-            <HBox alignment="CENTER" maxWidth="500" style="-fx-background-color: rgba(44, 62, 80, 0.05); -fx-background-radius: 20; -fx-padding: 10 20;">
+            <HBox alignment="CENTER" maxWidth="500" styleClass="fondo-info-suave">
                 <Label text="ℹ️  Los datos se sumarán automáticamente a tu análisis mensual."
-                       wrapText="true" textAlignment="CENTER" style="-fx-text-fill: -color-terciario; -fx-font-size: 12px;"/>
+                       wrapText="true" textAlignment="CENTER"
+                       styleClass="texto-terciario, texto-pequeno"/>
             </HBox>
 
         </VBox>

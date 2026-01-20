@@ -14,7 +14,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Utilidades para mostrar alertas en la interfaz de usuario.
+ * Utilidades para mostrar alertas y diálogos en la interfaz de usuario.
+ * <p>
+ * Proporciona métodos estáticos para mostrar errores, información y confirmaciones
+ * con un estilo visual consistente.
+ *
+ * @author TuNombre
+ * @version 1.0
  */
 public class AlertUtils {
 
@@ -22,6 +28,7 @@ public class AlertUtils {
 
     /**
      * Aplica la hoja de estilos global a la escena de la alerta.
+     *
      * @param alert La alerta a la que aplicar el estilo.
      */
     private static void aplicarEstilo(Alert alert) {
@@ -46,7 +53,8 @@ public class AlertUtils {
 
     /**
      * Muestra una alerta de error.
-     * Si el mensaje es largo, usa un área de texto desplazable.
+     * <p>
+     * Si el mensaje es largo, usa un área de texto desplazable para facilitar la lectura.
      *
      * @param mensaje El mensaje de error a mostrar.
      */
@@ -73,6 +81,7 @@ public class AlertUtils {
 
     /**
      * Método interno para construir y mostrar una alerta personalizada y robusta.
+     *
      * @param tipo El tipo de alerta (ERROR, INFORMATION, etc.).
      * @param titulo El título de la ventana de la alerta.
      * @param cabecera El texto de la cabecera de la alerta.
@@ -111,6 +120,7 @@ public class AlertUtils {
 
     /**
      * Muestra una alerta de confirmación y espera la respuesta del usuario.
+     *
      * @param title El título de la ventana de diálogo.
      * @param header El texto de la cabecera.
      * @param content El mensaje principal del diálogo.

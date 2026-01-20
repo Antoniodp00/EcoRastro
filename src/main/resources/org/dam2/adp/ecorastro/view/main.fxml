@@ -25,8 +25,8 @@
 
             <Button text="🏠 Inicio" onAction="#mostrarInicio" styleClass="boton-icon"/>
 
-            <Button text="Cerrar Sesión" onAction="#cerrarSesion" styleClass="boton-icon"
-                    style="-fx-border-color: #E74C3C; -fx-text-fill: #E74C3C;"/>
+            <Button text="Cerrar Sesión" onAction="#cerrarSesion"
+                    styleClass="boton-icon, boton-peligro"/>
         </HBox>
     </top>
 
