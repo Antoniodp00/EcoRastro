@@ -12,6 +12,8 @@ import org.dam2.adp.ecorastro.service.RecomendacionService;
 import org.dam2.adp.ecorastro.util.Navigation;
 import org.dam2.adp.ecorastro.util.SessionManager;
 
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Map;
 
@@ -37,29 +39,49 @@ public class InicioController {
     public Label lblAhorroRestante;
 
     // --- ELEMENTOS FXML ---
-    /** Etiqueta para mostrar el valor numérico total de emisiones de CO2. */
-    @FXML private Label lblHuellaTotal;
+    /**
+     * Etiqueta para mostrar el valor numérico total de emisiones de CO2.
+     */
+    @FXML
+    private Label lblHuellaTotal;
 
-    /** Etiqueta para mostrar un consejo o "insight" aleatorio. */
-    @FXML private Label lblConsejo;
+    /**
+     * Etiqueta para mostrar un consejo o "insight" aleatorio.
+     */
+    @FXML
+    private Label lblConsejo;
 
-    /** Gráfico de barras para comparar el impacto del usuario con la comunidad. */
-    @FXML private BarChart<String, Number> barChart;
+    /**
+     * Gráfico de barras para comparar el impacto del usuario con la comunidad.
+     */
+    @FXML
+    private BarChart<String, Number> barChart;
 
-    /** Barra de progreso visual que representa el nivel ecológico del usuario. */
-    @FXML private ProgressBar pbNivel;
+    /**
+     * Barra de progreso visual que representa el nivel ecológico del usuario.
+     */
+    @FXML
+    private ProgressBar pbNivel;
 
-    /** Etiqueta de texto que indica el rango o título del nivel actual (ej: "Guardián"). */
-    @FXML private Label lblNivel;
+    /**
+     * Etiqueta de texto que indica el rango o título del nivel actual (ej: "Guardián").
+     */
+    @FXML
+    private Label lblNivel;
 
     // --- SERVICIOS ---
-    /** Servicio para la gestión y recuperación de datos de huellas de carbono. */
+    /**
+     * Servicio para la gestión y recuperación de datos de huellas de carbono.
+     */
     private final HuellaService huellaService = new HuellaService();
 
-    /** Servicio para generar recomendaciones y consejos basados en categorías. */
+    /**
+     * Servicio para generar recomendaciones y consejos basados en categorías.
+     */
     private final RecomendacionService recomendacionService = new RecomendacionService();
 
-    /** * Variable de estado para almacenar el total de emisiones calculado.
+    /**
+     * Variable de estado para almacenar el total de emisiones calculado.
      * Se calcula en {@link #cargarDatosReales()} y se reutiliza en gráficas y gamificación.
      */
     private double totalEmisionesUsuario = 0.0;
@@ -91,8 +113,11 @@ public class InicioController {
     private void cargarDatosReales() {
         int idUsuario = SessionManager.getInstance().getUsuarioActual().getId();
 
+        LocalDate inicioMes = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate finMes = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+
         // 1. Obtenemos todas las huellas del usuario
-        List<Huella> huellas = huellaService.getHuellasPorUsuario(idUsuario);
+        List<Huella> huellas = huellaService.getHuellasPorFecha(idUsuario, inicioMes, finMes);
 
         // 2. Sumamos el CO2 total (Valor * Factor)
         totalEmisionesUsuario = 0.0;
@@ -103,7 +128,7 @@ public class InicioController {
         }
 
         // 3. Actualizamos la etiqueta gigante del Dashboard
-        lblHuellaTotal.setText(String.format("%.2f kg CO₂", totalEmisionesUsuario));
+        lblHuellaTotal.setText(String.format("%.2f kg CO₂ (Mes)", totalEmisionesUsuario));
     }
 
     /**
@@ -162,56 +187,73 @@ public class InicioController {
         String faltaTexto;
         double progreso;
 
-        // LÍMITES: <50 (Bueno), 50-200 (Normal), >200 (Malo)
+        // COLORES TEMA ANCIENT WOODS
+        String colorBueno = "#656D4A";   // Verde Musgo
+        String colorMedio = "#DDA15E";   // Ocre Dorado
+        String colorMalo  = "#bc4749";   // Rojo Arcilla
 
-        if (totalEmisionesUsuario < 50) {
-            // --- NIVEL ÓPTIMO ---
-            nivelTexto = "Bajo Consumo";
-            icono = "🌿";
-            objetivoTexto = "Objetivo: ¡Mantener!";
-            faltaTexto = "¡Estás en el nivel máximo!";
-            progreso = 1.0; // Barra llena de "energía verde"
+        // NIVEL 1: HÉROE (< 150 kg) - Objetivo Ideal
+        if (totalEmisionesUsuario < 150) {
+            nivelTexto = "Eco-Héroe 🌿";
+            icono = "🌟";
+            objetivoTexto = "Objetivo: ¡Inspirar a otros!";
+            faltaTexto = "¡Tu huella es ejemplar!";
+            progreso = 1.0;
 
-            // Estilos opcionales (color verde)
-            if (lblNivel != null) lblNivel.setStyle("-fx-text-fill: #2ecc71; -fx-font-weight: bold; -fx-font-size: 20px;");
+            aplicarEstiloNivel(colorBueno);
 
-        } else if (totalEmisionesUsuario < 200) {
-            // --- NIVEL MEDIO ---
-            nivelTexto = "Consumo Moderado";
-            icono = "⚖️";
+            // NIVEL 2: CONSCIENTE (150 - 300 kg) - Zona de Transición
+        } else if (totalEmisionesUsuario < 300) {
+            nivelTexto = "Consumo Consciente";
+            icono = "🍄";
 
-            // Calculamos cuánto sobra para bajar al nivel bueno (50)
-            double exceso = totalEmisionesUsuario - 50;
-            objetivoTexto = "Siguiente: Bajo Consumo";
-            faltaTexto = String.format("Reduce %.1f kg para subir nivel", exceso);
+            double exceso = totalEmisionesUsuario - 150;
+            objetivoTexto = "Siguiente: Eco-Héroe";
+            faltaTexto = String.format("Reduce %.1f kg para llegar al ideal", exceso);
 
-            // Progreso relativo: 1.0 si estás en 50, 0.0 si estás en 200
-            // Fórmula: (200 - actual) / (200 - 50)
-            progreso = (200 - totalEmisionesUsuario) / 150.0;
+            // Fórmula: (300 - actual) / 150
+            progreso = (300 - totalEmisionesUsuario) / 150.0;
 
-            if (lblNivel != null) lblNivel.setStyle("-fx-text-fill: #f1c40f; -fx-font-weight: bold; -fx-font-size: 20px;");
+            aplicarEstiloNivel(colorMedio);
 
+            // NIVEL 3: PRINCIPIANTE (> 300 kg) - Zona de Alerta
         } else {
-            // --- NIVEL MALO ---
-            nivelTexto = "Alto Consumo";
+            nivelTexto = "Inicio del Cambio";
             icono = "🔥";
 
-            // Calculamos cuánto sobra para bajar al nivel moderado (200)
-            double exceso = totalEmisionesUsuario - 200;
-            objetivoTexto = "Siguiente: Moderado";
+            double exceso = totalEmisionesUsuario - 300;
+            objetivoTexto = "Siguiente: Consciente";
             faltaTexto = String.format("Reduce %.1f kg para mejorar", exceso);
 
-            progreso = 0.1; // Barra en rojo/casi vacía
+            progreso = 0.15;
 
-            if (lblNivel != null) lblNivel.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold; -fx-font-size: 20px;");
+            aplicarEstiloNivel(colorMalo);
         }
 
-        // --- ACTUALIZAR INTERFAZ ---
+        // Actualizar UI
         if (lblIconoNivel != null) lblIconoNivel.setText(icono);
         if (lblNivel != null) lblNivel.setText(nivelTexto);
         if (lblSiguienteNivel != null) lblSiguienteNivel.setText(objetivoTexto);
         if (lblAhorroRestante != null) lblAhorroRestante.setText(faltaTexto);
         if (pbNivel != null) pbNivel.setProgress(progreso);
+    }
+
+    /**
+     * Aplica el color del tema tanto al texto del nivel como a la barra de progreso.
+     */
+    private void aplicarEstiloNivel(String colorHex) {
+        // Texto del Nivel
+        if (lblNivel != null) {
+            lblNivel.setStyle("-fx-text-fill: " + colorHex + "; -fx-font-weight: bold; -fx-font-size: 20px;");
+        }
+        // Icono (opcional, si quieres que también cambie de color)
+        if (lblIconoNivel != null) {
+            lblIconoNivel.setStyle("-fx-text-fill: " + colorHex + "; -fx-font-size: 38px;");
+        }
+        // Barra de Progreso (Cambia el color de relleno "accent")
+        if (pbNivel != null) {
+            pbNivel.setStyle("-fx-accent: " + colorHex + ";");
+        }
     }
 
     /**

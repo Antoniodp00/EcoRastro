@@ -1,18 +1,47 @@
 /* =========================================================
-   TEMA: HYDRO-TECH (Agua y Energía Limpia)
-   PRINCIPIOS: Accesibilidad, Jerarquía y Feedback
+   TEMA: ANCIENT WOODS (Bosque Antiguo)
+   PALETA EXTENDIDA:
+     TIERRA: #582F0E (Caoba), #7F4F24 (Roble), #936639 (Cuero), #A68A64 (Arena)
+     NEUTROS: #B6AD90 (Piedra), #C2C5AA (Liquen)
+     VERDES: #A4AC86 (Oliva Claro), #656D4A (Musgo), #414833 (Pino), #333D29 (Bosque Profundo)
    ========================================================= */
 .root {
-    /* --- PALETA DE COLORES --- */
-    -color-fondo: #0F172A;      /* Azul Abismo */
-    -color-blanco: #1E293B;     /* Azul Pizarra */
-    -color-primario: #0EA5E9;   /* Cian Eléctrico */
-    -color-primario-hover: #38BDF8;
-    -color-primario-texto: #0F172A;
-    -color-texto-principal: #F8FAFC;
-    -color-texto-secundario: #94A3B8;
-    -color-error: #EF4444;
-    -color-acento: #F59E0B;     /* Ámbar */
+    /* --- ASIGNACIÓN DE COLORES --- */
+
+    /* Fondo principal: El verde más profundo y oscuro (#333D29) */
+    -color-fondo: #333D29;
+
+    /* Fondo de tarjetas: Marrón Caoba (#582F0E) con transparencia.
+       Esto crea un contraste cálido (madera) sobre el fondo frío (bosque). */
+    -color-blanco: rgba(88, 47, 14, 0.4);
+
+    /* Color Primario (Botones): Marrón Cuero (#936639).
+       Es un tono medio que destaca bien sobre fondos oscuros. */
+    -color-primario: #936639;
+
+    /* Hover: Marrón Arena (#A68A64) para iluminar la acción. */
+    -color-primario-hover: #A68A64;
+
+    /* Texto en botón: El fondo oscuro (#333D29) para mantener contraste */
+    -color-primario-texto: #C2C5AA;
+
+    /* Texto Principal: Beige Liquen (#C2C5AA).
+       Muy suave y legible, menos agresivo que el blanco puro. */
+    -color-texto-principal: #C2C5AA;
+
+    /* Texto Secundario: Beige Piedra (#B6AD90) o Oliva Claro (#A4AC86) */
+    -color-texto-secundario: #A4AC86;
+
+    /* Color de Error: Usamos el Marrón Roble (#7F4F24) más rojizo/intenso
+       o mantenemos un rojo desaturado externo si es necesario.
+       Para ser puristas con la paleta, usaremos el Roble Brillante para alertas. */
+    -color-error: #bc4749; /* (Rojo externo suave para mantener usabilidad) */
+
+    /* Acento: Verde Musgo Medio (#656D4A) para gráficos e iconos */
+    -color-acento: #656D4A;
+
+    /* Terciario: Marrón Roble (#7F4F24) para bordes y detalles estructurales */
+    -color-terciario: #7F4F24;
 
     -fx-font-family: 'Segoe UI', sans-serif;
     -fx-font-size: 14px;
@@ -26,7 +55,7 @@
 .titulo {
     -fx-font-size: 28px;
     -fx-font-weight: bold;
-    -fx-text-fill: -color-texto-principal;
+    -fx-text-fill: #B6AD90; /* Tono Piedra para títulos */
     -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.5), 0, 2, 0, 1);
 }
 
@@ -41,26 +70,30 @@
    ========================================================= */
 .boton-primario {
     -fx-background-color: -color-primario;
-    -fx-text-fill: -color-primario-texto;
+    -fx-text-fill: #C2C5AA; /* Texto claro */
     -fx-background-radius: 6;
     -fx-font-weight: bold;
     -fx-cursor: hand;
     -fx-padding: 10 20;
-    -fx-effect: dropshadow(three-pass-box, rgba(14, 165, 233, 0.3), 10, 0, 0, 0);
+    /* Sombra profunda para dar volumen 3D */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 5, 0, 0, 1);
+    -fx-border-color: rgba(166, 138, 100, 0.2); /* Borde sutil Arena */
+    -fx-border-radius: 6;
 }
 .boton-primario:hover {
     -fx-background-color: -color-primario-hover;
+    -fx-text-fill: #333D29; /* Texto oscuro al iluminarse */
     -fx-scale-x: 1.02;
     -fx-scale-y: 1.02;
 }
 .boton-primario:pressed {
-    -fx-background-color: derive(-color-primario, -10%);
+    -fx-background-color: derive(-color-primario, -15%);
     -fx-scale-x: 0.98;
 }
 
 .boton-secundario {
     -fx-background-color: transparent;
-    -fx-border-color: -color-texto-secundario;
+    -fx-border-color: -color-texto-secundario; /* Borde Oliva */
     -fx-border-radius: 6;
     -fx-text-fill: -color-texto-secundario;
     -fx-cursor: hand;
@@ -69,59 +102,61 @@
 .boton-secundario:hover {
     -fx-border-color: -color-primario;
     -fx-text-fill: -color-primario;
-    -fx-background-color: rgba(14, 165, 233, 0.1);
+    -fx-background-color: rgba(147, 102, 57, 0.1); /* Cuero transparente */
 }
 
 /* =========================================================
-   PREVENCIÓN DE ERRORES (Inputs)
+   INPUTS (Campos de texto)
    ========================================================= */
 .text-field, .password-field, .combo-box {
-    -fx-background-color: -color-fondo;
+    /* Fondo Pino (#414833) semitransparente */
+    -fx-background-color: rgba(65, 72, 51, 0.6);
     -fx-text-fill: -color-texto-principal;
-    -fx-prompt-text-fill: -color-texto-secundario;
-    -fx-border-color: -color-texto-secundario;
+    -fx-prompt-text-fill: rgba(182, 173, 144, 0.5); /* Piedra transparente */
+    -fx-border-color: -color-terciario; /* Borde Roble */
     -fx-border-radius: 6;
     -fx-background-radius: 6;
     -fx-padding: 10;
 }
 .text-field:focused, .password-field:focused, .combo-box:focused {
-    -fx-border-color: -color-primario;
+    -fx-border-color: -color-primario-hover; /* Borde Arena */
     -fx-border-width: 1px;
-    -fx-effect: dropshadow(three-pass-box, rgba(14, 165, 233, 0.4), 8, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(166, 138, 100, 0.3), 8, 0, 0, 0);
 }
 .combo-box .list-cell {
     -fx-text-fill: -color-texto-principal;
-    -fx-background-color: -color-blanco;
+    -fx-background-color: #414833; /* Fondo Pino sólido */
 }
 .combo-box .list-cell:hover {
     -fx-background-color: -color-primario;
-    -fx-text-fill: -color-primario-texto;
+    -fx-text-fill: #C2C5AA;
 }
 
 /* =========================================================
-   ESTRUCTURA Y LAYOUT
+   ESTRUCTURA GENERAL
    ========================================================= */
-.panel-base { -fx-background-color: -color-fondo; }
+.panel-base {
+    -fx-background-color: -color-fondo;
+    /* Degradado atmosférico: De Bosque Profundo a Pino */
+    -fx-background-color: linear-gradient(to bottom right, #333D29, #414833);
+}
 
-.scroll-transparente {
-    -fx-background-color: transparent;
-    -fx-background: transparent;
-}
-.scroll-transparente > .viewport {
-    -fx-background-color: transparent;
-}
+.scroll-transparente { -fx-background-color: transparent; -fx-background: transparent; }
+.scroll-transparente > .viewport { -fx-background-color: transparent; }
 
 /* Header Panel */
 .header-panel {
-    -fx-background-color: -color-blanco;
+    -fx-background-color: rgba(40, 48, 32, 0.95); /* Casi negro verdoso */
     -fx-padding: 15 30;
-    -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.5), 0, 4, 0, 0);
+    -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.4), 0, 4, 0, 0);
+    /* Borde inferior sutil en tono Musgo */
+    -fx-border-color: transparent transparent rgba(101, 109, 74, 0.3) transparent;
+    -fx-border-width: 0 0 1 0;
 }
 .header-logo {
-    -fx-text-fill: -color-primario;
+    -fx-text-fill: #A68A64; /* Arena (Dorado apagado) */
     -fx-font-size: 22px;
     -fx-font-weight: bold;
-    -fx-effect: dropshadow(three-pass-box, rgba(14, 165, 233, 0.6), 10, 0, 0, 0);
 }
 .header-user {
     -fx-text-fill: -color-texto-secundario;
@@ -136,21 +171,25 @@
     -fx-font-size: 14px;
 }
 .boton-icon:hover {
-    -fx-text-fill: -color-primario;
-    -fx-background-color: rgba(255,255,255,0.05);
+    -fx-text-fill: #C2C5AA;
+    -fx-background-color: rgba(164, 172, 134, 0.1);
     -fx-background-radius: 4;
 }
 
-/* Tarjetas */
+/* =========================================================
+   TARJETAS
+   ========================================================= */
 .card {
-    -fx-background-color: -color-blanco;
+    -fx-background-color: -color-blanco; /* Caoba transparente */
     -fx-background-radius: 12;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 15, 0, 0, 4);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
     -fx-padding: 25;
+    -fx-border-color: rgba(166, 138, 100, 0.05); /* Borde Arena muy sutil */
+    -fx-border-radius: 12;
 }
 .card-titulo {
     -fx-font-size: 13px;
-    -fx-text-fill: -color-primario;
+    -fx-text-fill: #A68A64; /* Título en Arena */
     -fx-font-weight: bold;
     -fx-text-transform: uppercase;
     -fx-letter-spacing: 1px;
@@ -158,41 +197,42 @@
 .card-numero {
     -fx-font-size: 36px;
     -fx-font-weight: bold;
-    -fx-text-fill: -color-texto-principal;
+    -fx-text-fill: #C2C5AA; /* Liquen */
 }
 .card-numero-destacado {
     -fx-font-size: 36px;
     -fx-font-weight: bold;
-    -fx-text-fill: -color-primario;
+    -fx-text-fill: -color-primario-hover; /* Arena Brillante */
 }
 .card-azul {
-    -fx-background-color: linear-gradient(to right, #1E293B, #0F172A);
+    /* Tarjeta especial: Degradado de Musgo a Pino */
+    -fx-background-color: linear-gradient(to right, rgba(101, 109, 74, 0.5), rgba(65, 72, 51, 0.7));
     -fx-background-radius: 12;
     -fx-padding: 20;
-    -fx-border-color: -color-primario;
+    -fx-border-color: -color-primario; /* Borde lateral Cuero */
     -fx-border-width: 0 0 0 4;
 }
 .titulo-tip {
     -fx-font-weight: bold;
     -fx-font-size: 16px;
-    -fx-text-fill: -color-acento;
+    -fx-text-fill: #B6AD90; /* Piedra */
 }
 .texto-tip {
-    -fx-text-fill: -color-texto-principal;
+    -fx-text-fill: #C2C5AA;
     -fx-font-size: 14px;
 }
 
 /* =========================================================
-   ELEMENTOS ESPECÍFICOS (CORREGIDOS)
+   ELEMENTOS DE UI
    ========================================================= */
-.icono-gigante { -fx-font-size: 48px; -fx-text-fill: -color-texto-secundario; }
+.icono-gigante { -fx-font-size: 48px; -fx-text-fill: -color-acento; }
 .label-formulario { -fx-font-weight: bold; -fx-text-fill: -color-texto-principal; }
 
 .etiqueta-unidad {
-    -fx-text-fill: -color-primario;
+    -fx-text-fill: #333D29;
     -fx-font-weight: bold;
     -fx-font-size: 13px;
-    -fx-background-color: rgba(14, 165, 233, 0.1);
+    -fx-background-color: -color-primario;
     -fx-padding: 5 10;
     -fx-background-radius: 4;
 }
@@ -203,382 +243,374 @@
     -fx-font-size: 13px;
 }
 .boton-enlace:hover {
-    -fx-text-fill: -color-primario;
+    -fx-text-fill: -color-primario-hover;
     -fx-underline: true;
 }
 
 /* Cards de Navegación */
 .card-nav {
-    -fx-background-color: -color-blanco;
+    -fx-background-color: rgba(88, 47, 14, 0.3); /* Caoba */
     -fx-background-radius: 8;
     -fx-cursor: hand;
     -fx-padding: 15;
-    -fx-border-width: 0 0 0 4; /* Borde izquierdo de 4px */
-    -fx-border-color: -color-texto-secundario; /* Color por defecto */
+    -fx-border-width: 0 0 0 4;
+    -fx-border-color: rgba(127, 79, 36, 0.3); /* Roble */
 }
 .card-nav:hover {
-    -fx-background-color: derive(-color-blanco, 5%);
-    -fx-border-color: -color-primario;
-    -fx-effect: dropshadow(three-pass-box, rgba(14, 165, 233, 0.2), 10, 0, 0, 0);
+    -fx-background-color: rgba(88, 47, 14, 0.5);
+    -fx-border-color: -color-primario-hover; /* Borde Arena al hover */
+    -fx-effect: dropshadow(three-pass-box, rgba(166, 138, 100, 0.1), 10, 0, 0, 0);
 }
-.card-nav-titulo { -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: -color-texto-principal; }
-.card-nav-desc { -fx-font-size: 13px; -fx-text-fill: -color-texto-secundario; }
+.card-nav-titulo { -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #C2C5AA; }
+.card-nav-desc { -fx-font-size: 13px; -fx-text-fill: rgba(182, 173, 144, 0.7); }
 .icono-navegacion { -fx-font-size: 30px; -fx-text-fill: -color-texto-secundario; }
-.card-nav:hover .icono-navegacion { -fx-text-fill: -color-primario; }
+.card-nav:hover .icono-navegacion { -fx-text-fill: -color-primario-hover; }
 
 /* Alertas */
 .dialog-pane {
-    -fx-background-color: -color-blanco;
+    -fx-background-color: #414833;
     -fx-border-color: -color-texto-secundario;
 }
-.dialog-pane .header-panel { -fx-background-color: -color-blanco; }
-.dialog-pane .label, .dialog-pane .content.label { -fx-text-fill: -color-texto-principal; }
+.dialog-pane .header-panel { -fx-background-color: #333D29; }
+.dialog-pane .label { -fx-text-fill: -color-texto-principal; }
 
 /* =========================================================
-   ELEMENTOS RELLENADOS (LO QUE FALTABA)
+   ELEMENTOS ADICIONALES
    ========================================================= */
-
-/* Icono del consejo (Bombilla) */
-.icono-tip {
-    -fx-font-size: 30px;
-    -fx-text-fill: -color-acento; /* Amarillo Ámbar */
-}
-
-/* Bordes de color para las tarjetas de navegación */
-.nav-huella {
-    -fx-border-color: transparent transparent transparent -color-primario; /* Cian */
-}
-.nav-habitos {
-    -fx-border-color: transparent transparent transparent -color-acento; /* Ámbar */
-}
-.nav-analisis {
-    -fx-border-color: transparent transparent transparent -color-texto-secundario; /* Gris */
-}
-
-/* Subtítulos de sección (ej: "Acciones Rápidas") */
-.subtitulo-seccion {
-    -fx-font-weight: bold;
-    -fx-text-fill: -color-primario;
-}
-
-/* Unidad pequeña en tarjeta de totales ("CO2") */
-.card-unidad {
-    -fx-font-size: 14px;
-    -fx-text-fill: -color-texto-secundario;
-}
-
-/* Elementos de formularios modal */
-.input-formulario {
-    -fx-font-size: 14px;
-}
-.boton-accion {
-    -fx-font-size: 15px;
-}
-.mensaje-alerta {
-    -fx-font-weight: bold;
-    -fx-font-size: 13px;
-    -fx-alignment: CENTER;
-}
+.icono-tip { -fx-font-size: 30px; -fx-text-fill: #A68A64; } /* Bombilla Arena */
+.nav-huella { -fx-border-color: transparent transparent transparent -color-primario; }
+.nav-habitos { -fx-border-color: transparent transparent transparent -color-acento; }
+.nav-analisis { -fx-border-color: transparent transparent transparent -color-texto-principal; }
+.subtitulo-seccion { -fx-font-weight: bold; -fx-text-fill: #A68A64; }
+.card-unidad { -fx-font-size: 14px; -fx-text-fill: -color-texto-secundario; }
+.input-formulario { -fx-font-size: 14px; }
+.boton-accion { -fx-font-size: 15px; }
+.mensaje-alerta { -fx-font-weight: bold; -fx-font-size: 13px; -fx-alignment: CENTER; }
 
 /* =========================================================
-   GRÁFICO DE BARRAS (MODO ALTA RESOLUCIÓN)
+   GRÁFICOS
    ========================================================= */
-
-/* 1. Fondo y Líneas */
-.chart {
-    -fx-padding: 10px;
-    -fx-background-color: transparent;
-}
-.chart-content, .chart-plot-background {
-    -fx-background-color: transparent;
-}
-.chart-vertical-grid-lines {
-    -fx-stroke: transparent;
-}
+.chart { -fx-padding: 10px; -fx-background-color: transparent; }
+.chart-content, .chart-plot-background { -fx-background-color: transparent; }
+.chart-vertical-grid-lines { -fx-stroke: transparent; }
 .chart-horizontal-grid-lines {
-    -fx-stroke: #334155;
+    -fx-stroke: rgba(164, 172, 134, 0.15); /* Oliva muy transparente */
     -fx-stroke-dash-array: 3 5;
-    -fx-stroke-width: 1px;
 }
+.axis { -fx-tick-label-fill: -color-texto-secundario; -fx-font-size: 11px; }
+.axis:bottom { -fx-border-color: -color-texto-secundario; }
+.axis:left { -fx-border-color: transparent; }
+.chart-legend { -fx-background-color: transparent; -fx-padding: 10px; }
+.chart-legend-item { -fx-text-fill: -color-texto-secundario; -fx-font-weight: bold; }
 
-/* 2. Ejes */
-.axis {
-    -fx-tick-label-fill: -color-texto-secundario;
-    -fx-font-size: 11px;
-    -fx-tick-length: 5;
-    -fx-minor-tick-length: 0;
-}
-.axis:bottom {
-    -fx-border-color: -color-texto-secundario;
-    -fx-border-width: 1 0 0 0;
-}
-.axis:left {
-    -fx-border-color: transparent;
-}
-
-/* 3. Leyenda */
-.chart-legend {
-    -fx-background-color: transparent;
-    -fx-padding: 10px;
-}
-.chart-legend-item {
-    -fx-text-fill: -color-texto-secundario;
-    -fx-font-weight: bold;
-}
-
-/* 5. COLORES DE LAS BARRAS (Corrección de Visibilidad) */
-
-/* 5. COLORES DE LAS BARRAS (MODO SEGURO - COLORES PLANOS) */
-
-/* BARRA 1: TÚ (Cian sólido) */
-.default-color0.chart-bar {
-    -fx-bar-fill: -color-primario; /* #0EA5E9 */
-    -fx-background-radius: 4 4 0 0;
-    -fx-effect: null; /* Quitamos sombras por ahora */
-}
-
-/* BARRA 2: COMUNIDAD (Ámbar sólido) */
-.default-color1.chart-bar {
-    -fx-bar-fill: -color-acento; /* #F59E0B */
-    -fx-background-radius: 4 4 0 0;
-    -fx-effect: null;
-}
-
-/* Asegurar que el fondo del gráfico no tapa las barras */
-.chart-plot-background {
-    -fx-background-color: transparent;
-}
-.chart-content {
-    -fx-padding: 0;
-}
+/* Colores del gráfico */
+/* Barra 1: Cuero (Usuario) */
+.default-color0.chart-bar { -fx-bar-fill: -color-primario; -fx-background-radius: 4 4 0 0; }
+/* Barra 2: Musgo (Comunidad) */
+.default-color1.chart-bar { -fx-bar-fill: -color-acento; -fx-background-radius: 4 4 0 0; }
 
 /* =========================================================
-   NUEVOS ESTILOS: NIVEL Y SIDEBAR
+   NIVEL Y PROGRESO
    ========================================================= */
-.sidebar-container {
-    -fx-min-width: 380px;
-    -fx-max-width: 450px;
-}
+.sidebar-container { -fx-min-width: 380px; -fx-max-width: 450px; }
 .barra-progreso {
     -fx-accent: -color-primario;
-    -fx-control-inner-background: -color-fondo;
+    -fx-control-inner-background: rgba(0,0,0,0.3);
     -fx-pref-height: 10px;
 }
 .barra-progreso > .track {
-    -fx-background-color: rgba(255,255,255,0.05);
+    -fx-background-color: rgba(164, 172, 134, 0.1);
     -fx-background-radius: 10;
 }
 .barra-progreso > .bar {
     -fx-background-color: -color-primario;
     -fx-background-radius: 10;
-    -fx-effect: dropshadow(three-pass-box, rgba(14, 165, 233, 0.4), 5, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(147, 102, 57, 0.3), 8, 0, 0, 0);
 }
-.texto-progreso {
-    -fx-font-size: 11px;
-    -fx-text-fill: -color-texto-secundario;
-    -fx-font-style: italic;
-}
+.texto-progreso { -fx-font-size: 11px; -fx-text-fill: -color-texto-secundario; -fx-font-style: italic; }
 .icono-nivel {
     -fx-font-size: 38px;
-    -fx-text-fill: -color-acento;
-    -fx-effect: dropshadow(one-pass-box, rgba(245, 158, 11, 0.3), 0, 0, 10, 0);
+    -fx-text-fill: #A68A64; /* Arena */
+    -fx-effect:null;
 }
 
 /* =========================================================
-   TABLA PREMIUM "HYDRO-GRID"
+   TABLA FOREST-GRID
    ========================================================= */
-
 .tabla-moderna {
     -fx-background-color: transparent;
-    -fx-base: -color-fondo; /* Base oscura para componentes internos */
+    -fx-base: -color-fondo;
     -fx-control-inner-background: -color-fondo;
-    -fx-background-insets: 0;
-    -fx-padding: 0;
 }
-
-/* 1. CABECERA (Limpia y Minimalista) */
 .tabla-moderna .column-header-background {
-    -fx-background-color: -color-blanco; /* Fondo de la cabecera */
-    -fx-border-color: transparent transparent -color-texto-secundario transparent;
-    -fx-border-width: 0 0 1 0; /* Solo línea sutil abajo */
-    -fx-pref-height: 45px; /* Cabecera más alta */
+    -fx-background-color: rgba(88, 47, 14, 0.3); /* Caoba semitransparente */
+    -fx-border-color: transparent transparent rgba(164, 172, 134, 0.1) transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-pref-height: 45px;
 }
-
 .tabla-moderna .column-header {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
-
 .tabla-moderna .column-header .label {
-    -fx-text-fill: -color-primario; /* Texto CIAN */
+    -fx-text-fill: #A68A64; /* Arena */
     -fx-font-weight: bold;
     -fx-font-size: 12px;
-    -fx-text-transform: uppercase; /* Estilo profesional */
+    -fx-text-transform: uppercase;
     -fx-alignment: CENTER_LEFT;
     -fx-padding: 0 10 0 10;
 }
-
-/* Eliminar el "filler" (hueco feo arriba a la derecha) */
 .tabla-moderna .filler {
-    -fx-background-color: -color-blanco;
-    -fx-border-color: transparent transparent -color-texto-secundario transparent;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent rgba(164, 172, 134, 0.1) transparent;
     -fx-border-width: 0 0 1 0;
 }
-
-/* 2. FILAS Y CELDAS (Espaciosas) */
 .tabla-moderna .table-row-cell {
-    -fx-background-color: -color-fondo; /* Fondo oscuro */
-    -fx-border-color: transparent transparent rgba(148, 163, 184, 0.1) transparent; /* Separador casi invisible */
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent rgba(164, 172, 134, 0.05) transparent;
     -fx-border-width: 0 0 1 0;
-    -fx-pref-height: 40px; /* Filas más altas para que respiren */
+    -fx-pref-height: 40px;
 }
-
 .tabla-moderna .table-cell {
     -fx-text-fill: -color-texto-principal;
     -fx-alignment: CENTER_LEFT;
     -fx-padding: 0 15;
-    -fx-border-color: transparent; /* Quitar líneas verticales */
+    -fx-border-color: transparent;
 }
-
-/* Efecto Hover (Pasar el ratón por la fila) */
 .tabla-moderna .table-row-cell:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.03); /* Brillo muy sutil */
+    -fx-background-color: rgba(164, 172, 134, 0.05); /* Oliva muy suave */
     -fx-cursor: hand;
 }
-
-/* Fila Seleccionada */
 .tabla-moderna .table-row-cell:selected {
-    -fx-background-color: rgba(14, 165, 233, 0.15); /* Fondo Cian Transparente */
-    -fx-background-insets: 0;
+    -fx-background-color: rgba(147, 102, 57, 0.2); /* Cuero suave */
 }
 .tabla-moderna .table-row-cell:selected .table-cell {
-    -fx-text-fill: -color-primario; /* Texto se ilumina en cian */
+    -fx-text-fill: -color-primario-hover;
 }
+.tabla-moderna .placeholder .label { -fx-text-fill: -color-texto-secundario; -fx-opacity: 0.7; }
 
-/* 3. SCROLLBARS (Personalizados y Oscuros) */
-.tabla-moderna .scroll-bar:vertical,
-.tabla-moderna .scroll-bar:horizontal {
-    -fx-background-color: transparent;
-}
-.tabla-moderna .scroll-bar:vertical .track,
-.tabla-moderna .scroll-bar:horizontal .track {
-    -fx-background-color: rgba(0,0,0,0.2);
-    -fx-background-radius: 10;
-}
-.tabla-moderna .scroll-bar:vertical .thumb,
-.tabla-moderna .scroll-bar:horizontal .thumb {
-    -fx-background-color: -color-blanco; /* Barra gris oscura */
-    -fx-background-radius: 10;
-}
-.tabla-moderna .scroll-bar .thumb:hover {
-    -fx-background-color: -color-primario; /* Se ilumina al agarrarla */
-}
-
-/* Ocultar botones de flecha del scrollbar */
-.tabla-moderna .scroll-bar .increment-button,
-.tabla-moderna .scroll-bar .decrement-button {
-    -fx-padding: 0;
-    -fx-pref-height: 0;
-    -fx-pref-width: 0;
-    -fx-opacity: 0;
-}
-
-/* 4. MENSAJE "SIN CONTENIDO" */
-.tabla-moderna .placeholder .label {
-    -fx-text-fill: -color-texto-secundario;
-    -fx-font-size: 14px;
-    -fx-opacity: 0.7;
-}
+/* Scrollbars */
+.tabla-moderna .scroll-bar:vertical, .tabla-moderna .scroll-bar:horizontal { -fx-background-color: transparent; }
+.tabla-moderna .scroll-bar .track { -fx-background-color: rgba(0,0,0,0.2); -fx-background-radius: 10; }
+.tabla-moderna .scroll-bar .thumb { -fx-background-color: rgba(127, 79, 36, 0.6); -fx-background-radius: 10; }
+.tabla-moderna .scroll-bar .thumb:hover { -fx-background-color: -color-primario; }
 
 /* =========================================================
-   CLASES DE UTILIDAD (Refactorización FXML -> CSS)
-   Nuevas clases para eliminar estilos en línea
+   CLASES DE UTILIDAD
    ========================================================= */
-
-/* --- BOTONES ESPECÍFICOS --- */
-.boton-peligro {
-    -fx-border-color: -color-error;
-    -fx-text-fill: -color-error;
-}
-.boton-peligro:hover {
-    -fx-background-color: rgba(239, 68, 68, 0.1);
-    -fx-cursor: hand;
-}
-
-/* --- TEXTOS Y TIPOGRAFÍA --- */
-.texto-negrita {
-    -fx-font-weight: bold;
-}
-.texto-blanco {
-    -fx-text-fill: white;
-}
-.texto-secundario-bold {
-    -fx-font-weight: bold;
-    -fx-text-fill: -color-texto-secundario; /* Antes era -color-secundario (corregido) */
-}
-.texto-terciario {
-    -fx-text-fill: -color-terciario;
-}
-.texto-error {
-    -fx-text-fill: -color-error;
-}
-
-/* Tamaños de fuente */
-.texto-pequeno {
-    -fx-font-size: 12px;
-}
-.texto-mediano {
-    -fx-font-size: 13px;
-}
-.texto-mediano-plus {
-    -fx-font-size: 14px;
-}
-.texto-grande-18 {
-    -fx-font-size: 18px;
-}
-.texto-grande-20 {
-    -fx-font-size: 20px;
-}
-
-/* --- ICONOS --- */
-.icono-grande {
-    -fx-font-size: 24px;
-}
-.icono-gigante-34 {
-    -fx-font-size: 34px;
-}
-.icono-gigante-extra {
-    -fx-font-size: 48px;
-}
-.icono-primario {
-    -fx-text-fill: -color-primario;
-}
-.icono-error {
-    -fx-text-fill: -color-error;
-}
-
-/* --- CONTENEDORES Y BORDES --- */
-.padding-top-12 {
-    -fx-padding: 12 0 0 0;
-}
-.padding-10 {
-    -fx-padding: 10;
-}
-.borde-primario {
-    -fx-border-color: transparent transparent transparent -color-primario;
-}
+.boton-peligro { -fx-border-color: -color-error; -fx-text-fill: -color-error; }
+.boton-peligro:hover { -fx-background-color: rgba(188, 71, 73, 0.1); -fx-cursor: hand; }
+.texto-negrita { -fx-font-weight: bold; }
+.texto-blanco { -fx-text-fill: -color-texto-principal; }
+.texto-secundario-bold { -fx-font-weight: bold; -fx-text-fill: -color-texto-secundario; }
+.texto-terciario { -fx-text-fill: -color-terciario; }
+.texto-error { -fx-text-fill: -color-error; }
+.texto-pequeno { -fx-font-size: 12px; }
+.texto-mediano { -fx-font-size: 13px; }
+.texto-mediano-plus { -fx-font-size: 14px; }
+.texto-grande-18 { -fx-font-size: 18px; }
+.texto-grande-20 { -fx-font-size: 20px; }
+.icono-grande { -fx-font-size: 24px; }
+.icono-gigante-34 { -fx-font-size: 34px; }
+.icono-gigante-extra { -fx-font-size: 48px; }
+.icono-primario { -fx-text-fill: -color-primario; }
+.icono-error { -fx-text-fill: -color-error; }
+.padding-top-12 { -fx-padding: 12 0 0 0; }
+.padding-10 { -fx-padding: 10; }
+.borde-primario { -fx-border-color: transparent transparent transparent -color-primario; }
 .fondo-info-suave {
-    -fx-background-color: rgba(44, 62, 80, 0.05);
+    -fx-background-color: rgba(194, 197, 170, 0.05); /* Liquen transparente */
     -fx-background-radius: 20;
     -fx-padding: 10 20;
 }
-
-/* --- COMPONENTES COMPLEJOS --- */
 .etiqueta-unidad-detalle {
-    -fx-text-fill: -color-terciario;
+    -fx-text-fill: #333D29; /* Texto oscuro */
     -fx-font-weight: bold;
-    -fx-background-color: #ECF0F1;
+    -fx-background-color: #C2C5AA; /* Fondo claro */
     -fx-padding: 8 12;
     -fx-background-radius: 4;
 }
 
+/* =========================================================
+   COMPONENTES FALTANTES (ANÁLISIS) - TEMA ANCIENT WOODS
+   ========================================================= */
+
+/* --- CHECKBOX --- */
+.check-box {
+    -fx-text-fill: -color-texto-principal; /* #C2C5AA */
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+.check-box .box {
+    -fx-background-color: rgba(65, 72, 51, 0.6); /* Fondo Pino Transparente */
+    -fx-border-color: -color-terciario; /* Borde Roble */
+    -fx-border-radius: 3;
+}
+.check-box:selected .mark {
+    -fx-background-color: -color-primario-hover; /* Mark Arena */
+}
+.check-box:selected .box {
+    -fx-background-color: -color-fondo;
+}
+
+/* --- DATE PICKER (Hereda estilos de input pero necesita ajustes) --- */
+.date-picker {
+    -fx-background-color: transparent;
+}
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.date-picker .arrow-button .arrow {
+    -fx-background-color: -color-texto-secundario;
+}
+/* Popup del calendario (Lo más importante) */
+.date-picker-popup {
+    -fx-background-color: -color-fondo;
+    -fx-border-color: -color-terciario;
+}
+.date-picker-popup .month-year-pane {
+    -fx-background-color: rgba(40, 48, 32, 0.95);
+}
+.date-picker-popup .month-year-pane .label {
+    -fx-text-fill: -color-primario-hover;
+}
+.date-picker-popup .day-cell {
+    -fx-background-color: -color-fondo;
+    -fx-text-fill: -color-texto-principal;
+}
+.date-picker-popup .day-cell:hover {
+    -fx-background-color: -color-acento;
+}
+.date-picker-popup .selected {
+    -fx-background-color: -color-primario;
+    -fx-text-fill: -color-primario-texto;
+}
+
+/* --- PIE CHART (Colores del tema en lugar del arcoíris por defecto) --- */
+.chart-pie-label {
+    -fx-fill: -color-texto-principal;
+}
+.default-color0.chart-pie { -fx-pie-color: #936639; } /* Cuero */
+.default-color1.chart-pie { -fx-pie-color: #656D4A; } /* Musgo */
+.default-color2.chart-pie { -fx-pie-color: #A68A64; } /* Arena */
+.default-color3.chart-pie { -fx-pie-color: #414833; } /* Pino */
+.default-color4.chart-pie { -fx-pie-color: #B6AD90; } /* Piedra */
+
+/* =========================================================
+   TARJETAS DE ITEMS (Huellas / Hábitos)
+   ========================================================= */
+
+.item-card {
+    -fx-background-color: rgba(88, 47, 14, 0.4); /* Caoba semitransparente */
+    -fx-background-radius: 15;
+    -fx-border-color: rgba(166, 138, 100, 0.1); /* Borde Arena sutil */
+    -fx-border-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-cursor: hand;
+    -fx-padding: 15;
+    -fx-min-width: 200px;  /* Ancho fijo para que queden uniformes */
+    -fx-max-width: 200px;
+}
+
+/* Efecto Hover: La tarjeta "flota" y se ilumina */
+.item-card:hover {
+    -fx-background-color: rgba(88, 47, 14, 0.6);
+    -fx-translate-y: -3; /* Se mueve 3 píxeles hacia arriba */
+    -fx-border-color: -color-primario; /* Borde se pone color Cuero */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 5);
+}
+
+/* Tipografías dentro de la tarjeta */
+.item-card-titulo {
+    -fx-text-fill: -color-primario-hover; /* Arena */
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+.item-card-valor {
+    -fx-text-fill: -color-texto-principal; /* Liquen */
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+.item-card-fecha {
+    -fx-text-fill: -color-texto-secundario; /* Oliva */
+    -fx-font-size: 11px;
+    -fx-font-style: italic;
+}
+.item-card-icono {
+    -fx-font-size: 32px;
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.3), 0, 2, 0, 0);
+}
+
+/* Separador sutil */
+.separador-suave .line {
+    -fx-border-color: rgba(166, 138, 100, 0.3); /* Arena transparente */
+    -fx-border-width: 1;
+}
+
+/* Estilo base del Checkbox ocupando todo el ancho */
+.filtro-checkbox {
+    -fx-text-fill: -color-texto-secundario; /* Oliva */
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+
+    /* Relleno para que el área de clic sea grande */
+    -fx-padding: 8 12;
+
+    /* Fondo base (casi transparente o muy sutil) */
+    -fx-background-color: rgba(166, 138, 100, 0.05);
+    -fx-background-radius: 6;
+
+    /* Borde sutil */
+    -fx-border-color: rgba(166, 138, 100, 0.1);
+    -fx-border-radius: 6;
+
+    /* Alineación del texto e icono a la izquierda */
+    -fx-alignment: CENTER-LEFT;
+}
+
+/* Efecto al pasar el ratón por encima (Hover) */
+.filtro-checkbox:hover {
+    -fx-background-color: rgba(166, 138, 100, 0.15); /* Se ilumina un poco */
+    -fx-text-fill: -color-primario; /* El texto brilla */
+}
+
+/* Estado Seleccionado (Checked) */
+.filtro-checkbox:selected {
+    -fx-background-color: rgba(101, 109, 74, 0.2); /* Fondo Musgo suave */
+    -fx-border-color: -color-primario; /* Borde Arena */
+    -fx-text-fill: -color-texto-principal; /* Liquen (blanco sucio) */
+    -fx-font-weight: bold;
+}
+
+/* Personalizar la cajita (el tick box) para que combine */
+.filtro-checkbox .box {
+    -fx-background-color: transparent;
+    -fx-border-color: -color-texto-secundario;
+    -fx-border-radius: 3;
+}
+
+/* El "check" (la marca V) */
+.filtro-checkbox:selected .mark {
+    -fx-background-color: -color-primario; /* Color Arena para la marca */
+}
+
+/* Inputs dentro del sidebar oscuro */
+.text-field-moderno, .combo-box-moderno {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-text-fill: -color-texto-principal; /* Liquen */
+    -fx-prompt-text-fill: rgba(226, 226, 226, 0.5);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(166, 138, 100, 0.3);
+    -fx-border-radius: 8;
+}
+
+.text-field-moderno:focused, .combo-box-moderno:focused {
+    -fx-border-color: -color-primario; /* Arena */
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Color del texto dentro del ComboBox desplegado */
+.combo-box-moderno .list-cell {
+    -fx-text-fill: black; /* El desplegable suele ser blanco, así que texto negro */
+}

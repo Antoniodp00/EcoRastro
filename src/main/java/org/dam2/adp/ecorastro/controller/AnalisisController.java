@@ -214,11 +214,11 @@ public class AnalisisController {
     }
 
     /**
-     * Actualiza el gráfico circular (PieChart) con la distribución de emisiones por categoría.
+     * Actualiza el gráfico circular y asegura que la leyenda coincida con los colores.
      */
     private void actualizarGraficoDistribucion() {
+        // 1. Preparar datos
         Map<String, Double> porCategoria = new HashMap<>();
-
         for (Huella h : huellasFiltradas) {
             String cat = h.getIdActividad().getIdCategoria().getNombre();
             double co2 = h.getValor().doubleValue() * h.getIdActividad().getIdCategoria().getFactorEmision().doubleValue();
@@ -227,7 +227,62 @@ public class AnalisisController {
 
         ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();
         porCategoria.forEach((k, v) -> pieData.add(new PieChart.Data(k, v)));
+
+        // 2. Asignar datos al gráfico
         pieChart.setData(pieData);
+
+        // 3. Pintar las rebanadas (Slices)
+        for (PieChart.Data data : pieChart.getData()) {
+            String color = getColorPorCategoria(data.getName());
+            if (data.getNode() != null) {
+                data.getNode().setStyle("-fx-pie-color: " + color + ";");
+            }
+        }
+
+        // 4. Pintar la leyenda (Legend) - TRUCO NECESARIO
+        // Usamos Platform.runLater para esperar a que JavaFX termine de renderizar la leyenda
+        javafx.application.Platform.runLater(this::colorearLeyenda);
+    }
+
+    /**
+     * Busca los nodos de la leyenda y les aplica el mismo color que a las rebanadas.
+     */
+    private void colorearLeyenda() {
+        // Buscamos el nodo contenedor de la leyenda (clase .chart-legend)
+        javafx.scene.Node legend = pieChart.lookup(".chart-legend");
+
+        if (legend != null && legend instanceof javafx.scene.Parent) {
+            ObservableList<javafx.scene.Node> legendItems = ((javafx.scene.Parent) legend).getChildrenUnmodifiable();
+
+            // Iteramos simultáneamente sobre los datos y los ítems de la leyenda
+            for (int i = 0; i < legendItems.size() && i < pieChart.getData().size(); i++) {
+                javafx.scene.Node item = legendItems.get(i);
+                PieChart.Data data = pieChart.getData().get(i);
+                String color = getColorPorCategoria(data.getName());
+
+                if (item instanceof Label) {
+                    Label label = (Label) item;
+                    // El "símbolo" de color es el gráfico del Label
+                    if (label.getGraphic() != null) {
+                        label.getGraphic().setStyle("-fx-background-color: " + color + ";");
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Devuelve el color hexadecimal fijo para cada categoría (Tema Ancient Woods).
+     */
+    private String getColorPorCategoria(String categoria) {
+        switch (categoria) {
+            case "Transporte":    return "#936639"; // Marrón Cuero
+            case "Alimentación":  return "#656D4A"; // Verde Musgo
+            case "Energía":       return "#A68A64"; // Marrón Arena
+            case "Agua":          return "#414833"; // Verde Pino
+            case "Residuos":      return "#B6AD90"; // Beige Piedra
+            default:              return "#333D29"; // Fondo Oscuro (Genérico)
+        }
     }
 
     /**

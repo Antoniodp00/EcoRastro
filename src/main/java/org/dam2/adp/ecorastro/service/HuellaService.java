@@ -50,6 +50,18 @@ public class HuellaService {
         return insertado;
     }
 
+    public boolean updateHuella(Huella huella) {
+        boolean actualizado;
+
+        if ( huella.getValor().compareTo(BigDecimal.ZERO) <= 0|| huella.getFecha() == null) {
+            actualizado = false;
+        } else {
+            actualizado = huellaDAO.updateHuella(huella);
+        }
+        return actualizado;
+
+    }
+
     /**
      * Elimina una huella existente.
      *

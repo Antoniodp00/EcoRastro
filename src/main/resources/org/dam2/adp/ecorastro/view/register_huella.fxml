@@ -61,7 +61,7 @@
             </VBox>
 
             <HBox alignment="CENTER" maxWidth="500" styleClass="fondo-info-suave">
-                <Label text="ℹ️  Los datos se sumarán automáticamente a tu análisis mensual."
+                <Label text="Los datos se sumarán automáticamente a tu análisis mensual."
                        wrapText="true" textAlignment="CENTER"
                        styleClass="texto-terciario, texto-pequeno"/>
             </HBox>

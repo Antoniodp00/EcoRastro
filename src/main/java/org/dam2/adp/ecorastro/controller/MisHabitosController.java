@@ -1,245 +1,205 @@
 package org.dam2.adp.ecorastro.controller;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
-import org.dam2.adp.ecorastro.DAO.ActividadDAO;
 import org.dam2.adp.ecorastro.model.Actividad;
 import org.dam2.adp.ecorastro.model.Habito;
-import org.dam2.adp.ecorastro.model.HabitoId;
+import org.dam2.adp.ecorastro.model.Usuario;
 import org.dam2.adp.ecorastro.service.HabitoService;
-import org.dam2.adp.ecorastro.service.RecomendacionService;
+import org.dam2.adp.ecorastro.service.HuellaService;
 import org.dam2.adp.ecorastro.util.AlertUtils;
 import org.dam2.adp.ecorastro.util.SessionManager;
 
-/**
- * Controlador para la gestión de Hábitos del usuario.
- * <p>
- * Permite añadir, visualizar y eliminar hábitos recurrentes.
- * <p>
- * Funcionalidades principales:
- * <ul>
- * <li>Visualización de hábitos en una tabla.</li>
- * <li>Formulario para añadir nuevos hábitos (Actividad, Frecuencia, Tipo).</li>
- * <li>Eliminación de hábitos existentes.</li>
- * <li>Visualización de recomendaciones contextuales al seleccionar un hábito.</li>
- * </ul>
- *
- * @author TuNombre
- * @version 1.0
- */
+import java.util.List;
+
 public class MisHabitosController {
 
-    // --- ELEMENTOS FXML ---
+    @FXML private FlowPane contenedorHabitos;
 
-    /** Desplegable para seleccionar la actividad del hábito. */
-    public ComboBox<Actividad> cmbActividad;
-
-    /** Campo de texto para la frecuencia numérica (ej: 3 veces). */
-    public TextField txtFrecuencia;
-
-    /** Desplegable para el tipo de frecuencia (Diario, Semanal, Mensual). */
-    public ComboBox<String> cmbTipo;
-
-    /** Etiqueta para mostrar recomendaciones asociadas al hábito seleccionado. */
-    public Label lblRecomendacion;
-
-    /** Tabla para listar los hábitos del usuario. */
-    public TableView<Habito> tablaHabitos;
-
-    /** Columna para el nombre de la actividad. */
-    public TableColumn<Habito, String> colActividad;
-
-    /** Columna para la categoría de la actividad. */
-    public TableColumn<Habito, String> colCategoria;
-
-    /** Columna para la frecuencia del hábito. */
-    public TableColumn<Habito, String> colFrecuencia;
-
-    /** Columna para el tipo de periodicidad. */
-    public TableColumn<Habito, String> colTipo;
+    // --- CAMPOS DEL FORMULARIO LATERAL ---
+    @FXML private ComboBox<Actividad> cmbActividad;
+    @FXML private TextField txtFrecuencia; // Aquí el usuario escribirá "Diario", "Semanal", etc.
 
     // --- SERVICIOS ---
-
-    /** Servicio para gestionar hábitos. */
     private final HabitoService habitoService = new HabitoService();
+    private final HuellaService huellaService = new HuellaService(); // Necesario para llenar el combo
 
-    /** Servicio para generar recomendaciones. */
-    private final RecomendacionService recomendacionService = new RecomendacionService();
-
-    /** DAO para acceder a las actividades disponibles. */
-    private final ActividadDAO actividadDAO = new ActividadDAO();
-
-    /** Lista observable para mantener los datos de la tabla. */
-    private ObservableList<Habito> listaHabitos = FXCollections.observableArrayList();
-
-    /**
-     * Inicializa el controlador de hábitos.
-     * <p>
-     * Configura la tabla, carga los combos y los datos iniciales.
-     * <ol>
-     * <li>Configura las columnas de la tabla.</li>
-     * <li>Carga las opciones en los desplegables.</li>
-     * <li>Carga los datos de hábitos del usuario.</li>
-     * <li>Añade un listener para mostrar consejos al seleccionar una fila.</li>
-     * </ol>
-     */
+    @FXML
     public void initialize() {
-        configurarTabla();
-        cargarCombos();
-        cargarDatosTabla();
-
-        tablaHabitos.getSelectionModel().selectedItemProperty().addListener(
-                (observable, seleccionAnterior, seleccionNueva) -> mostrarConsejo(seleccionNueva)
-        );
+        cargarComboActividades();
+        cargarHabitos();
     }
 
     /**
-     * Configura las columnas de la tabla de hábitos.
-     * <p>
-     * Define cómo se muestran los datos en cada columna.
+     * Carga las actividades disponibles en el ComboBox del sidebar.
      */
-    private void configurarTabla() {
-        colActividad.setCellValueFactory(cell ->
-                new SimpleStringProperty(cell.getValue().getIdActividad().getNombre()));
+    private void cargarComboActividades() {
+        // Asegúrate de que ActividadService tenga un método para obtener todas
+        List<Actividad> actividades = huellaService.getAllActividades();
+        cmbActividad.getItems().addAll(actividades);
 
-        colCategoria.setCellValueFactory(cell ->
-                new SimpleStringProperty(cell.getValue().getIdActividad().getIdCategoria().getNombre())
-        );
-        colFrecuencia.setCellValueFactory(cell ->
-                new SimpleStringProperty(String.valueOf(cell.getValue().getFrecuencia() + " veces")));
-
-        colTipo.setCellValueFactory(cell ->
-                new SimpleStringProperty(cell.getValue().getTipo())
-        );
-        colFrecuencia.setStyle("-fx-alignment: CENTER-RIGHT; -fx-text-fill: -color-primario; -fx-font-weight: bold;");
-    }
-
-    /**
-     * Carga las opciones en los ComboBox de actividad y tipo de frecuencia.
-     */
-    private void cargarCombos() {
-        cmbTipo.getItems().addAll("Diario", "Semanal", "Mensual");
-
-        cmbActividad.setItems(FXCollections.observableArrayList(actividadDAO.getAllActividades()));
-
-        cmbActividad.setConverter(new StringConverter<>() {
+        // Convertidor para mostrar solo el nombre en el ComboBox
+        cmbActividad.setConverter(new StringConverter<Actividad>() {
             @Override
-            public String toString(Actividad actividad) {
-                return (actividad != null) ? actividad.getNombre() : "";
+            public String toString(Actividad a) {
+                return (a != null) ? a.getNombre() : "";
             }
-
             @Override
-            public Actividad fromString(String s) {
+            public Actividad fromString(String string) {
                 return null;
             }
         });
     }
 
     /**
-     * Carga los hábitos del usuario actual en la tabla.
+     * Acción del botón "Añadir Rutina".
+     * ADAPTADO A TU SERVICIO: addHabito(Usuario, Actividad, int, String)
      */
-    private void cargarDatosTabla() {
-        listaHabitos.clear();
-        listaHabitos.addAll(habitoService.getHabitosByUsuario(
-                SessionManager.getInstance().getUsuarioActual().getId()
-        ));
-        tablaHabitos.setItems(listaHabitos);
-    }
-
-    /**
-     * Guarda un nuevo hábito en la base de datos.
-     * <p>
-     * Valida los campos antes de proceder. Si es exitoso, actualiza la tabla.
-     *
-     * @param actionEvent Evento de acción.
-     */
-    public void guardarHabito(ActionEvent actionEvent) {
+    @FXML
+    public void guardarHabitoRapido() {
+        // 1. Obtener datos de la vista
         Actividad actividad = cmbActividad.getValue();
-        String frecuenciaStr = txtFrecuencia.getText();
-        String tipo = cmbTipo.getValue();
+        String tipoTexto = txtFrecuencia.getText(); // Ej: "Diario"
 
-        if (actividad == null || frecuenciaStr == null || tipo == null) {
-            AlertUtils.error("Por favor, rellena todos los campos.");
+        // 2. Validaciones básicas
+        if (actividad == null || tipoTexto == null || tipoTexto.trim().isEmpty()) {
+            AlertUtils.error("Por favor, selecciona una actividad y escribe la frecuencia (ej: Diario).");
             return;
         }
 
-        try {
-            int frecuencia = Integer.parseInt(frecuenciaStr);
+        // 3. Obtener Usuario actual
+        Usuario usuarioActual = SessionManager.getInstance().getUsuarioActual();
 
-            boolean exito = habitoService.addHabito(
-                    SessionManager.getInstance().getUsuarioActual(),
-                    actividad,
-                    frecuencia,
-                    tipo
-            );
+        // 4. Llamar al Servicio
+        // NOTA: Como el formulario rápido solo tiene un campo de texto, asumimos
+        // frecuencia numérica = 1 y el texto es el "tipo" (periodicidad).
+        boolean exito = habitoService.addHabito(usuarioActual, actividad, 1, tipoTexto);
 
-            if (exito){
-                AlertUtils.info("Nuevo registro guardado.");
-                limpiarFormulario();
-                cargarDatosTabla();
+        if (exito) {
+            // 5. Limpiar formulario
+            cmbActividad.getSelectionModel().clearSelection();
+            txtFrecuencia.clear();
+
+            // 6. Recargar lista
+            cargarHabitos();
+
+            AlertUtils.info("¡Hábito añadido correctamente!");
+        } else {
+            AlertUtils.error("No se pudo guardar el hábito. Verifica los datos.");
+        }
+    }
+
+    /**
+     * Carga y muestra las tarjetas de hábitos.
+     * ADAPTADO A TU SERVICIO: getHabitosByUsuario
+     */
+    @FXML
+    public void cargarHabitos() {
+        if (contenedorHabitos != null) {
+            contenedorHabitos.getChildren().clear();
+        }
+
+        int idUsuario = SessionManager.getInstance().getUsuarioActual().getId();
+
+        // CORRECCIÓN: Usamos el nombre exacto de tu servicio 'getHabitosByUsuario'
+        List<Habito> lista = habitoService.getHabitosByUsuario(idUsuario);
+
+        if (lista.isEmpty()) {
+            mostrarMensajeVacio();
+        } else {
+            for (Habito h : lista) {
+                contenedorHabitos.getChildren().add(crearTarjetaHabito(h));
+            }
+        }
+    }
+
+    /**
+     * Crea la tarjeta visual para un hábito.
+     */
+    private VBox crearTarjetaHabito(Habito h) {
+        VBox card = new VBox(5);
+        card.getStyleClass().add("item-card");
+        card.setAlignment(Pos.CENTER);
+
+        // A. Icono
+        String catNombre = h.getIdActividad().getIdCategoria().getNombre();
+        Label icon = new Label(getIconoPorCategoria(catNombre));
+        icon.getStyleClass().add("item-card-icono");
+
+        // B. Título (Actividad)
+        Label titulo = new Label(h.getIdActividad().getNombre());
+        titulo.getStyleClass().add("item-card-titulo");
+        titulo.setWrapText(true);
+        titulo.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+
+        // C. Frecuencia y Tipo (Ej: "1 vez(ces) Diario")
+        // Combinamos el int y el String que guardaste
+        String infoFrecuencia = h.getFrecuencia() + " x " + h.getTipo();
+        Label lblFreq = new Label(infoFrecuencia);
+        lblFreq.getStyleClass().add("item-card-valor");
+        lblFreq.setStyle("-fx-font-size: 14px; -fx-text-fill: -color-primario; -fx-font-weight: bold;");
+
+        // D. Estado (Decorativo)
+        Label lblEstado = new Label("En curso ⏳");
+        lblEstado.setStyle("-fx-font-size: 11px; -fx-text-fill: #656D4A;");
+
+        card.getChildren().addAll(icon, titulo, lblFreq, lblEstado);
+
+        // Menú Contextual (Click derecho para borrar)
+        ContextMenu menu = new ContextMenu();
+        MenuItem itemBorrar = new MenuItem("🗑 Dejar este hábito");
+        itemBorrar.setOnAction(e -> eliminarHabito(h));
+        menu.getItems().add(itemBorrar);
+
+        card.setOnContextMenuRequested(e -> menu.show(card, e.getScreenX(), e.getScreenY()));
+
+        return card;
+    }
+
+    /**
+     * Elimina un hábito usando tu servicio.
+     */
+    private void eliminarHabito(Habito h) {
+        if (AlertUtils.confirmacion("Eliminar Hábito", "Confirmar acción",
+                "¿Deseas dejar de seguir el hábito '" + h.getIdActividad().getNombre() + "'?")) {
+
+            // CORRECCIÓN: Usamos deleteHabito(Habito) como está en tu servicio
+            if (habitoService.deleteHabito(h)) {
+                AlertUtils.info("Hábito eliminado.");
+                cargarHabitos();
             } else {
-                AlertUtils.error("Error al guardar el registro.");
-            }
-        }catch (NumberFormatException e){
-            AlertUtils.error("La frecuencia debe ser un número entero.");
-
-        }
-    }
-
-    /**
-     * Elimina el hábito seleccionado de la tabla.
-     * <p>
-     * Solicita confirmación al usuario antes de borrar.
-     *
-     * @param mouseEvent Evento del ratón.
-     */
-    public void eliminarHabito(MouseEvent mouseEvent) {
-        Habito habitoSeleccionado = tablaHabitos.getSelectionModel().getSelectedItem();
-        if (habitoSeleccionado == null) {
-            AlertUtils.error("Por favor, selecciona un hábito para eliminar.");
-            return;
-        }
-
-        if (AlertUtils.confirmacion("Eliminar Hábito","Confirmacion", "¿Estás seguro de que quieres eliminar este hábito?")){
-            if (habitoService.deleteHabito(habitoSeleccionado)){
-                listaHabitos.remove(habitoSeleccionado);
-                limpiarFormulario();
-            }else {
-                AlertUtils.error("Error al eliminar el hábito.");
+                AlertUtils.error("No se pudo eliminar.");
             }
         }
     }
 
-    /**
-     * Muestra un consejo relacionado con la categoría del hábito seleccionado.
-     *
-     * @param habito El hábito seleccionado.
-     */
-    private void mostrarConsejo(Habito habito){
-        if (habito != null){
-            String categoria = habito.getIdActividad().getIdCategoria().getNombre();
+    private void mostrarMensajeVacio() {
+        VBox vacio = new VBox(10);
+        vacio.setAlignment(Pos.CENTER);
+        vacio.setPrefWidth(400);
 
-            String consejo = recomendacionService.generarConsejo(categoria);
+        Label icono = new Label("🌱");
+        icono.setStyle("-fx-font-size: 40px;");
+        Label msg = new Label("No tienes hábitos registrados.");
+        msg.setStyle("-fx-text-fill: -color-texto-secundario; -fx-font-size: 16px;");
 
-            lblRecomendacion.setText(consejo);
-        }else {
-            lblRecomendacion.setText("Selecciona un habito para ver consejos.");
-
-        }
+        vacio.getChildren().addAll(icono, msg);
+        contenedorHabitos.getChildren().add(vacio);
     }
 
-    /**
-     * Limpia los campos del formulario de creación de hábitos.
-     */
-    private void limpiarFormulario(){
-        cmbActividad.getSelectionModel().clearSelection();
-        cmbTipo.getSelectionModel().clearSelection();
-        txtFrecuencia.clear();
-        lblRecomendacion.setText("Selecciona un habito para ver consejos.");
+    private String getIconoPorCategoria(String categoria) {
+        if (categoria == null) return "✨";
+        switch (categoria) {
+            case "Transporte": return "🚲";
+            case "Alimentación": return "🥦";
+            case "Energía": return "🔌";
+            case "Agua": return "🚿";
+            case "Residuos": return "♻️";
+            default: return "✨";
+        }
     }
 }
