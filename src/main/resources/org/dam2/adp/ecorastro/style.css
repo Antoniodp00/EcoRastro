@@ -614,3 +614,24 @@
 .combo-box-moderno .list-cell {
     -fx-text-fill: black; /* El desplegable suele ser blanco, así que texto negro */
 }
+
+/* Radio Button Moderno */
+.radio-moderno {
+    -fx-text-fill: -color-texto-secundario; /* Oliva */
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+}
+
+.radio-moderno:selected {
+    -fx-text-fill: -color-primario; /* Arena */
+}
+
+/* El puntito del radio */
+.radio-moderno .radio {
+    -fx-background-color: rgba(255,255,255,0.1);
+    -fx-border-color: -color-texto-secundario;
+    -fx-border-radius: 10px;
+}
+.radio-moderno:selected .radio .dot {
+    -fx-background-color: -color-primario;
+}

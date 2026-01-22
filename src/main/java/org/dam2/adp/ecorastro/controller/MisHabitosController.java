@@ -9,8 +9,10 @@ import javafx.util.StringConverter;
 import org.dam2.adp.ecorastro.model.Actividad;
 import org.dam2.adp.ecorastro.model.Habito;
 import org.dam2.adp.ecorastro.model.Usuario;
+
 import org.dam2.adp.ecorastro.service.HabitoService;
 import org.dam2.adp.ecorastro.service.HuellaService;
+import org.dam2.adp.ecorastro.service.RecomendacionService; // Necesario para los consejos
 import org.dam2.adp.ecorastro.util.AlertUtils;
 import org.dam2.adp.ecorastro.util.SessionManager;
 
@@ -20,13 +22,22 @@ public class MisHabitosController {
 
     @FXML private FlowPane contenedorHabitos;
 
-    // --- CAMPOS DEL FORMULARIO LATERAL ---
+    // Formulario
     @FXML private ComboBox<Actividad> cmbActividad;
-    @FXML private TextField txtFrecuencia; // Aquí el usuario escribirá "Diario", "Semanal", etc.
+    @FXML private TextField txtCantidad;
+    @FXML private RadioButton rbDiario, rbSemanal, rbMensual;
+    @FXML private ToggleGroup grupoPeriodicidad;
 
-    // --- SERVICIOS ---
+    // Filtros
+    @FXML private CheckBox chkTransporte, chkAlimentacion, chkEnergia, chkAgua, chkOtros;
+
+    // Info Dinámica
+    @FXML private Label lblRecomendacionSidebar;
+
+    // Servicios
     private final HabitoService habitoService = new HabitoService();
-    private final HuellaService huellaService = new HuellaService(); // Necesario para llenar el combo
+    private final HuellaService huellaService = new HuellaService();
+    private final RecomendacionService recomendacionService = new RecomendacionService();
 
     @FXML
     public void initialize() {
@@ -34,145 +45,143 @@ public class MisHabitosController {
         cargarHabitos();
     }
 
-    /**
-     * Carga las actividades disponibles en el ComboBox del sidebar.
-     */
     private void cargarComboActividades() {
-        // Asegúrate de que ActividadService tenga un método para obtener todas
         List<Actividad> actividades = huellaService.getAllActividades();
         cmbActividad.getItems().addAll(actividades);
 
-        // Convertidor para mostrar solo el nombre en el ComboBox
         cmbActividad.setConverter(new StringConverter<Actividad>() {
             @Override
-            public String toString(Actividad a) {
-                return (a != null) ? a.getNombre() : "";
-            }
+            public String toString(Actividad a) { return (a != null) ? a.getNombre() : ""; }
             @Override
-            public Actividad fromString(String string) {
-                return null;
-            }
+            public Actividad fromString(String string) { return null; }
         });
     }
 
-    /**
-     * Acción del botón "Añadir Rutina".
-     * ADAPTADO A TU SERVICIO: addHabito(Usuario, Actividad, int, String)
-     */
     @FXML
     public void guardarHabitoRapido() {
-        // 1. Obtener datos de la vista
         Actividad actividad = cmbActividad.getValue();
-        String tipoTexto = txtFrecuencia.getText(); // Ej: "Diario"
+        String cantidadStr = txtCantidad.getText();
 
-        // 2. Validaciones básicas
-        if (actividad == null || tipoTexto == null || tipoTexto.trim().isEmpty()) {
-            AlertUtils.error("Por favor, selecciona una actividad y escribe la frecuencia (ej: Diario).");
+        // 1. Validar selección
+        if (actividad == null || cantidadStr.isEmpty()) {
+            AlertUtils.error("Selecciona actividad y cantidad.");
             return;
         }
 
-        // 3. Obtener Usuario actual
-        Usuario usuarioActual = SessionManager.getInstance().getUsuarioActual();
+        // 2. Parsear cantidad
+        int frecuenciaNum;
+        try {
+            frecuenciaNum = Integer.parseInt(cantidadStr);
+        } catch (NumberFormatException e) {
+            AlertUtils.error("La cantidad debe ser un número entero.");
+            return;
+        }
 
-        // 4. Llamar al Servicio
-        // NOTA: Como el formulario rápido solo tiene un campo de texto, asumimos
-        // frecuencia numérica = 1 y el texto es el "tipo" (periodicidad).
-        boolean exito = habitoService.addHabito(usuarioActual, actividad, 1, tipoTexto);
+        // 3. Obtener periodicidad del RadioButton
+        String tipoPeriodo = "Diario";
+        if (rbSemanal.isSelected()) tipoPeriodo = "Semanal";
+        if (rbMensual.isSelected()) tipoPeriodo = "Mensual";
+
+        // 4. Guardar
+        Usuario usuarioActual = SessionManager.getInstance().getUsuarioActual();
+        boolean exito = habitoService.addHabito(usuarioActual, actividad, frecuenciaNum, tipoPeriodo);
 
         if (exito) {
-            // 5. Limpiar formulario
             cmbActividad.getSelectionModel().clearSelection();
-            txtFrecuencia.clear();
-
-            // 6. Recargar lista
+            txtCantidad.clear();
+            rbDiario.setSelected(true); // Resetear a diario
             cargarHabitos();
-
-            AlertUtils.info("¡Hábito añadido correctamente!");
+            AlertUtils.info("¡Hábito añadido!");
         } else {
-            AlertUtils.error("No se pudo guardar el hábito. Verifica los datos.");
+            AlertUtils.error("Error al guardar.");
         }
     }
 
-    /**
-     * Carga y muestra las tarjetas de hábitos.
-     * ADAPTADO A TU SERVICIO: getHabitosByUsuario
-     */
     @FXML
     public void cargarHabitos() {
-        if (contenedorHabitos != null) {
-            contenedorHabitos.getChildren().clear();
-        }
+        if (contenedorHabitos != null) contenedorHabitos.getChildren().clear();
 
         int idUsuario = SessionManager.getInstance().getUsuarioActual().getId();
+        List<Habito> listaCompleta = habitoService.getHabitosByUsuario(idUsuario);
 
-        // CORRECCIÓN: Usamos el nombre exacto de tu servicio 'getHabitosByUsuario'
-        List<Habito> lista = habitoService.getHabitosByUsuario(idUsuario);
-
-        if (lista.isEmpty()) {
+        if (listaCompleta.isEmpty()) {
             mostrarMensajeVacio();
-        } else {
-            for (Habito h : lista) {
-                contenedorHabitos.getChildren().add(crearTarjetaHabito(h));
-            }
+            return;
+        }
+
+        for (Habito h : listaCompleta) {
+            // --- FILTRADO ---
+            String cat = h.getIdActividad().getIdCategoria().getNombre();
+            if (!isCategoriaSeleccionada(cat)) continue;
+
+            contenedorHabitos.getChildren().add(crearTarjetaHabito(h));
         }
     }
 
-    /**
-     * Crea la tarjeta visual para un hábito.
-     */
+    private boolean isCategoriaSeleccionada(String categoria) {
+        switch (categoria) {
+            case "Transporte": return chkTransporte.isSelected();
+            case "Alimentación": return chkAlimentacion.isSelected();
+            case "Energía": return chkEnergia.isSelected();
+            case "Agua": return chkAgua.isSelected();
+            default: return chkOtros.isSelected();
+        }
+    }
+
     private VBox crearTarjetaHabito(Habito h) {
         VBox card = new VBox(5);
         card.getStyleClass().add("item-card");
         card.setAlignment(Pos.CENTER);
 
-        // A. Icono
         String catNombre = h.getIdActividad().getIdCategoria().getNombre();
+
+        // A. Icono
         Label icon = new Label(getIconoPorCategoria(catNombre));
         icon.getStyleClass().add("item-card-icono");
 
-        // B. Título (Actividad)
+        // B. Título
         Label titulo = new Label(h.getIdActividad().getNombre());
         titulo.getStyleClass().add("item-card-titulo");
         titulo.setWrapText(true);
         titulo.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 
-        // C. Frecuencia y Tipo (Ej: "1 vez(ces) Diario")
-        // Combinamos el int y el String que guardaste
-        String infoFrecuencia = h.getFrecuencia() + " x " + h.getTipo();
+        // C. Frecuencia (Ej: "3 veces/Semanal")
+        String infoFrecuencia = h.getFrecuencia() + " veces / " + h.getTipo();
         Label lblFreq = new Label(infoFrecuencia);
         lblFreq.getStyleClass().add("item-card-valor");
         lblFreq.setStyle("-fx-font-size: 14px; -fx-text-fill: -color-primario; -fx-font-weight: bold;");
 
-        // D. Estado (Decorativo)
-        Label lblEstado = new Label("En curso ⏳");
-        lblEstado.setStyle("-fx-font-size: 11px; -fx-text-fill: #656D4A;");
+        // D. (QUITADO) Etiqueta "En curso" eliminada como pediste.
 
-        card.getChildren().addAll(icon, titulo, lblFreq, lblEstado);
+        card.getChildren().addAll(icon, titulo, lblFreq);
 
-        // Menú Contextual (Click derecho para borrar)
+        // --- INTERACCIÓN: Click para ver recomendación ---
+        card.setOnMouseClicked(e -> {
+            // 1. Obtener consejo según la categoría del hábito seleccionado
+            String consejo = recomendacionService.generarConsejo(catNombre);
+            // 2. Actualizar el Label del Sidebar
+            lblRecomendacionSidebar.setText("Tip para " + catNombre + ":\n" + consejo);
+        });
+
+        // Menú Contextual (Borrar)
         ContextMenu menu = new ContextMenu();
         MenuItem itemBorrar = new MenuItem("🗑 Dejar este hábito");
         itemBorrar.setOnAction(e -> eliminarHabito(h));
         menu.getItems().add(itemBorrar);
-
         card.setOnContextMenuRequested(e -> menu.show(card, e.getScreenX(), e.getScreenY()));
 
         return card;
     }
 
-    /**
-     * Elimina un hábito usando tu servicio.
-     */
-    private void eliminarHabito(Habito h) {
-        if (AlertUtils.confirmacion("Eliminar Hábito", "Confirmar acción",
-                "¿Deseas dejar de seguir el hábito '" + h.getIdActividad().getNombre() + "'?")) {
+    // ... (Métodos auxiliares eliminarHabito, mostrarMensajeVacio, getIconoPorCategoria igual que antes) ...
+    // Asegúrate de tenerlos copiados o mantenerlos si ya los tenías.
 
-            // CORRECCIÓN: Usamos deleteHabito(Habito) como está en tu servicio
+    private void eliminarHabito(Habito h) {
+        if (AlertUtils.confirmacion("Eliminar", "Confirmar", "¿Borrar hábito?")) {
             if (habitoService.deleteHabito(h)) {
-                AlertUtils.info("Hábito eliminado.");
                 cargarHabitos();
             } else {
-                AlertUtils.error("No se pudo eliminar.");
+                AlertUtils.error("Error al borrar.");
             }
         }
     }
@@ -180,26 +189,20 @@ public class MisHabitosController {
     private void mostrarMensajeVacio() {
         VBox vacio = new VBox(10);
         vacio.setAlignment(Pos.CENTER);
-        vacio.setPrefWidth(400);
-
-        Label icono = new Label("🌱");
-        icono.setStyle("-fx-font-size: 40px;");
-        Label msg = new Label("No tienes hábitos registrados.");
-        msg.setStyle("-fx-text-fill: -color-texto-secundario; -fx-font-size: 16px;");
-
-        vacio.getChildren().addAll(icono, msg);
+        Label msg = new Label("No hay hábitos con este filtro.");
+        msg.setStyle("-fx-text-fill: -color-texto-secundario;");
+        vacio.getChildren().add(msg);
         contenedorHabitos.getChildren().add(vacio);
     }
 
-    private String getIconoPorCategoria(String categoria) {
-        if (categoria == null) return "✨";
-        switch (categoria) {
+    private String getIconoPorCategoria(String cat) {
+        if (cat == null) return "✨";
+        switch (cat) {
             case "Transporte": return "🚲";
             case "Alimentación": return "🥦";
             case "Energía": return "🔌";
             case "Agua": return "🚿";
-            case "Residuos": return "♻️";
-            default: return "✨";
+            default: return "♻️";
         }
     }
 }
