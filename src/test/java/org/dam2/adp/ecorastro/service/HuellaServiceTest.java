@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -168,6 +167,19 @@ class HuellaServiceTest {
         huellaGuardada = service.getHuellasPorUsuario(usuarioTest.getId()).get(0);
 
         Map<String, Double> medias = service.getMediaImpactoPorCategoria();
+        assertNotNull(medias);
+        assertTrue(medias.containsKey("Cat Service"));
+    }
+
+    @Test
+    void testGetMediaImpactoConFechas() {
+        service.addHuella(usuarioTest, actividadTest, 10.0, LocalDate.now());
+        huellaGuardada = service.getHuellasPorUsuario(usuarioTest.getId()).get(0);
+
+        Map<String, Double> medias = service.getMediaImpactoPorCategoriaFechas(
+                LocalDate.now().minusDays(1),
+                LocalDate.now().plusDays(1)
+        );
         assertNotNull(medias);
         assertTrue(medias.containsKey("Cat Service"));
     }

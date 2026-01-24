@@ -42,12 +42,14 @@ public class HuellaDAO {
             "JOIN a.idCategoria c " +
             "GROUP BY c.nombre";
 
+    /** Consulta HQL para calcular la media de impacto por categoría filtrada por fecha. */
     private final String GET_MEDIA_IMPACTO_POR_CATEGORIA_FECHA = "SELECT c.nombre, AVG(h.valor * c.factorEmision) " +
             "FROM Huella h " +
             "JOIN h.idActividad a " +
             "JOIN a.idCategoria c " +
             "WHERE h.fecha >= :inicio AND h.fecha <= :fin " +
             "GROUP BY c.nombre";
+
     /**
      * Inserta una nueva huella en la base de datos.
      *
@@ -184,7 +186,14 @@ public class HuellaDAO {
         return medias;
     }
 
-    public Map<String, Double> getMediaImpactoPorCategoria(LocalDate fechaInicio, LocalDate fechaFin) {
+    /**
+     * Calcula la media del impacto de carbono por categoría dentro de un rango de fechas.
+     *
+     * @param fechaInicio Fecha de inicio del rango.
+     * @param fechaFin    Fecha de fin del rango.
+     * @return Un mapa con el nombre de la categoría y su impacto medio en ese periodo.
+     */
+    public Map<String, Double> getMediaImpactoPorCategoriaFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         Map<String, Double> medias = new HashMap<>();
         try (Session session = Connection.getInstance().getSession()) {
             Instant inicio = fechaInicio.atStartOfDay(ZoneId.systemDefault()).toInstant();

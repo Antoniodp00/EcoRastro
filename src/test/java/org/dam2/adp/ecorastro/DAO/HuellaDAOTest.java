@@ -160,6 +160,22 @@ class HuellaDAOTest {
         assertNotNull(medias.get("Categoria Test"));
     }
 
+    @Test
+    void testGetMediaImpactoPorCategoriaConFechas() {
+        // 1. Arrange
+        testGuardarHuella(); // Crea huella con fecha de hoy
+
+        // 2. Act
+        Map<String, Double> medias = huellaDAO.getMediaImpactoPorCategoriaFechas(
+                LocalDate.now().minusDays(1),
+                LocalDate.now().plusDays(1)
+        );
+
+        // 3. Assert
+        assertTrue(medias.containsKey("Categoria Test"));
+        assertNotNull(medias.get("Categoria Test"));
+    }
+
     // --- MÉTODOS AUXILIARES (SETUP / TEARDOWN) ---
 
     private void crearDatosDePrueba() {

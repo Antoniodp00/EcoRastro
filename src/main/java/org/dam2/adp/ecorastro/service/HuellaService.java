@@ -134,7 +134,7 @@ public class HuellaService {
         return huellaDAO.getMediaImpactoPorCategoria();
     }
 
-    public Map<String, Double> getMediaImpactoPorCategoria(LocalDate fechaInicio, LocalDate fechaFin) {
-        return huellaDAO.getMediaImpactoPorCategoria(fechaInicio, fechaFin);
+    public Map<String, Double> getMediaImpactoPorCategoriaFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        return huellaDAO.getMediaImpactoPorCategoriaFechas(fechaInicio, fechaFin);
     }
 }
