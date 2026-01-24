@@ -65,14 +65,15 @@
             </VBox>
         </VBox>
 
-        <VBox VBox.vgrow="ALWAYS" />
-
         <VBox styleClass="card-azul" spacing="5">
             <Label text="💡 CONSEJO" styleClass="titulo-tip, texto-mediano-plus"/>
             <Label fx:id="lblRecomendacionSidebar"
                    text="Selecciona un hábito de la lista para ver consejos personalizados."
                    wrapText="true" styleClass="texto-tip, texto-pequeno"/>
         </VBox>
+
+        <VBox VBox.vgrow="ALWAYS" />
+
     </VBox>
 
     <VBox spacing="20" HBox.hgrow="ALWAYS">

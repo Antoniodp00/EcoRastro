@@ -635,3 +635,90 @@
 .radio-moderno:selected .radio .dot {
     -fx-background-color: -color-primario;
 }
+
+/* =========================================================
+   MENÚ CONTEXTUAL (Click Derecho)
+   ========================================================= */
+
+/* El contenedor principal del menú */
+.context-menu {
+    -fx-background-color: rgba(40, 48, 35, 0.95); /* Verde Bosque muy oscuro y casi opaco */
+    -fx-background-radius: 10;
+    -fx-border-color: rgba(166, 138, 100, 0.3); /* Borde color Arena sutil */
+    -fx-border-radius: 10;
+    -fx-border-width: 1px;
+    /* Sombra elegante para que parezca que flota */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 8);
+    -fx-padding: 6 0 6 0; /* Padding vertical interno */
+}
+
+/* Cada fila del menú */
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 10 20; /* Espacio cómodo para el ratón */
+}
+
+/* El texto de las opciones */
+.menu-item .label {
+    -fx-text-fill: #FEFAE0; /* Color Liquen (blanco sucio) */
+    -fx-font-size: 13px;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* --- ESTADO HOVER (Pasar el ratón) --- */
+.menu-item:focused {
+    -fx-background-color: rgba(166, 138, 100, 0.15); /* Iluminación sutil */
+    -fx-cursor: hand;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: #DDA15E; /* El texto brilla en color Ocre/Dorado */
+    -fx-font-weight: bold;
+}
+
+/* Opcional: Si quieres que el botón de borrar se ponga rojo al pasar el ratón */
+/* JavaFX no distingue fácilmente items por ID en CSS, pero esto afecta a todos */
+.menu-item:focused .label {
+    /* Si prefieres que al pasar el ratón se ponga rojo de peligro, usa esto: */
+    /* -fx-text-fill: #bc4749; */
+}
+/* =========================================================
+   COMBOBOX MODERNO (Desplegable Estilizado)
+   ========================================================= */
+
+/* 1. El input cerrado (lo que se ve siempre) */
+.combo-box-moderno {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(166, 138, 100, 0.3); /* Borde Arena sutil */
+    -fx-border-radius: 8;
+}
+
+/* Texto dentro del input cerrado */
+.combo-box-moderno .list-cell {
+    -fx-text-fill: -color-texto-principal; /* Liquen (Claro) */
+}
+
+/* 2. El POPUP (La lista que se abre) */
+.combo-box-moderno .list-view {
+    -fx-background-color: rgba(40, 48, 35, 1); /* Fondo Verde Muy Oscuro (Opaco) */
+    -fx-background-radius: 5;
+    -fx-border-color: -color-primario; /* Borde Arena */
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 5);
+}
+
+/* 3. Las opciones dentro de la lista desplegada */
+.combo-box-moderno .list-view .list-cell {
+    -fx-text-fill: -color-texto-principal; /* Texto Claro */
+    -fx-background-color: transparent;
+    -fx-padding: 8 10; /* Espacio cómodo */
+    -fx-cursor: hand;
+}
+
+/* 4. Efecto al pasar el ratón (Hover) o opción Seleccionada */
+.combo-box-moderno .list-view .list-cell:filled:selected,
+.combo-box-moderno .list-view .list-cell:filled:hover {
+    -fx-background-color: rgba(166, 138, 100, 0.2); /* Fondo Arena translúcido */
+    -fx-text-fill: -color-primario; /* Texto Arena brillante */
+}
