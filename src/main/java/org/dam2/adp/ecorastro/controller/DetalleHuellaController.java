@@ -15,28 +15,67 @@ import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Controlador para la ventana modal de "Detalle de Huella".
+ * <p>
+ * Permite visualizar la información completa de un registro y editar sus valores.
+ * <p>
+ * Funcionalidades principales:
+ * <ul>
+ * <li>Visualización detallada (Fecha, Valor, Impacto, Categoría).</li>
+ * <li>Modo Edición: Permite modificar la fecha y el valor del consumo.</li>
+ * <li>Cálculo dinámico del impacto al actualizar valores.</li>
+ * </ul>
+ *
+ * @author Antonio Delgado Portero
+ * @version 1.0
+ */
 public class DetalleHuellaController {
 
     // --- VIEW ELEMENTS ---
-    @FXML private Label lblIcono, lblTitulo, lblCategoria, lblImpacto;
+    /** Etiqueta para el icono de la categoría. */
+    @FXML private Label lblIcono;
+    /** Etiqueta para el título (nombre de la actividad). */
+    @FXML private Label lblTitulo;
+    /** Etiqueta para el nombre de la categoría. */
+    @FXML private Label lblCategoria;
+    /** Etiqueta para mostrar el impacto calculado en CO2. */
+    @FXML private Label lblImpacto;
 
     // Elementos Modo Lectura
-    @FXML private Label lblFecha, lblValor;
-    @FXML private Button btnEditar, btnCerrar;
+    /** Etiqueta para mostrar la fecha (solo lectura). */
+    @FXML private Label lblFecha;
+    /** Etiqueta para mostrar el valor y unidad (solo lectura). */
+    @FXML private Label lblValor;
+    /** Botón para activar el modo edición. */
+    @FXML private Button btnEditar;
+    /** Botón para cerrar la ventana. */
+    @FXML private Button btnCerrar;
 
     // Elementos Modo Edición
+    /** Selector de fecha (modo edición). */
     @FXML private DatePicker dpFechaInput;
+    /** Campo de texto para editar el valor. */
     @FXML private TextField txtValorInput;
+    /** Etiqueta fija con la unidad de medida. */
     @FXML private Label lblUnidadInput;
+    /** Contenedor para los controles de edición de valor. */
     @FXML private HBox boxEdicionValor;
+    /** Botón para guardar los cambios. */
     @FXML private Button btnGuardar;
 
     // --- DATA ---
+    /** Objeto Huella que se está visualizando/editando. */
     private Huella huellaActual;
+    /** Servicio para operaciones de persistencia. */
     private final HuellaService huellaService = new HuellaService();
 
     /**
      * Carga los datos iniciales en la vista.
+     * <p>
+     * Se llama desde el controlador padre al abrir la ventana modal.
+     *
+     * @param h La huella a mostrar.
      */
     public void setDatos(Huella h) {
         this.huellaActual = h;
@@ -60,6 +99,8 @@ public class DetalleHuellaController {
 
     /**
      * Actualiza los Labels y Colores según los datos actuales del objeto Huella.
+     * <p>
+     * Recalcula el impacto y ajusta el color del texto según la gravedad.
      */
     private void actualizarVistaLectura() {
         // Valor y Unidad
@@ -82,6 +123,11 @@ public class DetalleHuellaController {
         lblImpacto.setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold; -fx-font-size: 16px;");
     }
 
+    /**
+     * Cambia la interfaz al modo de edición.
+     * <p>
+     * Oculta las etiquetas de lectura y muestra los campos de entrada.
+     */
     @FXML
     public void activarEdicion() {
         // Ocultar Lectura
@@ -97,6 +143,11 @@ public class DetalleHuellaController {
         btnCerrar.setText("Cancelar"); // Cambiamos texto del botón cerrar
     }
 
+    /**
+     * Guarda los cambios realizados en el modo edición.
+     * <p>
+     * Valida la entrada, actualiza el objeto y lo persiste en la base de datos.
+     */
     @FXML
     public void guardarCambios() {
         try {
@@ -129,6 +180,9 @@ public class DetalleHuellaController {
         }
     }
 
+    /**
+     * Restaura la interfaz al modo de solo lectura.
+     */
     private void activarModoLectura() {
         // Mostrar Lectura
         lblFecha.setVisible(true); lblFecha.setManaged(true);
@@ -143,12 +197,21 @@ public class DetalleHuellaController {
         btnCerrar.setText("Cerrar");
     }
 
+    /**
+     * Cierra la ventana modal actual.
+     */
     @FXML
     public void cerrarVentana() {
         Stage stage = (Stage) lblTitulo.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Obtiene un emoji representativo según la categoría.
+     *
+     * @param categoria Nombre de la categoría.
+     * @return Emoji como String.
+     */
     private String getIconoPorCategoria(String categoria) {
         if (categoria == null) return "🌿";
         return switch (categoria) {

@@ -23,7 +23,7 @@ import org.dam2.adp.ecorastro.util.Navigation;
  * <li>Navegación de vuelta al login.</li>
  * </ul>
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class RegisterController {

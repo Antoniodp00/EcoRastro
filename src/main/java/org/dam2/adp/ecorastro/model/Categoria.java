@@ -12,7 +12,7 @@ import java.util.List;
  * Mapea la tabla 'categoria' del esquema 'ecorastro_db'.
  * Define el factor de emisión base para calcular el impacto de CO2 de las actividades asociadas.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 @Entity

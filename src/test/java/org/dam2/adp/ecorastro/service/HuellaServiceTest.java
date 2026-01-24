@@ -12,7 +12,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,10 +27,7 @@ class HuellaServiceTest {
     private Usuario usuarioTest;
     private Actividad actividadTest;
     private Categoria categoriaTest;
-    // (No guardamos la huella aquí porque el servicio se encarga de eso,
-    //  pero deberíamos limpiarla si queremos ser estrictos.
-    //  Para simplificar, limpiaremos el usuario y por cascada o FK se limpiará lo demás en un entorno real,
-    //  o usamos un método de limpieza robusto).
+    private Huella huellaGuardada;
 
     @BeforeEach
     void setUp() {
@@ -55,6 +55,10 @@ class HuellaServiceTest {
 
         // 3. Assert
         assertTrue(resultado, "Debe permitir registrar una huella con datos válidos");
+        
+        // Recuperar para limpiar
+        List<Huella> lista = service.getHuellasPorUsuario(usuarioTest.getId());
+        if (!lista.isEmpty()) huellaGuardada = lista.get(0);
     }
 
     @Test
@@ -85,19 +89,87 @@ class HuellaServiceTest {
 
     @Test
     void testCalculoImpacto() {
-        // Si implementaste el método 'calcularImpacto' en el servicio:
-        // Fórmula: Valor * FactorEmision
-        // Valor = 100, Factor = 0.5 -> Resultado esperado = 50.0
-
         Huella huellaSimulada = new Huella();
         huellaSimulada.setValor(new BigDecimal("100"));
         huellaSimulada.setIdActividad(actividadTest); // Tiene factor 0.5
 
-        // Asumiendo que creaste este método en el Service como te sugerí
         BigDecimal impacto = service.calcularImpacto(huellaSimulada);
 
-        assertEquals(0, new BigDecimal("50.00").compareTo(impacto),
+        assertEquals(0, new BigDecimal("50.0000").compareTo(impacto),
                 "El cálculo debe ser 100 * 0.5 = 50.00");
+    }
+
+    @Test
+    void testUpdateHuella() {
+        // 1. Crear huella
+        service.addHuella(usuarioTest, actividadTest, 10.0, LocalDate.now());
+        huellaGuardada = service.getHuellasPorUsuario(usuarioTest.getId()).get(0);
+
+        // 2. Modificar
+        huellaGuardada.setValor(new BigDecimal("20.0"));
+        boolean actualizado = service.updateHuella(huellaGuardada);
+
+        // 3. Verificar
+        assertTrue(actualizado);
+        Huella recuperada = service.getHuellasPorUsuario(usuarioTest.getId()).get(0);
+        assertEquals(0, new BigDecimal("20.0").compareTo(recuperada.getValor()));
+    }
+
+    @Test
+    void testUpdateHuellaInvalida() {
+        // 1. Crear huella
+        service.addHuella(usuarioTest, actividadTest, 10.0, LocalDate.now());
+        huellaGuardada = service.getHuellasPorUsuario(usuarioTest.getId()).get(0);
+
+        // 2. Modificar con valor inválido
+        huellaGuardada.setValor(new BigDecimal("-5.0"));
+        boolean actualizado = service.updateHuella(huellaGuardada);
+
+        // 3. Verificar que falla
+        assertFalse(actualizado);
+    }
+
+    @Test
+    void testDeleteHuella() {
+        service.addHuella(usuarioTest, actividadTest, 10.0, LocalDate.now());
+        huellaGuardada = service.getHuellasPorUsuario(usuarioTest.getId()).get(0);
+
+        boolean eliminado = service.deleteHuella(huellaGuardada);
+
+        assertTrue(eliminado);
+        assertTrue(service.getHuellasPorUsuario(usuarioTest.getId()).isEmpty());
+        huellaGuardada = null;
+    }
+
+    @Test
+    void testGetAllActividades() {
+        List<Actividad> lista = service.getAllActividades();
+        assertNotNull(lista);
+        assertFalse(lista.isEmpty());
+    }
+
+    @Test
+    void testGetHuellasPorFecha() {
+        service.addHuella(usuarioTest, actividadTest, 10.0, LocalDate.now());
+        huellaGuardada = service.getHuellasPorUsuario(usuarioTest.getId()).get(0);
+
+        List<Huella> resultado = service.getHuellasPorFecha(
+                usuarioTest.getId(),
+                LocalDate.now().minusDays(1),
+                LocalDate.now().plusDays(1)
+        );
+
+        assertFalse(resultado.isEmpty());
+    }
+
+    @Test
+    void testGetMediaImpacto() {
+        service.addHuella(usuarioTest, actividadTest, 10.0, LocalDate.now());
+        huellaGuardada = service.getHuellasPorUsuario(usuarioTest.getId()).get(0);
+
+        Map<String, Double> medias = service.getMediaImpactoPorCategoria();
+        assertNotNull(medias);
+        assertTrue(medias.containsKey("Cat Service"));
     }
 
     // --- UTILS ---
@@ -125,15 +197,17 @@ class HuellaServiceTest {
     }
 
     private void limpiarBaseDeDatos() {
-        // Limpiamos la BBDD de los datos creados
         try (Session session = Connection.getInstance().getSession()) {
             Transaction tx = session.beginTransaction();
 
-            // Nota: Si el servicio guardó huellas reales, habría que borrarlas primero
-            // Aquí borramos los padres, si falla por FK es porque se creó una huella y habría que borrarla.
-            // Para estos tests unitarios básicos asumimos limpieza simple o BBDD de test.
-
-            // Borrar huellas asociadas al usuario de test (Query HQL)
+            if (huellaGuardada != null) {
+                // Verificar si existe antes de borrar
+                if (session.get(Huella.class, huellaGuardada.getId()) != null) {
+                    session.remove(session.merge(huellaGuardada));
+                }
+            }
+            
+            // Limpieza de seguridad por si falló la referencia
             session.createQuery("DELETE FROM Huella h WHERE h.idUsuario.id = :uid")
                     .setParameter("uid", usuarioTest.getId())
                     .executeUpdate();

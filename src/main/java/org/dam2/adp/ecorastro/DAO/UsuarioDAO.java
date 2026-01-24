@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * Gestiona las operaciones CRUD relacionadas con los usuarios del sistema.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class UsuarioDAO {

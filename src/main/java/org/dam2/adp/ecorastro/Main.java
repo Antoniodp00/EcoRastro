@@ -14,7 +14,7 @@ import java.util.Objects;
  * <p>
  * Inicia la aplicación JavaFX, configura la navegación y carga la pantalla de inicio de sesión.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class Main extends Application {

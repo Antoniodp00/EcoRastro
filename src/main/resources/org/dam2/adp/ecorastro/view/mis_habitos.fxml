@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <HBox spacing="0" styleClass="panel-base"
       xmlns="http://javafx.com/javafx/21"
@@ -48,6 +49,9 @@
 
             <Button text="Añadir Rutina" onAction="#guardarHabitoRapido"
                     styleClass="boton-primario" maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-plus" iconSize="12" styleClass="texto-blanco"/>
+                </graphic>
                 <VBox.margin> <Insets top="5"/> </VBox.margin>
             </Button>
         </VBox>
@@ -57,23 +61,39 @@
         <VBox spacing="5">
             <Label text="Filtrar por:" styleClass="subtitulo-seccion"/>
             <VBox spacing="5">
-                <CheckBox fx:id="chkTransporte" text="🚗 Transporte" selected="true" onAction="#cargarHabitos" styleClass="filtro-checkbox" maxWidth="Infinity"/>
-                <CheckBox fx:id="chkAlimentacion" text="🍎 Alimentación" selected="true" onAction="#cargarHabitos" styleClass="filtro-checkbox" maxWidth="Infinity"/>
-                <CheckBox fx:id="chkEnergia" text="💡 Energía" selected="true" onAction="#cargarHabitos" styleClass="filtro-checkbox" maxWidth="Infinity"/>
-                <CheckBox fx:id="chkAgua" text="💧 Agua" selected="true" onAction="#cargarHabitos" styleClass="filtro-checkbox" maxWidth="Infinity"/>
-                <CheckBox fx:id="chkOtros" text="📦 Otros" selected="true" onAction="#cargarHabitos" styleClass="filtro-checkbox" maxWidth="Infinity"/>
+                <CheckBox fx:id="chkTransporte" text="Transporte" selected="true" onAction="#cargarHabitos" styleClass="filtro-checkbox" maxWidth="Infinity">
+                    <graphic> <FontIcon iconLiteral="fas-car" iconSize="14" styleClass="icono-navegacion"/> </graphic>
+                </CheckBox>
+
+                <CheckBox fx:id="chkAlimentacion" text="Alimentación" selected="true" onAction="#cargarHabitos" styleClass="filtro-checkbox" maxWidth="Infinity">
+                    <graphic> <FontIcon iconLiteral="fas-apple-alt" iconSize="14" styleClass="icono-navegacion"/> </graphic>
+                </CheckBox>
+
+                <CheckBox fx:id="chkEnergia" text="Energía" selected="true" onAction="#cargarHabitos" styleClass="filtro-checkbox" maxWidth="Infinity">
+                    <graphic> <FontIcon iconLiteral="fas-bolt" iconSize="14" styleClass="icono-navegacion"/> </graphic>
+                </CheckBox>
+
+                <CheckBox fx:id="chkAgua" text="Agua" selected="true" onAction="#cargarHabitos" styleClass="filtro-checkbox" maxWidth="Infinity">
+                    <graphic> <FontIcon iconLiteral="fas-tint" iconSize="14" styleClass="icono-navegacion"/> </graphic>
+                </CheckBox>
+
+                <CheckBox fx:id="chkOtros" text="Otros" selected="true" onAction="#cargarHabitos" styleClass="filtro-checkbox" maxWidth="Infinity">
+                    <graphic> <FontIcon iconLiteral="fas-box-open" iconSize="14" styleClass="icono-navegacion"/> </graphic>
+                </CheckBox>
             </VBox>
         </VBox>
 
         <VBox styleClass="card-azul" spacing="5">
-            <Label text="💡 CONSEJO" styleClass="titulo-tip, texto-mediano-plus"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <FontIcon iconLiteral="fas-lightbulb" iconSize="18" styleClass="texto-tip"/>
+                <Label text="CONSEJO" styleClass="titulo-tip, texto-mediano-plus"/>
+            </HBox>
             <Label fx:id="lblRecomendacionSidebar"
                    text="Selecciona un hábito de la lista para ver consejos personalizados."
                    wrapText="true" styleClass="texto-tip, texto-pequeno"/>
         </VBox>
 
         <VBox VBox.vgrow="ALWAYS" />
-
     </VBox>
 
     <VBox spacing="20" HBox.hgrow="ALWAYS">

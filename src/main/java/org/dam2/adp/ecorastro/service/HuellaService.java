@@ -18,7 +18,7 @@ import java.util.Map;
  * Actúa como intermediario entre los controladores y la capa de acceso a datos (DAO).
  * Permite registrar, consultar y eliminar registros de impacto ambiental.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class HuellaService {
@@ -50,6 +50,14 @@ public class HuellaService {
         return insertado;
     }
 
+    /**
+     * Actualiza una huella existente.
+     * <p>
+     * Valida que el valor sea positivo y la fecha no sea nula.
+     *
+     * @param huella La huella con los datos modificados.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     */
     public boolean updateHuella(Huella huella) {
         boolean actualizado;
 
@@ -124,5 +132,9 @@ public class HuellaService {
      */
     public Map<String, Double> getMediaImpactoPorCategoria() {
         return huellaDAO.getMediaImpactoPorCategoria();
+    }
+
+    public Map<String, Double> getMediaImpactoPorCategoria(LocalDate fechaInicio, LocalDate fechaFin) {
+        return huellaDAO.getMediaImpactoPorCategoria(fechaInicio, fechaFin);
     }
 }

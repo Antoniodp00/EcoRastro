@@ -13,7 +13,7 @@ import java.util.List;
  * <p>
  * Gestiona las operaciones CRUD y consultas específicas contra la base de datos usando Hibernate.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class HabitoDAO {

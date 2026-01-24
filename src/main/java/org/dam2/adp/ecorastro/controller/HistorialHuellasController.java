@@ -17,6 +17,7 @@ import org.dam2.adp.ecorastro.model.Huella;
 import org.dam2.adp.ecorastro.service.HuellaService;
 import org.dam2.adp.ecorastro.util.AlertUtils;
 import org.dam2.adp.ecorastro.util.SessionManager;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
 import java.time.ZoneId;
@@ -29,11 +30,27 @@ import java.util.Objects;
  * <p>
  * REFACTORIZADO: Ahora usa un diseño de Tarjetas (Cards) en un FlowPane
  * en lugar de una tabla tradicional, adaptándose al tema visual.
+ * <p>
+ * Funcionalidades principales:
+ * <ul>
+ * <li>Visualización de huellas en tarjetas interactivas.</li>
+ * <li>Filtrado de huellas por categoría.</li>
+ * <li>Eliminación de registros mediante menú contextual.</li>
+ * <li>Apertura de detalles de huella en ventana modal.</li>
+ * <li>Navegación al formulario de registro de nuevas huellas.</li>
+ * </ul>
+ *
+ * @author Antonio Delgado Portero
+ * @version 1.0
  */
 public class HistorialHuellasController {
+    /** Filtro para mostrar huellas de transporte. */
     public CheckBox chkTransporte;
+    /** Filtro para mostrar huellas de alimentación. */
     public CheckBox chkAlimentacion;
+    /** Filtro para mostrar huellas de energía. */
     public CheckBox chkEnergia;
+    /** Filtro para mostrar huellas de agua. */
     public CheckBox chkAgua;
 
     // --- ELEMENTOS FXML ---
@@ -43,6 +60,7 @@ public class HistorialHuellasController {
 
 
     // --- SERVICIOS ---
+    /** Servicio para gestionar huellas. */
     private final HuellaService huellaService = new HuellaService();
 
 
@@ -55,6 +73,8 @@ public class HistorialHuellasController {
 
     /**
      * Obtiene los datos de la BBDD y genera una tarjeta visual por cada registro.
+     * <p>
+     * Aplica los filtros de categoría seleccionados.
      */
     @FXML
     public void cargarHuellas() {
@@ -84,6 +104,12 @@ public class HistorialHuellasController {
         }
     }
 
+    /**
+     * Verifica si una categoría está seleccionada en los filtros.
+     *
+     * @param categoria Nombre de la categoría.
+     * @return true si debe mostrarse, false en caso contrario.
+     */
     private boolean isCategoriaSeleccionada(String categoria) {
         switch (categoria) {
             case "Transporte":   return chkTransporte.isSelected();
@@ -96,7 +122,11 @@ public class HistorialHuellasController {
 
     /**
      * Crea un componente visual (VBox) que representa una tarjeta de huella individual.
+     * <p>
      * Incluye estilos CSS y menú contextual para borrar.
+     *
+     * @param h La huella a representar.
+     * @return El nodo gráfico de la tarjeta.
      */
     private VBox crearTarjetaHuella(Huella h) {
         VBox card = new VBox(5);
@@ -104,9 +134,13 @@ public class HistorialHuellasController {
         card.setAlignment(Pos.CENTER);
 
         // A. Icono según categoría
-        String cat = h.getIdActividad().getIdCategoria().getNombre();
-        Label icon = new Label(getIconoPorCategoria(cat));
+        String codigoIcono = getCodigoIconoPorCategoria(h.getIdActividad().getIdCategoria().getNombre()); // Obtenemos el código (ej: "fas-car")
+        FontIcon icon = new FontIcon(codigoIcono);
+
+        // Estilo: Ikonli usa -fx-icon-color y -fx-icon-size, pero hereda -fx-text-fill
+        // Puedes seguir usando tu clase CSS, pero asegúrate de que define el tamaño
         icon.getStyleClass().add("item-card-icono");
+        icon.setIconSize(30);
 
         // B. Título (Actividad)
         Label titulo = new Label(h.getIdActividad().getNombre());
@@ -175,6 +209,11 @@ public class HistorialHuellasController {
         return card;
     }
 
+    /**
+     * Abre una ventana modal con los detalles de la huella seleccionada.
+     *
+     * @param h La huella a mostrar.
+     */
     private void abrirDetalleHuella(Huella h) {
        try {
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/dam2/adp/ecorastro/view/detalle_huella.fxml"));
@@ -203,6 +242,8 @@ public class HistorialHuellasController {
 
     /**
      * Lógica para eliminar un registro específico desde su tarjeta.
+     *
+     * @param h La huella a eliminar.
      */
     private void eliminarHuella(Huella h) {
         if (AlertUtils.confirmacion("Eliminar Registro", "Confirmar borrado",
@@ -237,21 +278,28 @@ public class HistorialHuellasController {
 
     /**
      * Devuelve un emoji acorde a la categoría para decorar la tarjeta.
+     *
+     * @param categoria Nombre de la categoría.
+     * @return Código del icono (ej: "fas-car").
      */
-    private String getIconoPorCategoria(String categoria) {
-        if (categoria == null) return "📝";
+    private String getCodigoIconoPorCategoria(String categoria) {
+        if (categoria == null) return "fas-leaf"; // Hoja por defecto
+
         switch (categoria) {
-            case "Transporte": return "🚗";
-            case "Alimentación": return "🍎";
-            case "Energía": return "💡";
-            case "Agua": return "💧";
-            case "Residuos": return "♻️";
-            default: return "🌿";
+            case "Transporte":   return "fas-car";          // Coche
+            case "Alimentación": return "fas-apple-alt";    // Manzana
+            case "Energía":      return "fas-bolt";         // Rayo
+            case "Agua":         return "fas-tint";         // Gota
+            case "Residuos":     return "fas-recycle";      // Reciclaje
+            default:             return "fas-leaf";         // Hoja
         }
     }
 
     // --- NAVEGACIÓN ---
 
+    /**
+     * Abre la ventana modal para registrar una nueva huella.
+     */
     @FXML
     public void irARegistrar() {
         try {

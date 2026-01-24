@@ -6,9 +6,10 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.CheckBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
 <HBox spacing="0" styleClass="panel-base"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -23,34 +24,55 @@
         <Label text="Opciones disponibles" styleClass="subtitulo-seccion"/>
 
         <HBox styleClass="card-nav, nav-huella" onMouseClicked="#irARegistrar" alignment="CENTER_LEFT" spacing="15">
-            <Label text="+" styleClass="icono-navegacion, texto-negrita"/>
+            <FontIcon iconLiteral="fas-plus" iconSize="20" styleClass="icono-navegacion, texto-negrita"/>
+
             <VBox>
                 <Label text="Nueva Huella" styleClass="card-nav-titulo"/>
                 <Label text="Añadir registro" styleClass="card-nav-desc"/>
             </VBox>
         </HBox>
+
         <Separator styleClass="separador-suave"/>
 
         <VBox spacing="8">
-            <CheckBox fx:id="chkTransporte" text="🚗 Transporte" selected="true"
+            <CheckBox fx:id="chkTransporte" text="Transporte" selected="true"
                       onAction="#cargarHuellas" styleClass="filtro-checkbox"
-                      maxWidth="Infinity"/>
+                      maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-car" iconSize="14" styleClass="icono-navegacion"/>
+                </graphic>
+            </CheckBox>
 
-            <CheckBox fx:id="chkAlimentacion" text="🍎 Alimentación" selected="true"
+            <CheckBox fx:id="chkAlimentacion" text="Alimentación" selected="true"
                       onAction="#cargarHuellas" styleClass="filtro-checkbox"
-                      maxWidth="Infinity"/>
+                      maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-apple-alt" iconSize="14" styleClass="icono-navegacion"/>
+                </graphic>
+            </CheckBox>
 
-            <CheckBox fx:id="chkEnergia" text="💡 Energía" selected="true"
+            <CheckBox fx:id="chkEnergia" text="Energía" selected="true"
                       onAction="#cargarHuellas" styleClass="filtro-checkbox"
-                      maxWidth="Infinity"/>
+                      maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-bolt" iconSize="14" styleClass="icono-navegacion"/>
+                </graphic>
+            </CheckBox>
 
-            <CheckBox fx:id="chkAgua" text="💧 Agua" selected="true"
+            <CheckBox fx:id="chkAgua" text="Agua" selected="true"
                       onAction="#cargarHuellas" styleClass="filtro-checkbox"
-                      maxWidth="Infinity"/>
+                      maxWidth="Infinity">
+                <graphic>
+                    <FontIcon iconLiteral="fas-tint" iconSize="14" styleClass="icono-navegacion"/>
+                </graphic>
+            </CheckBox>
         </VBox>
 
         <VBox styleClass="card-azul" spacing="5">
-            <Label text="ℹ INFO" styleClass="titulo-tip, texto-mediano-plus"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <FontIcon iconLiteral="fas-info-circle" iconSize="18" styleClass="texto-tip"/>
+                <Label text="INFO" styleClass="titulo-tip, texto-mediano-plus"/>
+            </HBox>
             <Label text="Haz clic en una tarjeta para ver detalles o editarla."
                    wrapText="true" styleClass="texto-tip, texto-pequeno"/>
         </VBox>

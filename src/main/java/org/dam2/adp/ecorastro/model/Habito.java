@@ -12,7 +12,7 @@ import java.time.Instant;
  * Mapea la tabla 'habito' del esquema 'ecorastro_db'.
  * Utiliza una clave compuesta {@link HabitoId} formada por el ID del usuario y el ID de la actividad.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 @Entity

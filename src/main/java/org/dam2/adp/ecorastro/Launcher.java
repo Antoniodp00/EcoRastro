@@ -8,7 +8,7 @@ import javafx.application.Application;
  * Se utiliza como punto de entrada para evitar problemas con la carga de módulos
  * de JavaFX en archivos JAR ejecutables.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class Launcher {

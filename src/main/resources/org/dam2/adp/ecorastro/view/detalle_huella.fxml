@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.dam2.adp.ecorastro.controller.DetalleHuellaController"
@@ -19,7 +20,8 @@
     </padding>
 
     <VBox alignment="CENTER" spacing="5">
-        <Label fx:id="lblIcono" text="🌿" styleClass="icono-gigante-extra"/>
+        <Label fx:id="lblIcono" styleClass="icono-gigante-extra"/>
+
         <Label fx:id="lblTitulo" text="Actividad" styleClass="titulo" wrapText="true" textAlignment="CENTER"/>
         <Label fx:id="lblCategoria" text="CATEGORÍA" styleClass="subtitulo"/>
     </VBox>
@@ -27,7 +29,7 @@
     <VBox styleClass="card" spacing="15">
 
         <HBox alignment="CENTER_LEFT" spacing="10">
-            <Label text="📅" styleClass="texto-secundario-bold"/>
+            <FontIcon iconLiteral="fas-calendar-alt" iconSize="20" styleClass="texto-secundario-bold"/>
             <Label text="Fecha:" styleClass="texto-secundario-bold"/>
 
             <StackPane HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
@@ -39,7 +41,7 @@
         <Separator/>
 
         <HBox alignment="CENTER_LEFT" spacing="10">
-            <Label text="📊" styleClass="texto-secundario-bold"/>
+            <FontIcon iconLiteral="fas-chart-bar" iconSize="20" styleClass="texto-secundario-bold"/>
             <Label text="Consumo:" styleClass="texto-secundario-bold"/>
 
             <StackPane HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
@@ -55,19 +57,27 @@
         <Separator/>
 
         <HBox alignment="CENTER_LEFT" spacing="10">
-            <Label text="🌍" styleClass="texto-secundario-bold"/>
+            <FontIcon iconLiteral="fas-globe-americas" iconSize="20" styleClass="texto-secundario-bold"/>
             <Label text="Impacto:" styleClass="texto-secundario-bold"/>
             <Label fx:id="lblImpacto" text="-" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
         </HBox>
     </VBox>
 
     <HBox spacing="10">
-        <Button fx:id="btnEditar" text="✏ Editar" onAction="#activarEdicion"
-                styleClass="boton-secundario" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+        <Button fx:id="btnEditar" text="Editar" onAction="#activarEdicion"
+                styleClass="boton-secundario" maxWidth="Infinity" HBox.hgrow="ALWAYS">
+            <graphic>
+                <FontIcon iconLiteral="fas-edit" iconSize="14"/>
+            </graphic>
+        </Button>
 
-        <Button fx:id="btnGuardar" text="💾 Guardar" onAction="#guardarCambios"
+        <Button fx:id="btnGuardar" text="Guardar" onAction="#guardarCambios"
                 styleClass="boton-primario" maxWidth="Infinity" HBox.hgrow="ALWAYS"
-                visible="false" managed="false"/>
+                visible="false" managed="false">
+            <graphic>
+                <FontIcon iconLiteral="fas-save" iconSize="14"/>
+            </graphic>
+        </Button>
 
         <Button fx:id="btnCerrar" text="Cerrar" onAction="#cerrarVentana"
                 styleClass="boton-secundario" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>

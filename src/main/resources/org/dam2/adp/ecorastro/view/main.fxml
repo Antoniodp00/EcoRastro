@@ -6,6 +6,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <BorderPane fx:id="mainPane"
             xmlns="http://javafx.com/javafx/21"
@@ -13,20 +15,39 @@
             fx:controller="org.dam2.adp.ecorastro.controller.MainController"
             stylesheets="@../style.css"
             styleClass="panel-base"
-            prefWidth="900" prefHeight="600">
+            prefWidth="1000" prefHeight="700">
 
     <top>
-        <HBox styleClass="header-panel" alignment="CENTER_LEFT" spacing="15">
-            <Label text="EcoRastro" styleClass="header-logo"/>
+        <HBox styleClass="header-panel" alignment="CENTER_LEFT" spacing="20">
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <FontIcon iconLiteral="fas-leaf" iconSize="24" styleClass="texto-primario"/>
+                <Label text="EcoRastro" styleClass="header-logo"/>
+            </HBox>
 
             <Region HBox.hgrow="ALWAYS"/>
 
-            <Label fx:id="lblUsuario" text="Usuario" styleClass="header-user"/>
+            <HBox styleClass="card-nav" onMouseClicked="#irAPerfil" alignment="CENTER_LEFT" spacing="12">
+                <FontIcon iconLiteral="fas-user-circle" iconSize="32" styleClass="icono-navegacion"/>
 
-            <Button text="🏠 Inicio" onAction="#mostrarInicio" styleClass="boton-icon"/>
+                <VBox alignment="CENTER_LEFT" spacing="0">
+                    <Label fx:id="lblUsuario" text="Usuario" styleClass="header-user"/>
+                    <Label text="Mi Perfil" styleClass="texto-pequeno, texto-terciario"/>
+                </VBox>
+            </HBox>
 
-            <Button text="Cerrar Sesión" onAction="#cerrarSesion"
-                    styleClass="boton-icon, boton-peligro"/>
+            <Button text="Inicio" onAction="#mostrarInicio" styleClass="boton-icon">
+                <graphic>
+                    <FontIcon iconLiteral="fas-home" iconSize="16"/>
+                </graphic>
+            </Button>
+
+            <Button text="Salir" onAction="#cerrarSesion"
+                    styleClass="boton-icon, boton-peligro">
+                <graphic>
+                    <FontIcon iconLiteral="fas-sign-out-alt" iconSize="16"/>
+                </graphic>
+            </Button>
         </HBox>
     </top>
 

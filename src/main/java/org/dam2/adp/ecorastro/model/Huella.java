@@ -15,7 +15,7 @@ import java.time.Instant;
  * Almacena la información de una actividad realizada por un usuario en una fecha concreta,
  * incluyendo el valor consumido y la unidad de medida.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 @Entity

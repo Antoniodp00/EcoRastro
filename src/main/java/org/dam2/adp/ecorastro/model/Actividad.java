@@ -12,7 +12,7 @@ import java.util.List;
  * Las actividades pertenecen a una {@link Categoria} y pueden ser registradas
  * como huellas o hábitos por los usuarios.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 @Entity

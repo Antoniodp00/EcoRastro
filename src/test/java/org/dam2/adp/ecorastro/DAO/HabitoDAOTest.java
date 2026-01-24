@@ -93,6 +93,30 @@ class HabitoDAOTest {
         habitoGuardado = null; // Evitar que el tearDown intente borrarlo de nuevo
     }
 
+    @Test
+    void testGetHabitoMasFrecuente() {
+        // 1. Arrange: Crear dos hábitos con distinta frecuencia
+        // Hábito 1 (el que ya tenemos, frecuencia 1)
+        testGuardarHabito();
+
+        // Hábito 2 (frecuencia 5)
+        Actividad actividad2 = crearActividadExtra("Actividad Frecuente");
+        Habito habito2 = new Habito(usuarioTest, actividad2, 5, "Diario");
+        habitoDAO.addHabito(habito2);
+
+        // 2. Act
+        Habito masFrecuente = habitoDAO.getHabitoMasFrecuente(usuarioTest.getId());
+
+        // 3. Assert
+        assertNotNull(masFrecuente);
+        assertEquals(5, masFrecuente.getFrecuencia());
+        assertEquals("Actividad Frecuente", masFrecuente.getIdActividad().getNombre());
+
+        // Limpieza extra
+        habitoDAO.deleteHabito(habito2);
+        borrarActividadExtra(actividad2);
+    }
+
     // --- UTILS DE CONFIGURACIÓN ---
     private void crearDatosDePrueba() {
         try (Session session = Connection.getInstance().getSession()) {
@@ -112,6 +136,26 @@ class HabitoDAOTest {
             actividadTest.setIdCategoria(categoriaTest);
             session.persist(actividadTest);
 
+            tx.commit();
+        }
+    }
+
+    private Actividad crearActividadExtra(String nombre) {
+        try (Session session = Connection.getInstance().getSession()) {
+            Transaction tx = session.beginTransaction();
+            Actividad a = new Actividad();
+            a.setNombre(nombre);
+            a.setIdCategoria(categoriaTest); // Reusamos la categoría
+            session.persist(a);
+            tx.commit();
+            return a;
+        }
+    }
+
+    private void borrarActividadExtra(Actividad a) {
+        try (Session session = Connection.getInstance().getSession()) {
+            Transaction tx = session.beginTransaction();
+            session.remove(session.merge(a));
             tx.commit();
         }
     }

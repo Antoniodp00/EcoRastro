@@ -16,7 +16,7 @@ import java.util.Objects;
  * </ul>
  * Implementa {@link Serializable} como requisito de JPA para claves compuestas.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 @Embeddable

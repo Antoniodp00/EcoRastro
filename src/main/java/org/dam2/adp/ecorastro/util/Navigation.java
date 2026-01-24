@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * <p>
  * Gestiona el cambio de vistas principales y la carga de contenido dinámico.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class Navigation {

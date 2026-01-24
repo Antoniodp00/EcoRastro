@@ -69,4 +69,40 @@ class UsuarioServiceTest {
         Usuario logueado = service.login("fantasma@test.com", "1234");
         assertNull(logueado, "Debe devolver null si no encuentra al usuario");
     }
+
+    @Test
+    void testActualizarUsuarioExitoso() {
+        UsuarioService service = new UsuarioService();
+        usuarioPrueba = new Usuario("User Update", "update@test.com", "1234");
+        service.registrarUsuario(usuarioPrueba);
+
+        usuarioPrueba.setNombre("Nombre Cambiado");
+        boolean resultado = service.actualizarUsuario(usuarioPrueba, "nuevaPass");
+
+        assertTrue(resultado);
+        Usuario actualizado = service.login("update@test.com", "nuevaPass");
+        assertNotNull(actualizado);
+        assertEquals("Nombre Cambiado", actualizado.getNombre());
+    }
+
+    @Test
+    void testActualizarUsuarioEmailDuplicado() {
+        UsuarioService service = new UsuarioService();
+        // Usuario 1
+        usuarioPrueba = new Usuario("User 1", "user1@test.com", "1234");
+        service.registrarUsuario(usuarioPrueba);
+
+        // Usuario 2
+        Usuario usuario2 = new Usuario("User 2", "user2@test.com", "1234");
+        service.registrarUsuario(usuario2);
+
+        // Intentamos cambiar el email de usuario2 al de usuario1
+        usuario2.setEmail("user1@test.com");
+        boolean resultado = service.actualizarUsuario(usuario2, null);
+
+        assertFalse(resultado, "No debe permitir actualizar a un email ya existente");
+
+        // Limpieza extra
+        new UsuarioDAO().deleteUsuario(usuario2);
+    }
 }

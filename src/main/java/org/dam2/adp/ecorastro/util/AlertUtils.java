@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * Proporciona métodos estáticos para mostrar errores, información y confirmaciones
  * con un estilo visual consistente.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class AlertUtils {

@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.Region?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <ScrollPane fitToWidth="true" fitToHeight="true"
             xmlns="http://javafx.com/javafx/21"
@@ -22,7 +23,8 @@
             <padding> <Insets top="40" right="20" bottom="40" left="20"/> </padding>
 
             <VBox alignment="CENTER" spacing="5">
-                <Label text="👣" styleClass="icono-gigante-extra"/>
+                <FontIcon iconLiteral="fas-shoe-prints" iconSize="50" styleClass="texto-primario"/>
+
                 <Label text="Nueva Huella" styleClass="titulo"/>
                 <Label text="Registra tu actividad para calcular el impacto" styleClass="subtitulo"/>
             </VBox>
@@ -52,15 +54,24 @@
 
                 <HBox spacing="15" alignment="CENTER">
                     <Button text="Cancelar" onAction="#onCancelarClick"
-                            styleClass="boton-secundario" maxWidth="Infinity" HBox.hgrow="ALWAYS" prefHeight="45"/>
+                            styleClass="boton-secundario" maxWidth="Infinity" HBox.hgrow="ALWAYS" prefHeight="45">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-times" iconSize="16"/>
+                        </graphic>
+                    </Button>
 
                     <Button text="Guardar Registro" onAction="#onGuardarClick"
-                            styleClass="boton-primario" maxWidth="Infinity" HBox.hgrow="ALWAYS" prefHeight="45"/>
+                            styleClass="boton-primario" maxWidth="Infinity" HBox.hgrow="ALWAYS" prefHeight="45">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-save" iconSize="16" styleClass="texto-blanco"/>
+                        </graphic>
+                    </Button>
                 </HBox>
 
             </VBox>
 
-            <HBox alignment="CENTER" maxWidth="500" styleClass="fondo-info-suave">
+            <HBox alignment="CENTER" maxWidth="500" styleClass="fondo-info-suave" spacing="10">
+                <FontIcon iconLiteral="fas-info-circle" iconSize="14" styleClass="texto-terciario"/>
                 <Label text="Los datos se sumarán automáticamente a tu análisis mensual."
                        wrapText="true" textAlignment="CENTER"
                        styleClass="texto-terciario, texto-pequeno"/>

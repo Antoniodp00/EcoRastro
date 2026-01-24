@@ -12,7 +12,7 @@ import java.util.Random;
  * Selecciona consejos aleatorios basados en categorías específicas para fomentar
  * la concienciación ambiental del usuario.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class RecomendacionService {

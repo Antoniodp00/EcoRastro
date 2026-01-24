@@ -13,7 +13,9 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -82,6 +84,82 @@ class HuellaDAOTest {
         assertEquals(usuarioTest.getId(), huellas.get(0).getIdUsuario().getId(), "El usuario de la huella debe coincidir");
     }
 
+    @Test
+    void testUpdateHuella() {
+        // 1. Arrange
+        testGuardarHuella(); // Crea una huella inicial
+        assertNotNull(huellaGuardada);
+
+        // 2. Act
+        huellaGuardada.setValor(new BigDecimal("99.99"));
+        boolean actualizado = huellaDAO.updateHuella(huellaGuardada);
+
+        // 3. Assert
+        assertTrue(actualizado);
+        // Recuperar de BBDD para verificar persistencia (simulando nueva sesión)
+        try (Session s = Connection.getInstance().getSession()) {
+            Huella recuperada = s.get(Huella.class, huellaGuardada.getId());
+            assertEquals(0, new BigDecimal("99.99").compareTo(recuperada.getValor()));
+        }
+    }
+
+    @Test
+    void testDeleteHuella() {
+        // 1. Arrange
+        testGuardarHuella();
+        assertNotNull(huellaGuardada);
+
+        // 2. Act
+        boolean eliminado = huellaDAO.deleteHuella(huellaGuardada);
+
+        // 3. Assert
+        assertTrue(eliminado);
+        try (Session s = Connection.getInstance().getSession()) {
+            Huella recuperada = s.get(Huella.class, huellaGuardada.getId());
+            assertNull(recuperada, "La huella no debería existir");
+        }
+        huellaGuardada = null; // Para que tearDown no falle
+    }
+
+    @Test
+    void testGetHuellasPorFecha() {
+        // 1. Arrange
+        Huella h = new Huella();
+        h.setIdUsuario(usuarioTest);
+        h.setIdActividad(actividadTest);
+        h.setValor(BigDecimal.TEN);
+        h.setUnidad("kg");
+        h.setFecha(Instant.now()); // Fecha de hoy
+        huellaDAO.addHuella(h);
+        huellaGuardada = h;
+
+        // 2. Act
+        List<Huella> resultados = huellaDAO.getHuellasPorFecha(
+                usuarioTest.getId(),
+                LocalDate.now().minusDays(1),
+                LocalDate.now().plusDays(1)
+        );
+
+        // 3. Assert
+        assertFalse(resultados.isEmpty());
+        assertEquals(h.getId(), resultados.get(0).getId());
+    }
+
+    @Test
+    void testGetMediaImpactoPorCategoria() {
+        // 1. Arrange
+        testGuardarHuella(); // Crea huella con valor 10.5 y factor 0.5 -> Impacto 5.25
+
+        // 2. Act
+        Map<String, Double> medias = huellaDAO.getMediaImpactoPorCategoria();
+
+        // 3. Assert
+        assertTrue(medias.containsKey("Categoria Test"));
+        // Nota: Como es una media global, si hay otros tests corriendo podría variar,
+        // pero en un entorno aislado debería ser exacto.
+        assertNotNull(medias.get("Categoria Test"));
+    }
+
     // --- MÉTODOS AUXILIARES (SETUP / TEARDOWN) ---
 
     private void crearDatosDePrueba() {
@@ -115,7 +193,10 @@ class HuellaDAOTest {
 
             // Borramos en orden inverso para no romper FK (Foreign Keys)
             if (huellaGuardada != null && huellaGuardada.getId() != null) {
-                session.remove(session.merge(huellaGuardada));
+                // Verificar si existe antes de borrar
+                if (session.get(Huella.class, huellaGuardada.getId()) != null) {
+                    session.remove(session.merge(huellaGuardada));
+                }
             }
             if (actividadTest != null) session.remove(session.merge(actividadTest));
             if (categoriaTest != null) session.remove(session.merge(categoriaTest));

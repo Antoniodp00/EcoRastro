@@ -29,7 +29,7 @@ import java.util.List;
  * <li>Guardado de la huella en base de datos mediante {@link HuellaService}.</li>
  * </ul>
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class RegisterHuellaController {

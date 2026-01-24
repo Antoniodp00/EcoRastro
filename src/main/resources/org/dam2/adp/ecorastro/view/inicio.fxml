@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <ScrollPane fitToWidth="true" fitToHeight="true"
             xmlns="http://javafx.com/javafx/21"
@@ -27,25 +28,23 @@
                     <Label text="TOTAL EMISIONES" styleClass="card-titulo"/>
                     <HBox alignment="CENTER_LEFT" spacing="10">
                         <Label fx:id="lblHuellaTotal" text="0.00 kg" styleClass="card-numero-destacado"/>
-                        <Label text="" styleClass="card-unidad, padding-top-12"/>
                     </HBox>
                 </VBox>
 
                 <VBox styleClass="card" spacing="10">
                     <HBox spacing="15" alignment="CENTER_LEFT">
-                        <Label fx:id="lblIconoNivel" text="🌱" styleClass="icono-nivel"/>
+                        <FontIcon fx:id="iconNivel" iconLiteral="fas-seedling" iconSize="40" styleClass="icono-nivel"/>
+
                         <VBox spacing="2">
                             <Label text="NIVEL ACTUAL" styleClass="card-titulo"/>
-                            <Label fx:id="lblNivel" text="Bajo Consumo" styleClass="card-numero, texto-grande-20"/>
+                            <Label fx:id="lblNivel" text="Calculando..." styleClass="card-numero, texto-grande-20"/>
                         </VBox>
                     </HBox>
 
                     <VBox spacing="5">
-                        <Label fx:id="lblSiguienteNivel" text="Objetivo: Mantener" styleClass="subtitulo, texto-pequeno"/>
-
-                        <ProgressBar fx:id="pbNivel" progress="0.65" maxWidth="Infinity" styleClass="barra-progreso"/>
-
-                        <Label fx:id="lblAhorroRestante" text="¡Vas genial!" styleClass="texto-progreso" alignment="CENTER_RIGHT" maxWidth="Infinity"/>
+                        <Label fx:id="lblSiguienteNivel" text="Objetivo: ..." styleClass="subtitulo, texto-pequeno"/>
+                        <ProgressBar fx:id="pbNivel" progress="0.0" maxWidth="Infinity" styleClass="barra-progreso"/>
+                        <Label fx:id="lblAhorroRestante" text="..." styleClass="texto-progreso" alignment="CENTER_RIGHT" maxWidth="Infinity"/>
                     </VBox>
                 </VBox>
 
@@ -53,7 +52,7 @@
                     <Label text="Acciones Rápidas" styleClass="subtitulo-seccion"/>
 
                     <HBox styleClass="card-nav, nav-huella" onMouseClicked="#irARegistrarHuella" alignment="CENTER_LEFT" spacing="15">
-                        <Label text="👣" styleClass="icono-navegacion"/>
+                        <FontIcon iconLiteral="fas-shoe-prints" iconSize="20" styleClass="icono-navegacion"/>
                         <VBox>
                             <Label text="Registrar Huella" styleClass="card-nav-titulo"/>
                             <Label text="Añade consumo..." styleClass="card-nav-desc"/>
@@ -61,7 +60,7 @@
                     </HBox>
 
                     <HBox styleClass="card-nav, nav-habitos" onMouseClicked="#irAHabitos" alignment="CENTER_LEFT" spacing="15">
-                        <Label text="📅" styleClass="icono-navegacion"/>
+                        <FontIcon iconLiteral="fas-calendar-check" iconSize="20" styleClass="icono-navegacion"/>
                         <VBox>
                             <Label text="Mis Hábitos" styleClass="card-nav-titulo"/>
                             <Label text="Gestiona tus rutinas" styleClass="card-nav-desc"/>
@@ -69,7 +68,7 @@
                     </HBox>
 
                     <HBox styleClass="card-nav, nav-analisis" onMouseClicked="#irAAnalisis" alignment="CENTER_LEFT" spacing="15">
-                        <Label text="📊" styleClass="icono-navegacion"/>
+                        <FontIcon iconLiteral="fas-chart-pie" iconSize="20" styleClass="icono-navegacion"/>
                         <VBox>
                             <Label text="Ver Análisis" styleClass="card-nav-titulo"/>
                             <Label text="Estadísticas detalladas" styleClass="card-nav-desc"/>
@@ -78,7 +77,7 @@
                 </VBox>
 
                 <HBox styleClass="card-azul" alignment="CENTER_LEFT" spacing="15">
-                    <Label text="💡" styleClass="icono-tip"/>
+                    <FontIcon iconLiteral="fas-lightbulb" iconSize="28" styleClass="icono-tip"/>
                     <VBox>
                         <Label text="CONSEJO DEL DÍA" styleClass="titulo-tip, texto-mediano"/>
                         <Label fx:id="lblConsejo" text="Cargando consejo..." wrapText="true" styleClass="texto-tip, texto-pequeno"/>

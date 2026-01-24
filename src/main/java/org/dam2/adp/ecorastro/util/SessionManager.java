@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  * Implementa el patrón Singleton para mantener un estado global accesible desde toda la aplicación.
  * Almacena el usuario autenticado y permite guardar datos temporales arbitrarios.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class SessionManager {

@@ -23,7 +23,7 @@ import org.dam2.adp.ecorastro.util.SessionManager;
  * <li>Manejo de errores de autenticación.</li>
  * </ul>
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class LoginController {
@@ -85,7 +85,7 @@ public class LoginController {
         if (usuario != null) {
             realizarLoginExitoso(usuario);
         } else {
-            // Mostrar error si el login falla (opcional, aunque recomendable)
+            // Mostrar error si el login falla
             lblError.setText("Credenciales incorrectas.");
             lblError.setVisible(true);
         }

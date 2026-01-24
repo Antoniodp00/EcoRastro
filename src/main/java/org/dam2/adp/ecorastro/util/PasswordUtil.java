@@ -7,7 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
  * <p>
  * Utiliza el algoritmo BCrypt para generar hashes y verificar contraseñas.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class PasswordUtil {

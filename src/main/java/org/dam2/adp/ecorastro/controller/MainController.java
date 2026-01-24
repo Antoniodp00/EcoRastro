@@ -1,10 +1,12 @@
 package org.dam2.adp.ecorastro.controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import org.dam2.adp.ecorastro.util.Navigation;
@@ -26,7 +28,7 @@ import java.io.IOException;
  * <li>Carga dinámica de vistas FXML.</li>
  * </ul>
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class MainController {
@@ -122,5 +124,15 @@ public class MainController {
             e.printStackTrace();
             System.err.println("Error cargando vista: " + fxml);
         }
+    }
+
+    /**
+     * Navega a la vista de perfil del usuario.
+     *
+     * @param event Evento del ratón.
+     */
+    @FXML
+    public void irAPerfil(MouseEvent event) {
+        Navigation.navigate("perfil.fxml");
     }
 }

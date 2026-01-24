@@ -24,6 +24,8 @@ module org.dam2.adp.ecorastro {
     requires java.sql;
     requires jbcrypt;
 
+    requires org.kordamp.ikonli.fontawesome5;
+
     // 3. Permite abrir tus paquetes a JavaFX y Hibernate
     opens org.dam2.adp.ecorastro to javafx.fxml;
     opens org.dam2.adp.ecorastro.controller to javafx.fxml;

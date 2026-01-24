@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * Mapea la tabla 'recomendacion' del esquema 'ecorastro_db'.
  * Las recomendaciones están vinculadas a una categoría específica para ofrecer consejos contextuales.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 @Entity

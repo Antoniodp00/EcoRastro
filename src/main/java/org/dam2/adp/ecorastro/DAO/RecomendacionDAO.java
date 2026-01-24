@@ -11,7 +11,7 @@ import java.util.List;
  * <p>
  * Permite consultar recomendaciones filtradas por categoría.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class RecomendacionDAO {

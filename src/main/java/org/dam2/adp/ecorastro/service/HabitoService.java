@@ -16,7 +16,7 @@ import java.util.List;
  * Actúa como intermediario entre los controladores y la capa de acceso a datos (DAO).
  * Permite crear, eliminar y consultar hábitos recurrentes.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class HabitoService {

@@ -13,7 +13,7 @@ import java.util.List;
  * Mapea la tabla 'usuario' del esquema 'ecorastro_db'.
  * Contiene la información de perfil, credenciales y relaciones con sus datos (huellas y hábitos).
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 @Entity

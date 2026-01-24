@@ -9,7 +9,7 @@ import org.dam2.adp.ecorastro.util.PasswordUtil;
  * <p>
  * Se encarga del registro, autenticación (login) y seguridad de las contraseñas.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class UsuarioService {
@@ -59,5 +59,33 @@ public class UsuarioService {
         }
 
         return null;
+    }
+
+    /**
+     * Actualiza los datos de un usuario existente.
+     * <p>
+     * Gestiona la actualización del perfil, incluyendo validación de email único
+     * y cifrado de nueva contraseña si se proporciona.
+     *
+     * @param usuario       El objeto usuario con los datos actualizados.
+     * @param nuevaPassword La nueva contraseña en texto plano (opcional).
+     *                      Si es null o vacía, se mantiene la contraseña actual.
+     * @return true si la actualización fue exitosa, false si el email ya está en uso.
+     */
+    public boolean actualizarUsuario(Usuario usuario, String nuevaPassword) {
+        // 1. Si cambia el email, verificar que no esté ocupado por otro
+        Usuario existente = usuarioDAO.getUsuarioByEmail(usuario.getEmail());
+        if (existente != null && !existente.getId().equals(usuario.getId())) {
+            return false; // El email ya pertenece a otra persona
+        }
+
+        // 2. Gestión de la contraseña
+        if (nuevaPassword != null && !nuevaPassword.trim().isEmpty()) {
+            String hash = PasswordUtil.hashPassword(nuevaPassword);
+            usuario.setContrasena(hash);
+        }
+
+        // 3. Guardar cambios en BBDD
+        return usuarioDAO.updateUsuario(usuario);
     }
 }

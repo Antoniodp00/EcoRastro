@@ -11,12 +11,12 @@ import java.util.List;
  * <p>
  * Proporciona métodos para recuperar el catálogo de actividades disponibles.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class ActividadDAO {
     /** Consulta HQL para obtener todas las actividades cargando su categoría. */
-    private final String GET_ALL_HQL = "FROM Actividad a JOIN FETCH a.idCategoria";//JOIN FETCHcarga inmediatamente las entidades relacionadas, inicializándolas en el objeto principal.
+    private final String GET_ALL_HQL = "FROM Actividad a JOIN FETCH a.idCategoria"; // JOIN FETCH carga inmediatamente las entidades relacionadas, inicializándolas en el objeto principal.
 
     /**
      * Recupera todas las actividades registradas en la base de datos.

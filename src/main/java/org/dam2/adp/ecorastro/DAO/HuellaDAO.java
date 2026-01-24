@@ -19,7 +19,7 @@ import java.util.Map;
  * <p>
  * Gestiona las operaciones CRUD y consultas específicas contra la base de datos usando Hibernate.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class HuellaDAO {
@@ -42,6 +42,12 @@ public class HuellaDAO {
             "JOIN a.idCategoria c " +
             "GROUP BY c.nombre";
 
+    private final String GET_MEDIA_IMPACTO_POR_CATEGORIA_FECHA = "SELECT c.nombre, AVG(h.valor * c.factorEmision) " +
+            "FROM Huella h " +
+            "JOIN h.idActividad a " +
+            "JOIN a.idCategoria c " +
+            "WHERE h.fecha >= :inicio AND h.fecha <= :fin " +
+            "GROUP BY c.nombre";
     /**
      * Inserta una nueva huella en la base de datos.
      *
@@ -169,6 +175,26 @@ public class HuellaDAO {
         Map<String, Double> medias = new HashMap<>();
         try (Session session = Connection.getInstance().getSession()) {
             List<Object[]> resultados = session.createQuery(GET_MEDIA_IMPACTO_POR_CATEGORIA, Object[].class).getResultList();
+            for (Object[] fila : resultados) {
+                medias.put((String) fila[0], (Double) fila[1]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return medias;
+    }
+
+    public Map<String, Double> getMediaImpactoPorCategoria(LocalDate fechaInicio, LocalDate fechaFin) {
+        Map<String, Double> medias = new HashMap<>();
+        try (Session session = Connection.getInstance().getSession()) {
+            Instant inicio = fechaInicio.atStartOfDay(ZoneId.systemDefault()).toInstant();
+            Instant fin = fechaFin.plusDays(1).atStartOfDay(ZoneId.systemDefault()).minusNanos(1).toInstant();
+
+            List<Object[]> resultados = session.createQuery(GET_MEDIA_IMPACTO_POR_CATEGORIA_FECHA, Object[].class)
+                    .setParameter("inicio", inicio)
+                    .setParameter("fin", fin)
+                    .getResultList();
+
             for (Object[] fila : resultados) {
                 medias.put((String) fila[0], (Double) fila[1]);
             }

@@ -11,6 +11,7 @@ import org.dam2.adp.ecorastro.service.HuellaService;
 import org.dam2.adp.ecorastro.service.RecomendacionService;
 import org.dam2.adp.ecorastro.util.Navigation;
 import org.dam2.adp.ecorastro.util.SessionManager;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
@@ -30,13 +31,14 @@ import java.util.Map;
  * <li>Gestionar la navegación rápida a otras secciones de la app.</li>
  * </ul>
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class InicioController {
     public Label lblIconoNivel;
     public Label lblSiguienteNivel;
     public Label lblAhorroRestante;
+    public FontIcon iconNivel;
 
     // --- ELEMENTOS FXML ---
     /**
@@ -182,56 +184,48 @@ public class InicioController {
      */
     private void calcularNivelGamificacion() {
         String nivelTexto;
-        String icono;
+        String iconCode; // Código del icono (fas-star, etc.)
         String objetivoTexto;
         String faltaTexto;
         double progreso;
 
-        // COLORES TEMA ANCIENT WOODS
+        // Colores Tema
         String colorBueno = "#656D4A";   // Verde Musgo
         String colorMedio = "#DDA15E";   // Ocre Dorado
         String colorMalo  = "#bc4749";   // Rojo Arcilla
 
-        // NIVEL 1: HÉROE (< 150 kg) - Objetivo Ideal
+        // NIVEL 1: HÉROE (< 150 kg)
         if (totalEmisionesUsuario < 150) {
-            nivelTexto = "Eco-Héroe 🌿";
-            icono = "🌟";
+            nivelTexto = "Eco-Héroe";
+            iconCode = "fas-star"; // Estrella
             objetivoTexto = "Objetivo: ¡Inspirar a otros!";
             faltaTexto = "¡Tu huella es ejemplar!";
             progreso = 1.0;
-
             aplicarEstiloNivel(colorBueno);
 
-            // NIVEL 2: CONSCIENTE (150 - 300 kg) - Zona de Transición
+            // NIVEL 2: CONSCIENTE (150 - 300 kg)
         } else if (totalEmisionesUsuario < 300) {
             nivelTexto = "Consumo Consciente";
-            icono = "🍄";
-
+            iconCode = "fas-leaf"; // Hoja
             double exceso = totalEmisionesUsuario - 150;
             objetivoTexto = "Siguiente: Eco-Héroe";
-            faltaTexto = String.format("Reduce %.1f kg para llegar al ideal", exceso);
-
-            // Fórmula: (300 - actual) / 150
+            faltaTexto = String.format("Reduce %.1f kg más", exceso);
             progreso = (300 - totalEmisionesUsuario) / 150.0;
-
             aplicarEstiloNivel(colorMedio);
 
-            // NIVEL 3: PRINCIPIANTE (> 300 kg) - Zona de Alerta
+            // NIVEL 3: PRINCIPIANTE (> 300 kg)
         } else {
             nivelTexto = "Inicio del Cambio";
-            icono = "🔥";
-
+            iconCode = "fas-fire"; // Fuego / Alerta
             double exceso = totalEmisionesUsuario - 300;
             objetivoTexto = "Siguiente: Consciente";
             faltaTexto = String.format("Reduce %.1f kg para mejorar", exceso);
-
             progreso = 0.15;
-
             aplicarEstiloNivel(colorMalo);
         }
 
         // Actualizar UI
-        if (lblIconoNivel != null) lblIconoNivel.setText(icono);
+        if (iconNivel != null) iconNivel.setIconLiteral(iconCode);
         if (lblNivel != null) lblNivel.setText(nivelTexto);
         if (lblSiguienteNivel != null) lblSiguienteNivel.setText(objetivoTexto);
         if (lblAhorroRestante != null) lblAhorroRestante.setText(faltaTexto);
@@ -242,20 +236,17 @@ public class InicioController {
      * Aplica el color del tema tanto al texto del nivel como a la barra de progreso.
      */
     private void aplicarEstiloNivel(String colorHex) {
-        // Texto del Nivel
         if (lblNivel != null) {
             lblNivel.setStyle("-fx-text-fill: " + colorHex + "; -fx-font-weight: bold; -fx-font-size: 20px;");
         }
-        // Icono (opcional, si quieres que también cambie de color)
-        if (lblIconoNivel != null) {
-            lblIconoNivel.setStyle("-fx-text-fill: " + colorHex + "; -fx-font-size: 38px;");
+        // Aplicamos el color al icono
+        if (iconNivel != null) {
+            iconNivel.setIconColor(javafx.scene.paint.Paint.valueOf(colorHex));
         }
-        // Barra de Progreso (Cambia el color de relleno "accent")
         if (pbNivel != null) {
             pbNivel.setStyle("-fx-accent: " + colorHex + ";");
         }
     }
-
     /**
      * Selecciona una categoría aleatoria y muestra un consejo relacionado.
      * <p>
