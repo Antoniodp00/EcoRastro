@@ -9,7 +9,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -67,7 +66,7 @@ class ActividadDAOTest {
             // 1. Crear Categoría
             categoriaTest = new Categoria();
             categoriaTest.setNombre("Cat DAO Test");
-            categoriaTest.setFactorEmision(new BigDecimal("0.123"));
+            categoriaTest.setFactorEmision(0.123); // Changed to double
             categoriaTest.setUnidad("Unidad Test");
             session.persist(categoriaTest);
 

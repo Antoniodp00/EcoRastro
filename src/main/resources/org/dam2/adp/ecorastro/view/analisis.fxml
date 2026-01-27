@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
@@ -14,41 +15,36 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<ScrollPane fitToWidth="true" fitToHeight="true"
-            xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.dam2.adp.ecorastro.controller.AnalisisController"
-            styleClass="scroll-transparente">
+<ScrollPane fitToWidth="true" fitToHeight="true" styleClass="scroll-transparente" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.dam2.adp.ecorastro.controller.AnalisisController">
 
     <VBox spacing="20.0" styleClass="panel-base">
         <padding>
-            <Insets top="30" right="30" bottom="30" left="30"/>
+            <Insets bottom="30" left="30" right="30" top="30" />
         </padding>
 
         <HBox alignment="CENTER_LEFT" spacing="20">
             <VBox>
-                <Label text="Análisis de Impacto" styleClass="titulo"/>
-                <Label text="Monitoriza y compara tu huella" styleClass="subtitulo"/>
+                <Label styleClass="titulo" text="Análisis de Impacto" />
+                <Label styleClass="subtitulo" text="Monitoriza y compara tu huella" />
             </VBox>
 
-            <Region HBox.hgrow="ALWAYS"/>
+            <Region HBox.hgrow="ALWAYS" />
 
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label text="Ver:" styleClass="texto-negrita"/>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label styleClass="texto-negrita" text="Filtros:" />
 
-                <ComboBox fx:id="cmbRango" prefWidth="140" styleClass="combo-box"/>
-                <DatePicker fx:id="dpFecha" prefWidth="140" promptText="Fecha" styleClass="date-picker"/>
+                <ComboBox fx:id="cmbRango" prefWidth="150" styleClass="combo-box" />
+                <DatePicker fx:id="dpFecha" prefWidth="130" promptText="Fecha" styleClass="date-picker" />
 
-                <CheckBox fx:id="chkDesglose" text="Desglosar" selected="true" styleClass="check-box"/>
+                <Separator orientation="VERTICAL" />
 
-                <Separator orientation="VERTICAL"/>
-
-                <Button text="Exportar" onAction="#exportarReporte" styleClass="boton-secundario">
+                <Button onAction="#exportarReporte" styleClass="boton-secundario" text="Exportar">
                     <graphic>
-                        <FontIcon iconLiteral="fas-file-download" iconSize="16" styleClass="icono-navegacion"/>
+                        <FontIcon iconLiteral="fas-file-download" iconSize="16" styleClass="icono-navegacion" />
                     </graphic>
                 </Button>
             </HBox>
@@ -57,46 +53,66 @@
         <HBox spacing="20" VBox.vgrow="ALWAYS">
 
             <VBox spacing="20" HBox.hgrow="ALWAYS">
-                <HBox styleClass="card" spacing="20" alignment="CENTER_LEFT">
+                <HBox alignment="CENTER_LEFT" spacing="20" styleClass="card">
                     <VBox>
-                        <Label text="TOTAL PERIODO" styleClass="card-titulo"/>
-                        <Label fx:id="lblTotalPeriodo" text="0.00 kg" styleClass="card-numero-destacado"/>
+                        <Label styleClass="card-titulo" text="TOTAL PERIODO" />
+                        <Label fx:id="lblTotalPeriodo" styleClass="card-numero-destacado" text="0.00 kg" />
                     </VBox>
-                    <Separator orientation="VERTICAL"/>
+                    <Separator orientation="VERTICAL" />
                     <VBox>
-                        <Label text="ACTIVIDAD FRECUENTE" styleClass="card-titulo"/>
-                        <Label fx:id="lblActividadFrecuente" text="-" styleClass="card-numero, texto-grande-18"/>
+                        <Label styleClass="card-titulo" text="HÁBITO FRECUENTE" />
+                        <Label fx:id="lblActividadFrecuente" styleClass="card-numero, texto-grande-18" text="-" />
                     </VBox>
                 </HBox>
 
                 <VBox styleClass="card" VBox.vgrow="ALWAYS">
-                    <Label text="DESGLOSE POR CATEGORÍA" styleClass="card-titulo"/>
-                    <PieChart fx:id="pieChart" VBox.vgrow="ALWAYS" minHeight="250" legendSide="RIGHT"/>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label styleClass="card-titulo" text="ANÁLISIS PERSONAL" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <CheckBox fx:id="chkEvolucion" styleClass="check-box-small" text="Ver Evolución Anual" />
+                    </HBox>
+
+                    <StackPane VBox.vgrow="ALWAYS">
+                        <PieChart fx:id="pieChart" legendSide="RIGHT" minHeight="250" />
+
+                        <LineChart fx:id="lineChart" visible="false" animated="false" legendSide="BOTTOM">
+                            <xAxis>
+                                <CategoryAxis label="Mes" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis label="kg CO₂" />
+                            </yAxis>
+                        </LineChart>
+                    </StackPane>
                 </VBox>
             </VBox>
 
-            <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="TOP_CENTER">
-                <Label text="TÚ VS LA COMUNIDAD (MEDIA)" styleClass="card-titulo" maxWidth="Infinity" alignment="CENTER_LEFT"/>
-                <Label text="Comparativa de emisiones por categoría" styleClass="subtitulo" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+            <VBox alignment="TOP_CENTER" styleClass="card" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <VBox>
+                        <Label alignment="CENTER_LEFT" maxWidth="Infinity" styleClass="card-titulo" text="TÚ VS COMUNIDAD" />
+                        <Label alignment="CENTER_LEFT" maxWidth="Infinity" styleClass="subtitulo" text="Comparativa de emisiones" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <CheckBox fx:id="chkDesglose" selected="true" styleClass="check-box-small" text="Desglosar Categorías" />
+                </HBox>
 
-                <BarChart fx:id="barChart" VBox.vgrow="ALWAYS" minHeight="400" legendSide="BOTTOM" animated="false">
+                <BarChart fx:id="barChart" animated="false" legendSide="BOTTOM" minHeight="400" VBox.vgrow="ALWAYS">
                     <xAxis>
-                        <CategoryAxis label=""/>
+                        <CategoryAxis label="" />
                     </xAxis>
                     <yAxis>
-                        <NumberAxis label="kg CO₂"/>
+                        <NumberAxis label="kg CO₂" />
                     </yAxis>
                 </BarChart>
             </VBox>
         </HBox>
 
-        <HBox styleClass="card-azul" spacing="20" alignment="CENTER_LEFT">
-            <FontIcon iconLiteral="fas-robot" iconSize="34" styleClass="texto-blanco"/>
-
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="card-azul">
+            <FontIcon iconLiteral="fas-robot" iconSize="34" styleClass="texto-blanco" />
             <VBox>
-                <Label text="ANÁLISIS INTELIGENTE" styleClass="titulo-tip"/>
-                <Label fx:id="lblInsight" text="Analizando tus hábitos..."
-                       wrapText="true" styleClass="texto-mediano-plus, texto-blanco"/>
+                <Label styleClass="titulo-tip" text="ANÁLISIS INTELIGENTE" />
+                <Label fx:id="lblInsight" styleClass="texto-mediano-plus, texto-blanco" text="Analizando..." wrapText="true" />
             </VBox>
         </HBox>
 

@@ -153,7 +153,7 @@ public class HistorialHuellasController {
         valor.getStyleClass().add("item-card-valor");
 
         // D. Impacto Calculado (Pequeño)
-        double impacto = h.getValor().doubleValue() * h.getIdActividad().getIdCategoria().getFactorEmision().doubleValue();
+        double impacto = h.getValor() * h.getIdActividad().getIdCategoria().getFactorEmision(); // Changed to double
 
         String colorImpacto;
         String pesoFuente = "normal"; // Para poner negrita si es grave

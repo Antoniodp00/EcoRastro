@@ -6,94 +6,45 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
-import org.dam2.adp.ecorastro.model.Huella;
 import org.dam2.adp.ecorastro.service.HuellaService;
 import org.dam2.adp.ecorastro.service.RecomendacionService;
+import org.dam2.adp.ecorastro.service.UsuarioService;
 import org.dam2.adp.ecorastro.util.Navigation;
 import org.dam2.adp.ecorastro.util.SessionManager;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.List;
-import java.util.Map;
 
 /**
- * Controlador principal para la pantalla de "Inicio" (Dashboard) de la aplicación.
+ * Controlador principal para la pantalla de "Inicio" (Dashboard).
  * <p>
- * Esta clase se encarga de gestionar la vista resumen que ve el usuario al loguearse.
- * Sus responsabilidades incluyen:
- * <ul>
- * <li>Mostrar el KPI principal: Huella de carbono total acumulada.</li>
- * <li>Visualizar una comparativa gráfica entre el usuario y la media global.</li>
- * <li>Gestionar la lógica de gamificación (Nivel del usuario basado en emisiones).</li>
- * <li>Mostrar consejos aleatorios para concienciación ambiental.</li>
- * <li>Gestionar la navegación rápida a otras secciones de la app.</li>
- * </ul>
+ * Gestiona el KPI principal, la gráfica comparativa y la gamificación
+ * con ranking contextual (Posición vs Total Usuarios).
  *
  * @author Antonio Delgado Portero
- * @version 1.0
+ * @version 2.1 (Corrección Gráfico Comparativo)
  */
 public class InicioController {
-    public Label lblIconoNivel;
-    public Label lblSiguienteNivel;
-    public Label lblAhorroRestante;
-    public FontIcon iconNivel;
 
     // --- ELEMENTOS FXML ---
-    /**
-     * Etiqueta para mostrar el valor numérico total de emisiones de CO2.
-     */
-    @FXML
-    private Label lblHuellaTotal;
-
-    /**
-     * Etiqueta para mostrar un consejo o "insight" aleatorio.
-     */
-    @FXML
-    private Label lblConsejo;
-
-    /**
-     * Gráfico de barras para comparar el impacto del usuario con la comunidad.
-     */
-    @FXML
-    private BarChart<String, Number> barChart;
-
-    /**
-     * Barra de progreso visual que representa el nivel ecológico del usuario.
-     */
-    @FXML
-    private ProgressBar pbNivel;
-
-    /**
-     * Etiqueta de texto que indica el rango o título del nivel actual (ej: "Guardián").
-     */
-    @FXML
-    private Label lblNivel;
+    @FXML private Label lblHuellaTotal;
+    @FXML private Label lblConsejo;
+    @FXML private BarChart<String, Number> barChart;
+    @FXML private ProgressBar pbNivel;
+    @FXML private Label lblNivel;
+    @FXML private Label lblSiguienteNivel;
+    @FXML private Label lblAhorroRestante;
+    @FXML private FontIcon iconNivel;
 
     // --- SERVICIOS ---
-    /**
-     * Servicio para la gestión y recuperación de datos de huellas de carbono.
-     */
     private final HuellaService huellaService = new HuellaService();
-
-    /**
-     * Servicio para generar recomendaciones y consejos basados en categorías.
-     */
     private final RecomendacionService recomendacionService = new RecomendacionService();
+    private final UsuarioService usuarioService = new UsuarioService();
 
-    /**
-     * Variable de estado para almacenar el total de emisiones calculado.
-     * Se calcula en {@link #cargarDatosReales()} y se reutiliza en gráficas y gamificación.
-     */
-    private double totalEmisionesUsuario = 0.0;
+    // Variable de estado para reutilizar el cálculo en niveles (del mes actual)
+    private double totalEmisionesMes = 0.0;
 
-    /**
-     * Método de inicialización del controlador.
-     * <p>
-     * Se ejecuta automáticamente tras cargar el archivo FXML. Orquesta la llamada
-     * a los distintos métodos de carga de datos y configuración visual.
-     */
     public void initialize() {
         cargarDatosReales();
         configurarGraficoResumen();
@@ -102,194 +53,133 @@ public class InicioController {
     }
 
     /**
-     * Recupera las huellas del usuario actual desde la base de datos y calcula el impacto total.
-     * <p>
-     * Lógica:
-     * <ol>
-     * <li>Obtiene el ID del usuario logueado mediante {@link SessionManager}.</li>
-     * <li>Recupera la lista completa de huellas a través de {@link HuellaService}.</li>
-     * <li>Itera sobre las huellas sumando el producto de (Valor * Factor de Emisión).</li>
-     * <li>Actualiza la etiqueta {@code lblHuellaTotal} con el resultado formateado.</li>
-     * </ol>
+     * Carga el KPI principal: Huella del mes actual.
      */
     private void cargarDatosReales() {
         int idUsuario = SessionManager.getInstance().getUsuarioActual().getId();
-
         LocalDate inicioMes = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
         LocalDate finMes = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
 
-        // 1. Obtenemos todas las huellas del usuario
-        List<Huella> huellas = huellaService.getHuellasPorFecha(idUsuario, inicioMes, finMes);
-
-        // 2. Sumamos el CO2 total (Valor * Factor)
-        totalEmisionesUsuario = 0.0;
-        for (Huella h : huellas) {
-            double valor = h.getValor().doubleValue();
-            double factor = h.getIdActividad().getIdCategoria().getFactorEmision().doubleValue();
-            totalEmisionesUsuario += (valor * factor);
-        }
-
-        // 3. Actualizamos la etiqueta gigante del Dashboard
-        lblHuellaTotal.setText(String.format("%.2f kg CO₂ (Mes)", totalEmisionesUsuario));
+        // KPI: Total emisiones del mes actual
+        totalEmisionesMes = huellaService.getTotalImpactoUsuarioFecha(idUsuario, inicioMes, finMes);
+        lblHuellaTotal.setText(String.format("%.2f kg CO₂", totalEmisionesMes));
     }
 
     /**
-     * Configura y rellena el gráfico de barras comparativo.
+     * Configura el gráfico de barras: Tu Histórico vs Media Histórica del Resto.
      * <p>
-     * Muestra dos barras:
-     * <ul>
-     * <li><b>Tú:</b> El total de emisiones del usuario actual.</li>
-     * <li><b>Media Global:</b> El promedio de emisiones calculado desde la base de datos.</li>
-     * </ul>
-     * Si no hay datos globales, se establece un valor base por defecto para mantener la estética.
+     * Corrección: Ahora usa 'getMediaComunidadSinUsuario' para que la comparación sea justa
+     * (Promedio vs Promedio) y no (Promedio vs Suma Total).
      */
     private void configurarGraficoResumen() {
+        int idUsuario = SessionManager.getInstance().getUsuarioActual().getId();
         barChart.getData().clear();
         barChart.setAnimated(false);
 
-        // SERIE 1: TÚ (Tu total calculado arriba)
+        // --- SERIE 1: TU IMPACTO HISTÓRICO ---
+        // Calculamos tu impacto total histórico para compararlo con la media histórica
+        double miImpactoHistorico = huellaService.getTotalImpactoUsuarioFecha(
+                idUsuario,
+                LocalDate.of(1970, 1, 1),
+                LocalDate.now().plusDays(1)
+        );
+
         XYChart.Series<String, Number> serieYo = new XYChart.Series<>();
-        serieYo.setName("Tú");
-        serieYo.getData().add(new XYChart.Data<>("", totalEmisionesUsuario));
+        serieYo.setName("Tú (Total)");
+        serieYo.getData().add(new XYChart.Data<>("", miImpactoHistorico));
 
-        double mediaGlobalTotal = huellaService.getTotalImpactoComunidad();
+        // --- SERIE 2: MEDIA DEL RESTO DE LA COMUNIDAD ---
+        // Usamos el método corregido que calcula el promedio por persona del resto
+        double mediaRestoComunidad = huellaService.getMediaComunidadSinUsuario(idUsuario);
 
-        // Si la BBDD está vacía y da 0, ponemos una referencia visual mínima para que el gráfico no se rompa
-        if (mediaGlobalTotal == 0) mediaGlobalTotal = 100.0;
+        // Si la media es 0 (primera ejecución o sin datos), ponemos un valor visual mínimo
+        if (mediaRestoComunidad <= 0.1) mediaRestoComunidad = 10.0;
 
         XYChart.Series<String, Number> serieMedia = new XYChart.Series<>();
-        serieMedia.setName("Media Global");
-        serieMedia.getData().add(new XYChart.Data<>("", mediaGlobalTotal));
+        serieMedia.setName("Media Comunidad");
+        serieMedia.getData().add(new XYChart.Data<>("", mediaRestoComunidad));
 
         barChart.getData().addAll(serieYo, serieMedia);
 
-        // Ajustes estéticos para barras más gruesas
-        barChart.setCategoryGap(20);
+        // Ajustes estéticos
+        barChart.setCategoryGap(40);
         barChart.setBarGap(10);
     }
 
     /**
-     * Calcula y muestra el nivel de gamificación del usuario.
-     * <p>
-     * El nivel se determina inversamente a la cantidad de emisiones:
-     * <ul>
-     * <li><b>Guardián del Bosque:</b> < 50 kg CO2.</li>
-     * <li><b>Árbol Joven:</b> Entre 50 y 200 kg CO2.</li>
-     * <li><b>Semilla:</b> > 200 kg CO2.</li>
-     * </ul>
-     * Actualiza tanto el texto del nivel como la barra de progreso visual.
+     * Calcula el nivel del usuario y su posición en el ranking.
      */
     private void calcularNivelGamificacion() {
+        int idUsuario = SessionManager.getInstance().getUsuarioActual().getId();
+
+        Long ranking = huellaService.getRankingUsuario(idUsuario);
+        Long totalUsuarios = usuarioService.countUsuariosActivos();
+
         String nivelTexto;
-        String iconCode; // Código del icono (fas-star, etc.)
+        String iconCode;
         String objetivoTexto;
         String faltaTexto;
         double progreso;
+        String colorTema;
 
-        // Colores Tema
-        String colorBueno = "#656D4A";   // Verde Musgo
-        String colorMedio = "#DDA15E";   // Ocre Dorado
-        String colorMalo  = "#bc4749";   // Rojo Arcilla
-
-        // NIVEL 1: HÉROE (< 150 kg)
-        if (totalEmisionesUsuario < 150) {
+        // NIVEL 1: ECO-HÉROE (Top Rank o emisiones muy bajas este mes)
+        if (ranking > 0 && (ranking <= 10 || totalEmisionesMes < 50)) {
             nivelTexto = "Eco-Héroe";
-            iconCode = "fas-star"; // Estrella
-            objetivoTexto = "Objetivo: ¡Inspirar a otros!";
-            faltaTexto = "¡Tu huella es ejemplar!";
+            iconCode = "fas-star";
+            colorTema = "#656D4A";
+            objetivoTexto = (ranking > 0) ? String.format("Ranking: #%d / %d", ranking, totalUsuarios) : "Ranking: Calculando...";
+            faltaTexto = "¡Eres un líder en sostenibilidad!";
             progreso = 1.0;
-            aplicarEstiloNivel(colorBueno);
 
-            // NIVEL 2: CONSCIENTE (150 - 300 kg)
-        } else if (totalEmisionesUsuario < 300) {
+            // NIVEL 2: CONSUMO CONSCIENTE
+        } else if (totalEmisionesMes < 150) {
             nivelTexto = "Consumo Consciente";
-            iconCode = "fas-leaf"; // Hoja
-            double exceso = totalEmisionesUsuario - 150;
+            iconCode = "fas-leaf";
+            colorTema = "#DDA15E";
+            double exceso = totalEmisionesMes - 50;
             objetivoTexto = "Siguiente: Eco-Héroe";
             faltaTexto = String.format("Reduce %.1f kg más", exceso);
-            progreso = (300 - totalEmisionesUsuario) / 150.0;
-            aplicarEstiloNivel(colorMedio);
+            progreso = (150 - totalEmisionesMes) / 100.0;
 
-            // NIVEL 3: PRINCIPIANTE (> 300 kg)
+            // NIVEL 3: INICIO DEL CAMBIO
         } else {
             nivelTexto = "Inicio del Cambio";
-            iconCode = "fas-fire"; // Fuego / Alerta
-            double exceso = totalEmisionesUsuario - 300;
+            iconCode = "fas-fire";
+            colorTema = "#bc4749";
+            double exceso = totalEmisionesMes - 150;
             objetivoTexto = "Siguiente: Consciente";
-            faltaTexto = String.format("Reduce %.1f kg para mejorar", exceso);
+            faltaTexto = String.format("Reduce %.1f kg para subir", exceso);
             progreso = 0.15;
-            aplicarEstiloNivel(colorMalo);
         }
 
-        // Actualizar UI
-        if (iconNivel != null) iconNivel.setIconLiteral(iconCode);
-        if (lblNivel != null) lblNivel.setText(nivelTexto);
-        if (lblSiguienteNivel != null) lblSiguienteNivel.setText(objetivoTexto);
-        if (lblAhorroRestante != null) lblAhorroRestante.setText(faltaTexto);
-        if (pbNivel != null) pbNivel.setProgress(progreso);
+        aplicarEstilosUI(nivelTexto, iconCode, objetivoTexto, faltaTexto, progreso, colorTema);
     }
 
-    /**
-     * Aplica el color del tema tanto al texto del nivel como a la barra de progreso.
-     */
-    private void aplicarEstiloNivel(String colorHex) {
+    private void aplicarEstilosUI(String titulo, String icono, String objetivo, String mensaje, double valorBarra, String colorHex) {
         if (lblNivel != null) {
+            lblNivel.setText(titulo);
             lblNivel.setStyle("-fx-text-fill: " + colorHex + "; -fx-font-weight: bold; -fx-font-size: 20px;");
         }
-        // Aplicamos el color al icono
         if (iconNivel != null) {
+            iconNivel.setIconLiteral(icono);
             iconNivel.setIconColor(javafx.scene.paint.Paint.valueOf(colorHex));
         }
+        if (lblSiguienteNivel != null) lblSiguienteNivel.setText(objetivo);
+        if (lblAhorroRestante != null) lblAhorroRestante.setText(mensaje);
         if (pbNivel != null) {
+            pbNivel.setProgress(valorBarra);
             pbNivel.setStyle("-fx-accent: " + colorHex + ";");
         }
     }
-    /**
-     * Selecciona una categoría aleatoria y muestra un consejo relacionado.
-     * <p>
-     * Utiliza el {@link RecomendacionService} para obtener el texto del consejo.
-     * Esto proporciona dinamismo a la pantalla de inicio cada vez que se carga.
-     */
+
     private void mostrarConsejoDelDia() {
-        // Elegimos una categoría aleatoria para variar el consejo cada vez que entras
         String[] categorias = {"Energía", "Transporte", "Agua", "Residuos", "Alimentación"};
         String categoriaRandom = categorias[(int) (Math.random() * categorias.length)];
-
-        String consejo = recomendacionService.generarConsejo(categoriaRandom);
-        lblConsejo.setText(consejo);
+        lblConsejo.setText(recomendacionService.generarConsejo(categoriaRandom));
     }
 
     // --- NAVEGACIÓN ---
-
-    /**
-     * Maneja el evento de clic para navegar a la pantalla de Historial de Huellas.
-     * Se usa normalmente como atajo desde el Dashboard para registrar una nueva huella.
-     *
-     * @param event El evento del ratón que disparó la acción.
-     */
-    @FXML
-    public void irARegistrarHuella(MouseEvent event) {
-        // Asumiendo que quieres ir al formulario de alta rápida o historial
-        Navigation.navigate("historial_huellas.fxml");
-    }
-
-    /**
-     * Maneja el evento de clic para navegar a la pantalla de "Mis Hábitos".
-     *
-     * @param e El evento del ratón que disparó la acción.
-     */
-    @FXML
-    public void irAHabitos(MouseEvent e) {
-        Navigation.navigate("mis_habitos.fxml");
-    }
-
-    /**
-     * Maneja el evento de clic para navegar a la pantalla de "Análisis".
-     *
-     * @param e El evento del ratón que disparó la acción.
-     */
-    @FXML
-    public void irAAnalisis(MouseEvent e) {
-        Navigation.navigate("analisis.fxml");
-    }
+    @FXML public void irARegistrarHuella(MouseEvent event) { Navigation.navigate("historial_huellas.fxml"); }
+    @FXML public void irAHabitos(MouseEvent e) { Navigation.navigate("mis_habitos.fxml"); }
+    @FXML public void irAAnalisis(MouseEvent e) { Navigation.navigate("analisis.fxml"); }
 }

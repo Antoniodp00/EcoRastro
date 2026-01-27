@@ -88,4 +88,13 @@ public class UsuarioService {
         // 3. Guardar cambios en BBDD
         return usuarioDAO.updateUsuario(usuario);
     }
+
+    public Usuario getUsuarioById(int id){
+        return usuarioDAO.getUsuarioById(id);
+    }
+
+    public Long countUsuariosActivos() {
+        return usuarioDAO.countUsuariosActivos();
+    }
+
 }

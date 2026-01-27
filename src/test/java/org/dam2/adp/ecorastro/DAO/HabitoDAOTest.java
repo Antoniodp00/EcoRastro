@@ -8,7 +8,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
@@ -127,7 +126,7 @@ class HabitoDAOTest {
 
             categoriaTest = new Categoria();
             categoriaTest.setNombre("Cat Habito");
-            categoriaTest.setFactorEmision(BigDecimal.ONE);
+            categoriaTest.setFactorEmision(1.0); // Changed to double
             categoriaTest.setUnidad("ud");
             session.persist(categoriaTest);
 

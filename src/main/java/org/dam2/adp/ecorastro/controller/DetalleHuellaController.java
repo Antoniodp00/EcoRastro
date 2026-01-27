@@ -11,7 +11,6 @@ import org.dam2.adp.ecorastro.model.Huella;
 import org.dam2.adp.ecorastro.service.HuellaService;
 import org.dam2.adp.ecorastro.util.AlertUtils;
 
-import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
@@ -93,7 +92,7 @@ public class DetalleHuellaController {
         if (h.getFecha() != null) {
             dpFechaInput.setValue(h.getFecha().atZone(ZoneId.systemDefault()).toLocalDate());
         }
-        txtValorInput.setText(h.getValor().toString());
+        txtValorInput.setText(String.valueOf(h.getValor())); // Changed to String.valueOf()
         lblUnidadInput.setText(h.getUnidad());
     }
 
@@ -113,8 +112,8 @@ public class DetalleHuellaController {
         }
 
         // Recalcular Impacto
-        double factor = huellaActual.getIdActividad().getIdCategoria().getFactorEmision().doubleValue();
-        double impacto = huellaActual.getValor().doubleValue() * factor;
+        double factor = huellaActual.getIdActividad().getIdCategoria().getFactorEmision(); // Removed .doubleValue()
+        double impacto = huellaActual.getValor() * factor; // Removed .doubleValue()
 
         lblImpacto.setText(String.format("%.2f kg CO₂", impacto));
 
@@ -152,7 +151,7 @@ public class DetalleHuellaController {
     public void guardarCambios() {
         try {
             // 1. Validar y obtener datos
-            BigDecimal nuevoValor = new BigDecimal(txtValorInput.getText().replace(",", "."));
+            double nuevoValor = Double.parseDouble(txtValorInput.getText().replace(",", ".")); // Changed to double and Double.parseDouble
 
             // 2. Actualizar objeto local
             huellaActual.setValor(nuevoValor);
@@ -161,7 +160,7 @@ public class DetalleHuellaController {
             }
 
             // 3. Guardar en BBDD
-            if (huellaService.updateHuella(huellaActual)) { // Asumiendo que creaste este método
+            if (huellaService.updateHuella(huellaActual)) {
 
                 // 4. Volver a Modo Lectura
                 activarModoLectura();

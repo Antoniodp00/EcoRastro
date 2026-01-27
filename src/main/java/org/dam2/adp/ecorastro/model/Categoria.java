@@ -2,7 +2,6 @@ package org.dam2.adp.ecorastro.model;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +29,8 @@ public class Categoria {
     private String nombre;
 
     /** Factor de emisión de CO2 por unidad de medida. */
-    @Column(name = "factor_emision", nullable = false, precision = 10, scale = 4)
-    private BigDecimal factorEmision;
+    @Column(name = "factor_emision", nullable = false) // Removed precision and scale for double
+    private double factorEmision;
 
     /** Unidad de medida estándar para esta categoría (ej: "km", "kWh"). */
     @Column(name = "unidad", nullable = false, length = 20)
@@ -61,11 +60,11 @@ public class Categoria {
         this.nombre = nombre;
     }
 
-    public BigDecimal getFactorEmision() {
+    public double getFactorEmision() {
         return factorEmision;
     }
 
-    public void setFactorEmision(BigDecimal factorEmision) {
+    public void setFactorEmision(double factorEmision) {
         this.factorEmision = factorEmision;
     }
 

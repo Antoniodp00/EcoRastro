@@ -67,7 +67,7 @@ class RecomendacionDAOTest {
             // 1. Crear Categoría
             categoriaTest = new Categoria();
             categoriaTest.setNombre("Cat Reco Test");
-            categoriaTest.setFactorEmision(new BigDecimal("0.5"));
+            categoriaTest.setFactorEmision(0.5);
             categoriaTest.setUnidad("ud");
             session.persist(categoriaTest);
 
@@ -75,7 +75,7 @@ class RecomendacionDAOTest {
             recomendacionTest = new Recomendacion();
             recomendacionTest.setIdCategoria(categoriaTest);
             recomendacionTest.setDescripcion("Usa menos esto para ahorrar");
-            recomendacionTest.setImpactoEstimado(new BigDecimal("10.00"));
+            recomendacionTest.setImpactoEstimado(10.00);
             session.persist(recomendacionTest);
 
             tx.commit();

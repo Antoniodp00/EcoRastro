@@ -89,13 +89,14 @@ class HuellaServiceTest {
     @Test
     void testCalculoImpacto() {
         Huella huellaSimulada = new Huella();
-        huellaSimulada.setValor(new BigDecimal("100"));
+        huellaSimulada.setValor(100);
         huellaSimulada.setIdActividad(actividadTest); // Tiene factor 0.5
 
-        BigDecimal impacto = service.calcularImpacto(huellaSimulada);
+        Double impacto = service.calcularImpacto(huellaSimulada);
 
-        assertEquals(0, new BigDecimal("50.0000").compareTo(impacto),
-                "El cálculo debe ser 100 * 0.5 = 50.00");
+        assertEquals(50, impacto);
+
+
     }
 
     @Test
@@ -105,13 +106,13 @@ class HuellaServiceTest {
         huellaGuardada = service.getHuellasPorUsuario(usuarioTest.getId()).get(0);
 
         // 2. Modificar
-        huellaGuardada.setValor(new BigDecimal("20.0"));
+        huellaGuardada.setValor( 20.0);
         boolean actualizado = service.updateHuella(huellaGuardada);
 
         // 3. Verificar
         assertTrue(actualizado);
         Huella recuperada = service.getHuellasPorUsuario(usuarioTest.getId()).get(0);
-        assertEquals(0, new BigDecimal("20.0").compareTo(recuperada.getValor()));
+       assertEquals(20.0, recuperada.getValor());
     }
 
     @Test
@@ -121,7 +122,7 @@ class HuellaServiceTest {
         huellaGuardada = service.getHuellasPorUsuario(usuarioTest.getId()).get(0);
 
         // 2. Modificar con valor inválido
-        huellaGuardada.setValor(new BigDecimal("-5.0"));
+        huellaGuardada.setValor(-5.0);
         boolean actualizado = service.updateHuella(huellaGuardada);
 
         // 3. Verificar que falla
@@ -195,7 +196,7 @@ class HuellaServiceTest {
 
             categoriaTest = new Categoria();
             categoriaTest.setNombre("Cat Service");
-            categoriaTest.setFactorEmision(new BigDecimal("0.5000")); // Factor conocido para calcular
+            categoriaTest.setFactorEmision(0.5000); // Factor conocido para calcular
             categoriaTest.setUnidad("ud");
             session.persist(categoriaTest);
 

@@ -5,7 +5,6 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
@@ -40,8 +39,8 @@ public class Huella {
     private Actividad idActividad;
 
     /** Valor numérico del consumo o actividad (ej: 100). */
-    @Column(name = "valor", nullable = false, precision = 10, scale = 2)
-    private BigDecimal valor;
+    @Column(name = "valor", nullable = false) // Removed precision and scale for double
+    private double valor;
 
     /** Unidad de medida asociada al valor (ej: km, kWh). */
     @Column(name = "unidad", nullable = false, length = 20)
@@ -67,7 +66,7 @@ public class Huella {
      * @param unidad      La unidad de medida (ej. km, kg, kWh).
      * @param fecha       La fecha y hora del registro.
      */
-    public Huella(Usuario idUsuario, Actividad idActividad, BigDecimal valor, String unidad, Instant fecha) {
+    public Huella(Usuario idUsuario, Actividad idActividad, double valor, String unidad, Instant fecha) {
         this.idUsuario = idUsuario;
         this.idActividad = idActividad;
         this.valor = valor;
@@ -99,11 +98,11 @@ public class Huella {
         this.idActividad = idActividad;
     }
 
-    public BigDecimal getValor() {
+    public double getValor() {
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
+    public void setValor(double valor) {
         this.valor = valor;
     }
 

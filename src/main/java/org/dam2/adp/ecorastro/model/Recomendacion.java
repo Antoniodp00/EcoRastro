@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
-
 /**
  * Entidad que representa un consejo o recomendación ecológica.
  * <p>
@@ -36,8 +34,8 @@ public class Recomendacion {
     private String descripcion;
 
     /** Estimación del impacto positivo si se sigue el consejo (opcional). */
-    @Column(name = "impacto_estimado", precision = 10, scale = 2)
-    private BigDecimal impactoEstimado;
+    @Column(name = "impacto_estimado") // Removed precision and scale for double
+    private Double impactoEstimado; // Changed to Double to allow nulls if needed, or primitive double if always present
 
     public Integer getId() {
         return id;
@@ -63,11 +61,11 @@ public class Recomendacion {
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getImpactoEstimado() {
+    public Double getImpactoEstimado() {
         return impactoEstimado;
     }
 
-    public void setImpactoEstimado(BigDecimal impactoEstimado) {
+    public void setImpactoEstimado(Double impactoEstimado) {
         this.impactoEstimado = impactoEstimado;
     }
 

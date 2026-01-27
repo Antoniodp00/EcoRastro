@@ -19,6 +19,8 @@ public class UsuarioDAO {
 
     private final String GET_ALL_HQL = "FROM Usuario";
 
+    private  final String COUNT_USUARIOS_ACTIVOS = "SELECT COUNT(DISTINCT h.idUsuario) FROM Huella h";
+
     /**
      * Inserta un nuevo usuario en la base de datos.
      *
@@ -119,6 +121,13 @@ public class UsuarioDAO {
             return session.createQuery("FROM Usuario WHERE email = :email", Usuario.class)
                     .setParameter("email", email)
                     .uniqueResult();
+        }
+    }
+
+    public Long countUsuariosActivos() {
+        try (Session session = Connection.getInstance().getSession()) {
+            // Cuenta usuarios que tengan al menos 1 huella
+            return session.createQuery(COUNT_USUARIOS_ACTIVOS, Long.class).uniqueResult();
         }
     }
 }

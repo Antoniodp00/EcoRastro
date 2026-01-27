@@ -83,7 +83,6 @@
                         <Label fx:id="lblConsejo" text="Cargando consejo..." wrapText="true" styleClass="texto-tip, texto-pequeno"/>
                     </VBox>
                 </HBox>
-
             </VBox>
 
             <VBox spacing="20" HBox.hgrow="ALWAYS">
