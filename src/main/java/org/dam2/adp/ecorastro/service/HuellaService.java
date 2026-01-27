@@ -134,7 +134,20 @@ public class HuellaService {
         return huellaDAO.getMediaImpactoPorCategoria();
     }
 
+    /**
+     * Obtiene la media del impacto de carbono agrupada por categoría dentro de un rango de fechas.
+     * <p>
+     * Útil para comparar el rendimiento del usuario con la media global de la comunidad en un periodo específico.
+     *
+     * @param fechaInicio Fecha de inicio del rango.
+     * @param fechaFin    Fecha de fin del rango.
+     * @return Un mapa donde la clave es el nombre de la categoría y el valor es la media de impacto.
+     */
     public Map<String, Double> getMediaImpactoPorCategoriaFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return huellaDAO.getMediaImpactoPorCategoriaFechas(fechaInicio, fechaFin);
+    }
+
+    public double getTotalImpactoComunidad(){
+        return huellaDAO.getTotalImpactoComunidad();
     }
 }

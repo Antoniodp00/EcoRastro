@@ -152,12 +152,9 @@ public class InicioController {
         serieYo.setName("Tú");
         serieYo.getData().add(new XYChart.Data<>("", totalEmisionesUsuario));
 
-        // SERIE 2: MEDIA GLOBAL (Calculada desde la BBDD)
-        // Pedimos las medias por categoría y las sumamos para tener la "Huella Total de un Usuario Promedio"
-        Map<String, Double> mediasPorCategoria = huellaService.getMediaImpactoPorCategoria();
-        double mediaGlobalTotal = mediasPorCategoria.values().stream().mapToDouble(Double::doubleValue).sum();
+        double mediaGlobalTotal = huellaService.getTotalImpactoComunidad();
 
-        // Si la BBDD está vacía y da 0, ponemos una referencia visual mínima (ej: 100) para que el gráfico no se rompa
+        // Si la BBDD está vacía y da 0, ponemos una referencia visual mínima para que el gráfico no se rompa
         if (mediaGlobalTotal == 0) mediaGlobalTotal = 100.0;
 
         XYChart.Series<String, Number> serieMedia = new XYChart.Series<>();

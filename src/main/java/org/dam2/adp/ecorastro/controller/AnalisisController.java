@@ -331,10 +331,11 @@ public class AnalisisController {
                 serieMedia.getData().add(new XYChart.Data<>(cat, mediaComunidad.getOrDefault(cat, 0.0)));
             }
         } else {
-            // --- OPCIÓN 2: TOTALES GLOBALES (Sin Categoría) ---
-            // Sumamos todos los valores del mapa
-            double miTotalGlobal = misTotales.values().stream().mapToDouble(Double::doubleValue).sum();
-            double mediaTotalGlobal = mediaComunidad.values().stream().mapToDouble(Double::doubleValue).sum();
+           double miTotalGlobal = 0.0;
+           for (double v : misTotales.values()) miTotalGlobal += v;
+
+           double mediaTotalGlobal = 0.0;
+           for (double v : mediaComunidad.values()) mediaTotalGlobal += v;
 
             // Creamos una única barra llamada "Global"
             serieYo.getData().add(new XYChart.Data<>("Global", miTotalGlobal));

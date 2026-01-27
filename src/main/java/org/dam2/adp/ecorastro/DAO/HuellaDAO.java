@@ -50,6 +50,9 @@ public class HuellaDAO {
             "WHERE h.fecha >= :inicio AND h.fecha <= :fin " +
             "GROUP BY c.nombre";
 
+    private final String GET_TOTAL_IMPACTO_COMUNIDAD = "SELECT SUM(h.valor * c.factorEmision) " +
+            "FROM Huella h JOIN h.idActividad a JOIN a.idCategoria c";
+
     /**
      * Inserta una nueva huella en la base de datos.
      *
@@ -211,5 +214,16 @@ public class HuellaDAO {
             e.printStackTrace();
         }
         return medias;
+    }
+
+    /**
+     * Calcula el impacto total acumulado de toda la comunidad.
+     * @return Suma total de (valor * factor_emision)
+     */
+    public double getTotalImpactoComunidad() {
+        try (Session session = Connection.getInstance().getSession()) {
+            Double resultado = session.createQuery(GET_TOTAL_IMPACTO_COMUNIDAD, Double.class).getSingleResult();
+            return (resultado != null) ? resultado : 0.0;
+        }
     }
 }
