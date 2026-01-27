@@ -33,8 +33,6 @@ import java.io.IOException;
  */
 public class MainController {
 
-    // --- ELEMENTOS FXML ---
-
     /** Etiqueta para mostrar el nombre del usuario conectado. */
     public Label lblUsuario;
 
@@ -112,7 +110,6 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/dam2/adp/ecorastro/view/" + fxml));
             Node view = loader.load();
 
-            // Binding para que ocupe todo el espacio
             if (view instanceof javafx.scene.layout.Region) {
                 javafx.scene.layout.Region region = (javafx.scene.layout.Region) view;
                 region.prefWidthProperty().bind(contentPane.widthProperty());

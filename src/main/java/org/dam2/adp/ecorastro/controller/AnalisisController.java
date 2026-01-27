@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import org.dam2.adp.ecorastro.model.Habito;
 import org.dam2.adp.ecorastro.model.Huella;
@@ -22,32 +21,73 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.*;
 
+/**
+ * Controlador para la pantalla de Análisis y Estadísticas.
+ * <p>
+ * Proporciona herramientas visuales para que el usuario entienda su impacto ambiental.
+ * <p>
+ * Funcionalidades principales:
+ * <ul>
+ * <li>Filtros temporales (Semana, Mes, Histórico).</li>
+ * <li>Gráficos de distribución por categoría (PieChart).</li>
+ * <li>Gráficos de evolución temporal (LineChart).</li>
+ * <li>Comparativa con la media de la comunidad (BarChart).</li>
+ * <li>Generación de "Insights" o consejos basados en los datos.</li>
+ * <li>Exportación de datos a CSV.</li>
+ * </ul>
+ *
+ * @author Antonio Delgado Portero
+ * @version 1.0
+ */
 public class AnalisisController {
 
+    // --- ELEMENTOS FXML ---
+    /** Selector de rango temporal (Mes, Semana, etc.). */
     @FXML private ComboBox<String> cmbRango;
+    /** Selector de fecha de referencia para el filtro. */
     @FXML private DatePicker dpFecha;
+    /** Etiqueta para mostrar el total de emisiones del periodo. */
     @FXML private Label lblTotalPeriodo;
+    /** Etiqueta para mostrar la actividad más frecuente. */
     @FXML private Label lblActividadFrecuente;
+    /** Etiqueta para mostrar un consejo personalizado (Insight). */
     @FXML private Label lblInsight;
+    /** Checkbox para activar el desglose detallado en la comparativa. */
     @FXML private CheckBox chkDesglose;
+    /** Checkbox para alternar entre gráfico de distribución y evolución. */
     @FXML private CheckBox chkEvolucion;
+    /** Gráfico circular de distribución por categorías. */
     @FXML private PieChart pieChart;
+    /** Gráfico de líneas para la evolución temporal. */
     @FXML private LineChart<String, Number> lineChart;
+    /** Gráfico de barras para la comparativa con la comunidad. */
     @FXML private BarChart<String, Number> barChart;
 
+    // --- SERVICIOS ---
+    /** Servicio para gestión de huellas. */
     private final HuellaService huellaService = new HuellaService();
+    /** Servicio para gestión de hábitos. */
     private final HabitoService habitoService = new HabitoService();
+    /** Servicio para recomendaciones. */
     private final RecomendacionService recomendacionService = new RecomendacionService();
 
+    // --- ESTADO ---
+    /** Lista de huellas filtradas según el rango seleccionado. */
     private List<Huella> huellasFiltradas;
+    /** Fecha de inicio del filtro actual. */
     private LocalDate fechaInicioFiltro;
+    /** Fecha de fin del filtro actual. */
     private LocalDate fechaFinFiltro;
 
+    /**
+     * Inicializa el controlador de análisis.
+     * <p>
+     * Configura los filtros, listeners y carga los datos iniciales.
+     */
     @FXML
     public void initialize() {
         configurarFiltros();
@@ -57,12 +97,18 @@ public class AnalisisController {
         cargarDatos();
     }
 
+    /**
+     * Configura los valores iniciales de los filtros de fecha.
+     */
     private void configurarFiltros() {
         cmbRango.getItems().addAll("Todo el historial", "Mes Seleccionado", "Semana Seleccionada", "Día Concreto");
         cmbRango.setValue("Mes Seleccionado");
         dpFecha.setValue(LocalDate.now());
     }
 
+    /**
+     * Configura los listeners para actualizar los datos al cambiar filtros.
+     */
     private void configurarListeners() {
         cmbRango.valueProperty().addListener((obs, oldV, newV) -> cargarDatos());
         dpFecha.valueProperty().addListener((obs, oldV, newV) -> cargarDatos());
@@ -76,6 +122,11 @@ public class AnalisisController {
         });
     }
 
+    /**
+     * Carga y procesa los datos según los filtros seleccionados.
+     * <p>
+     * Actualiza KPIs, gráficos y consejos.
+     */
     private void cargarDatos() {
         int idUsuario = SessionManager.getInstance().getUsuarioActual().getId();
         calcularFechasFiltro();
@@ -92,6 +143,9 @@ public class AnalisisController {
         generarInsight(idUsuario);
     }
 
+    /**
+     * Calcula las fechas de inicio y fin según el rango seleccionado.
+     */
     private void calcularFechasFiltro() {
         String rango = cmbRango.getValue();
         LocalDate ref = dpFecha.getValue() != null ? dpFecha.getValue() : LocalDate.now();
@@ -111,11 +165,21 @@ public class AnalisisController {
         }
     }
 
+    /**
+     * Actualiza los indicadores clave de rendimiento (KPIs).
+     *
+     * @param idUsuario ID del usuario actual.
+     */
     private void actualizarKPIs(int idUsuario) {
         double total = huellaService.getTotalImpactoUsuarioFecha(idUsuario, fechaInicioFiltro, fechaFinFiltro);
         lblTotalPeriodo.setText(String.format("%.2f kg CO₂", total));
     }
 
+    /**
+     * Genera un consejo basado en el hábito más frecuente del usuario.
+     *
+     * @param idUsuario ID del usuario actual.
+     */
     private void generarInsight(int idUsuario) {
         Habito habito = habitoService.getHabitoMasFrecuente(idUsuario);
         if (habito != null) {
@@ -130,6 +194,9 @@ public class AnalisisController {
 
     // --- GRÁFICOS ---
 
+    /**
+     * Actualiza el gráfico circular de distribución por categorías.
+     */
     private void actualizarGraficoDistribucion() {
         int idUsuario = SessionManager.getInstance().getUsuarioActual().getId();
         Map<String, Double> datos = huellaService.getImpactoPorCategoriaUsuario(idUsuario, fechaInicioFiltro, fechaFinFiltro);
@@ -151,6 +218,9 @@ public class AnalisisController {
         javafx.application.Platform.runLater(this::colorearLeyenda);
     }
 
+    /**
+     * Actualiza el gráfico de líneas con la evolución de los últimos 12 meses.
+     */
     private void actualizarGraficoEvolucion() {
         int idUsuario = SessionManager.getInstance().getUsuarioActual().getId();
 
@@ -185,6 +255,9 @@ public class AnalisisController {
         series.getNode().setStyle("-fx-stroke: #E67E22; -fx-stroke-width: 2px;");
     }
 
+    /**
+     * Actualiza el gráfico de barras comparativo (Usuario vs Comunidad).
+     */
     private void actualizarGraficoComparativo() {
         int idUsuario = SessionManager.getInstance().getUsuarioActual().getId();
         Map<String, Double> misDatos = huellaService.getImpactoPorCategoriaUsuario(idUsuario, fechaInicioFiltro, fechaFinFiltro);
@@ -223,7 +296,12 @@ public class AnalisisController {
         }
     }
 
-    /** Helper para asignar colores fijos según categoría */
+    /**
+     * Helper para asignar colores fijos según categoría.
+     *
+     * @param categoria Nombre de la categoría.
+     * @return Código hexadecimal del color.
+     */
     private String getColorHexPorCategoria(String categoria) {
         if (categoria == null) return "#7F8C8D";
         switch (categoria) {
@@ -236,6 +314,11 @@ public class AnalisisController {
         }
     }
 
+    /**
+     * Exporta los datos filtrados a un archivo CSV.
+     *
+     * @param event Evento de acción.
+     */
     @FXML
     public void exportarReporte(ActionEvent event) {
         if (huellasFiltradas == null || huellasFiltradas.isEmpty()) {

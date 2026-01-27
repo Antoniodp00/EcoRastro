@@ -45,6 +45,11 @@ public class InicioController {
     // Variable de estado para reutilizar el cálculo en niveles (del mes actual)
     private double totalEmisionesMes = 0.0;
 
+    /**
+     * Inicializa el controlador de inicio.
+     * <p>
+     * Carga los datos reales, configura los gráficos y calcula el nivel de gamificación.
+     */
     public void initialize() {
         cargarDatosReales();
         configurarGraficoResumen();
@@ -54,6 +59,8 @@ public class InicioController {
 
     /**
      * Carga el KPI principal: Huella del mes actual.
+     * <p>
+     * Obtiene el total de emisiones del usuario para el mes en curso y actualiza la etiqueta correspondiente.
      */
     private void cargarDatosReales() {
         int idUsuario = SessionManager.getInstance().getUsuarioActual().getId();
@@ -108,6 +115,9 @@ public class InicioController {
 
     /**
      * Calcula el nivel del usuario y su posición en el ranking.
+     * <p>
+     * Determina el nivel (Eco-Héroe, Consumo Consciente, Inicio del Cambio) basado en el ranking
+     * y las emisiones del mes. Actualiza la interfaz con el progreso y mensajes motivacionales.
      */
     private void calcularNivelGamificacion() {
         int idUsuario = SessionManager.getInstance().getUsuarioActual().getId();
@@ -155,6 +165,16 @@ public class InicioController {
         aplicarEstilosUI(nivelTexto, iconCode, objetivoTexto, faltaTexto, progreso, colorTema);
     }
 
+    /**
+     * Aplica los estilos visuales a los elementos de la interfaz de gamificación.
+     *
+     * @param titulo Título del nivel.
+     * @param icono Código del icono FontAwesome.
+     * @param objetivo Texto del objetivo siguiente.
+     * @param mensaje Mensaje de progreso restante.
+     * @param valorBarra Valor de progreso (0.0 a 1.0).
+     * @param colorHex Código de color hexadecimal.
+     */
     private void aplicarEstilosUI(String titulo, String icono, String objetivo, String mensaje, double valorBarra, String colorHex) {
         if (lblNivel != null) {
             lblNivel.setText(titulo);
@@ -172,6 +192,9 @@ public class InicioController {
         }
     }
 
+    /**
+     * Muestra un consejo aleatorio en la pantalla de inicio.
+     */
     private void mostrarConsejoDelDia() {
         String[] categorias = {"Energía", "Transporte", "Agua", "Residuos", "Alimentación"};
         String categoriaRandom = categorias[(int) (Math.random() * categorias.length)];
@@ -179,7 +202,19 @@ public class InicioController {
     }
 
     // --- NAVEGACIÓN ---
+    /**
+     * Navega a la vista de registro de huella.
+     * @param event Evento del ratón.
+     */
     @FXML public void irARegistrarHuella(MouseEvent event) { Navigation.navigate("historial_huellas.fxml"); }
+    /**
+     * Navega a la vista de mis hábitos.
+     * @param e Evento del ratón.
+     */
     @FXML public void irAHabitos(MouseEvent e) { Navigation.navigate("mis_habitos.fxml"); }
+    /**
+     * Navega a la vista de análisis.
+     * @param e Evento del ratón.
+     */
     @FXML public void irAAnalisis(MouseEvent e) { Navigation.navigate("analisis.fxml"); }
 }

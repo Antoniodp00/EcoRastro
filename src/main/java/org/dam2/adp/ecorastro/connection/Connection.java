@@ -10,7 +10,7 @@ import org.hibernate.cfg.Configuration;
  * Proporciona acceso centralizado a la {@link SessionFactory} y permite obtener sesiones
  * individuales para realizar operaciones de base de datos.
  *
- * @author TuNombre
+ * @author Antonio Delgado Portero
  * @version 1.0
  */
 public class Connection {
