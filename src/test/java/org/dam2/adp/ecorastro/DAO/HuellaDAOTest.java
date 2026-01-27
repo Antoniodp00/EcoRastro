@@ -200,7 +200,7 @@ class HuellaDAOTest {
         Huella h2 = crearHuellaManual(usuarioTest, 20.0, fechaFeb);
 
         // Act
-        List<Object[]> evolucion = huellaDAO.getEvolucionMensualUsuario(usuarioTest.getId(), year);
+        List<Object[]> evolucion = huellaDAO.getEvolucionRangoFechaUsuario(usuarioTest.getId(), LocalDate.of(year, 1, 1), LocalDate.of(year, 2, 28));
 
         // Assert
         assertNotNull(evolucion);
