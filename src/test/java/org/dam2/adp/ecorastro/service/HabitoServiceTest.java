@@ -103,7 +103,7 @@ class HabitoServiceTest {
 
             categoriaTest = new Categoria();
             categoriaTest.setNombre("Cat Service Habito");
-            categoriaTest.setFactorEmision(BigDecimal.ONE);
+            categoriaTest.setFactorEmision(0.5000);
             categoriaTest.setUnidad("ud");
             session.persist(categoriaTest);
 

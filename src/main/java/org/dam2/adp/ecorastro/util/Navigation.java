@@ -10,8 +10,6 @@ import org.dam2.adp.ecorastro.controller.MainController;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Utilidades para la navegación entre escenas en la aplicación.
@@ -25,7 +23,6 @@ public class Navigation {
 
     private static Stage primaryStage;
     private static MainController mainController;
-    private static final Logger logger = Logger.getLogger(Navigation.class.getName());
 
     private static final String CUSTOM_CSS_PATH = "/css/style.css";
 
@@ -36,7 +33,6 @@ public class Navigation {
      */
     public static void setStage(Stage stage) {
         primaryStage = stage;
-        logger.log(Level.INFO, "Primary stage establecido.");
     }
 
     /**
@@ -46,7 +42,6 @@ public class Navigation {
      */
     public static void setMainController(MainController controller) {
         mainController = controller;
-        logger.log(Level.INFO, "Main controller establecido.");
     }
 
     /**
@@ -58,11 +53,9 @@ public class Navigation {
      * @param fxml El archivo FXML de la vista a cargar.
      */
     public static void navigate(String fxml) {
-        logger.log(Level.INFO, "Navegando a sub-vista: " + fxml);
         if (mainController != null) {
             mainController.loadView(fxml);
         } else {
-            logger.log(Level.WARNING, "MainController no está establecido. Usando switchScene como fallback.");
             switchScene(fxml);
         }
     }
@@ -77,12 +70,10 @@ public class Navigation {
      */
     public static void switchScene(String fxml) {
         if (primaryStage == null) {
-            logger.log(Level.SEVERE, "¡ERROR! Primary stage es NULL. Llama a Navigation.setStage(stage) en tu Main.");
             return;
         }
         try {
-            // CORRECCIÓN CLAVE: Ruta absoluta exacta según tu estructura de carpetas
-            // Fíjate que empieza por "/" y sigue toda la ruta de paquetes
+
             String ruta = "/org/dam2/adp/ecorastro/view/" + fxml;
 
             URL resource = Navigation.class.getResource(ruta);
@@ -93,15 +84,12 @@ public class Navigation {
                 return;
             }
 
-            logger.log(Level.INFO, "Cambiando escena a: " + ruta);
-
             FXMLLoader loader = new FXMLLoader(resource);
             Parent root = loader.load();
             Scene scene = new Scene(root);
 
             primaryStage.setScene(scene);
 
-            // Ajustes de ventana para Login/Registro
             if (fxml.equals("login.fxml") || fxml.equals("register.fxml")) {
                 primaryStage.setResizable(false);
                 primaryStage.sizeToScene();
@@ -113,7 +101,6 @@ public class Navigation {
 
             primaryStage.show();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Error CRÍTICO al cargar el FXML: " + fxml, e);
             e.printStackTrace();
         }
     }

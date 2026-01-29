@@ -10,8 +10,6 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Utilidades para mostrar alertas y diálogos en la interfaz de usuario.
@@ -23,8 +21,6 @@ import java.util.logging.Logger;
  * @version 1.0
  */
 public class AlertUtils {
-
-    private static final Logger logger = Logger.getLogger(AlertUtils.class.getName());
 
     /**
      * Aplica la hoja de estilos global a la escena de la alerta.
@@ -127,7 +123,6 @@ public class AlertUtils {
      * @return true si el usuario presiona OK, false en caso contrario.
      */
     public static boolean confirmacion(String title, String header, String content) {
-        logger.log(Level.INFO, "Mostrando alerta de confirmación: " + header);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);

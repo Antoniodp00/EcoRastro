@@ -26,12 +26,5 @@
         <mapping class="org.dam2.adp.ecorastro.model.Huella"/>
         <mapping class="org.dam2.adp.ecorastro.model.Recomendacion"/>
 
-
-
-
-
-
-
-
     </session-factory>
 </hibernate-configuration>

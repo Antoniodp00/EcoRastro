@@ -53,6 +53,9 @@ public class HistorialHuellasController {
     public CheckBox chkEnergia;
     /** Filtro para mostrar huellas de agua. */
     public CheckBox chkAgua;
+    /** Filtro para mostrar otros tipos de huellas. */
+    public CheckBox chkOtros;
+
 
 
     /** Contenedor fluido donde se añadirán las tarjetas dinámicamente. */
@@ -113,8 +116,8 @@ public class HistorialHuellasController {
             case "Alimentación": return chkAlimentacion.isSelected();
             case "Energía":      return chkEnergia.isSelected();
             case "Agua":         return chkAgua.isSelected();
+            default: return chkOtros.isSelected();
         }
-        return false;
     }
 
     /**

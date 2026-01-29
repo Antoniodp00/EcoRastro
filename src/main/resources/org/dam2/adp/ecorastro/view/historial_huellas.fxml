@@ -66,6 +66,9 @@
                     <FontIcon iconLiteral="fas-tint" iconSize="14" styleClass="icono-navegacion"/>
                 </graphic>
             </CheckBox>
+            <CheckBox fx:id="chkOtros" text="Otros" selected="true" onAction="#cargarHuellas" styleClass="filtro-checkbox" maxWidth="Infinity">
+                <graphic> <FontIcon iconLiteral="fas-box-open" iconSize="14" styleClass="icono-navegacion"/> </graphic>
+            </CheckBox>
         </VBox>
 
         <VBox styleClass="card-azul" spacing="5">
