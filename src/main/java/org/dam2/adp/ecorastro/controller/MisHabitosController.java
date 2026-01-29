@@ -39,7 +39,6 @@ public class MisHabitosController {
     /** Contenedor fluido para mostrar las tarjetas de hábitos. */
     @FXML private FlowPane contenedorHabitos;
 
-    // --- FORMULARIO ---
     /** Desplegable para seleccionar la actividad del hábito. */
     @FXML private ComboBox<Actividad> cmbActividad;
     /** Campo de texto para la frecuencia numérica (ej: 3 veces). */
@@ -53,7 +52,6 @@ public class MisHabitosController {
     /** Grupo de botones para la periodicidad. */
     @FXML private ToggleGroup grupoPeriodicidad;
 
-    // --- FILTROS ---
     /** Filtro para mostrar hábitos de transporte. */
     @FXML private CheckBox chkTransporte;
     /** Filtro para mostrar hábitos de alimentación. */
@@ -65,11 +63,9 @@ public class MisHabitosController {
     /** Filtro para mostrar otros hábitos. */
     @FXML private CheckBox chkOtros;
 
-    // --- INFO ---
     /** Etiqueta lateral para mostrar recomendaciones. */
     @FXML private Label lblRecomendacionSidebar;
 
-    // --- SERVICIOS ---
     /** Servicio para gestionar hábitos. */
     private final HabitoService habitoService = new HabitoService();
 

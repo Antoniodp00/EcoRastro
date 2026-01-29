@@ -27,7 +27,6 @@ import java.time.temporal.TemporalAdjusters;
  */
 public class InicioController {
 
-    // --- ELEMENTOS FXML ---
     @FXML private Label lblHuellaTotal;
     @FXML private Label lblConsejo;
     @FXML private BarChart<String, Number> barChart;
@@ -37,12 +36,10 @@ public class InicioController {
     @FXML private Label lblAhorroRestante;
     @FXML private FontIcon iconNivel;
 
-    // --- SERVICIOS ---
     private final HuellaService huellaService = new HuellaService();
     private final RecomendacionService recomendacionService = new RecomendacionService();
     private final UsuarioService usuarioService = new UsuarioService();
 
-    // Variable de estado para reutilizar el cálculo en niveles (del mes actual)
     private double totalEmisionesMes = 0.0;
 
     /**
@@ -67,7 +64,7 @@ public class InicioController {
         LocalDate inicioMes = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
         LocalDate finMes = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
 
-        // KPI: Total emisiones del mes actual
+
         totalEmisionesMes = huellaService.getTotalImpactoUsuarioFecha(idUsuario, inicioMes, finMes);
         lblHuellaTotal.setText(String.format("%.2f kg CO₂", totalEmisionesMes));
     }
@@ -83,8 +80,6 @@ public class InicioController {
         barChart.getData().clear();
         barChart.setAnimated(false);
 
-        // --- SERIE 1: TU IMPACTO HISTÓRICO ---
-        // Calculamos tu impacto total histórico para compararlo con la media histórica
         double miImpactoHistorico = huellaService.getTotalImpactoUsuarioFecha(
                 idUsuario,
                 LocalDate.of(1970, 1, 1),
@@ -95,11 +90,8 @@ public class InicioController {
         serieYo.setName("Tú (Total)");
         serieYo.getData().add(new XYChart.Data<>("", miImpactoHistorico));
 
-        // --- SERIE 2: MEDIA DEL RESTO DE LA COMUNIDAD ---
-        // Usamos el método corregido que calcula el promedio por persona del resto
         double mediaRestoComunidad = huellaService.getMediaComunidadSinUsuario(idUsuario);
 
-        // Si la media es 0 (primera ejecución o sin datos), ponemos un valor visual mínimo
         if (mediaRestoComunidad <= 0.1) mediaRestoComunidad = 10.0;
 
         XYChart.Series<String, Number> serieMedia = new XYChart.Series<>();

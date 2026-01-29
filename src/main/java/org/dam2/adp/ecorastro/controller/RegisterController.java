@@ -28,7 +28,6 @@ import org.dam2.adp.ecorastro.util.Navigation;
  */
 public class RegisterController {
 
-    // --- ELEMENTOS FXML ---
 
     /** Campo de texto para el nombre del usuario. */
     public TextField txtNombre;
@@ -45,7 +44,6 @@ public class RegisterController {
     /** Etiqueta para mostrar mensajes de error o validación. */
     public Label lblMensaje;
 
-    // --- SERVICIOS ---
 
     /** Servicio para la gestión de usuarios. */
     UsuarioService usuarioService = new UsuarioService();

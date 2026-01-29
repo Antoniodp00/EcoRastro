@@ -28,7 +28,6 @@ import org.dam2.adp.ecorastro.util.SessionManager;
  */
 public class LoginController {
 
-    // --- ELEMENTOS FXML ---
 
     /** Campo de texto para introducir el correo electrónico. */
     public TextField txtEmail;
@@ -45,7 +44,6 @@ public class LoginController {
     /** Botón para navegar al registro. */
     public Button btnRegister;
 
-    // --- SERVICIOS ---
 
     /** Servicio encargado de la gestión de usuarios y autenticación. */
     UsuarioService usuarioService = new UsuarioService();
@@ -85,7 +83,7 @@ public class LoginController {
         if (usuario != null) {
             realizarLoginExitoso(usuario);
         } else {
-            // Mostrar error si el login falla
+
             lblError.setText("Credenciales incorrectas.");
             lblError.setVisible(true);
         }

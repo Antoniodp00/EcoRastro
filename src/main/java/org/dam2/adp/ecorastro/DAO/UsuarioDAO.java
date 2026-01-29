@@ -17,7 +17,6 @@ import java.util.List;
  */
 public class UsuarioDAO {
 
-    private final String GET_ALL_HQL = "FROM Usuario";
 
     private  final String COUNT_USUARIOS_ACTIVOS = "SELECT COUNT(DISTINCT h.idUsuario) FROM Huella h";
 

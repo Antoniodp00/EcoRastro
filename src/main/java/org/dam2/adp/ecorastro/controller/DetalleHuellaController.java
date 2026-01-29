@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import org.dam2.adp.ecorastro.model.Huella;
 import org.dam2.adp.ecorastro.service.HuellaService;
 import org.dam2.adp.ecorastro.util.AlertUtils;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -31,42 +32,85 @@ import java.time.format.DateTimeFormatter;
  */
 public class DetalleHuellaController {
 
-    // --- VIEW ELEMENTS ---
-    /** Etiqueta para el icono de la categoría. */
-    @FXML private Label lblIcono;
-    /** Etiqueta para el título (nombre de la actividad). */
-    @FXML private Label lblTitulo;
-    /** Etiqueta para el nombre de la categoría. */
-    @FXML private Label lblCategoria;
-    /** Etiqueta para mostrar el impacto calculado en CO2. */
-    @FXML private Label lblImpacto;
 
-    // Elementos Modo Lectura
-    /** Etiqueta para mostrar la fecha (solo lectura). */
-    @FXML private Label lblFecha;
-    /** Etiqueta para mostrar el valor y unidad (solo lectura). */
-    @FXML private Label lblValor;
-    /** Botón para activar el modo edición. */
-    @FXML private Button btnEditar;
-    /** Botón para cerrar la ventana. */
-    @FXML private Button btnCerrar;
+    /**
+     * Etiqueta para el icono de la categoría.
+     */
+    @FXML
+    private Label lblIcono;
+    /**
+     * Etiqueta para el título (nombre de la actividad).
+     */
+    @FXML
+    private Label lblTitulo;
+    /**
+     * Etiqueta para el nombre de la categoría.
+     */
+    @FXML
+    private Label lblCategoria;
+    /**
+     * Etiqueta para mostrar el impacto calculado en CO2.
+     */
+    @FXML
+    private Label lblImpacto;
 
-    // Elementos Modo Edición
-    /** Selector de fecha (modo edición). */
-    @FXML private DatePicker dpFechaInput;
-    /** Campo de texto para editar el valor. */
-    @FXML private TextField txtValorInput;
-    /** Etiqueta fija con la unidad de medida. */
-    @FXML private Label lblUnidadInput;
-    /** Contenedor para los controles de edición de valor. */
-    @FXML private HBox boxEdicionValor;
-    /** Botón para guardar los cambios. */
-    @FXML private Button btnGuardar;
 
-    // --- DATA ---
-    /** Objeto Huella que se está visualizando/editando. */
+    /**
+     * Etiqueta para mostrar la fecha (solo lectura).
+     */
+    @FXML
+    private Label lblFecha;
+    /**
+     * Etiqueta para mostrar el valor y unidad (solo lectura).
+     */
+    @FXML
+    private Label lblValor;
+    /**
+     * Botón para activar el modo edición.
+     */
+    @FXML
+    private Button btnEditar;
+    /**
+     * Botón para cerrar la ventana.
+     */
+    @FXML
+    private Button btnCerrar;
+
+
+    /**
+     * Selector de fecha (modo edición).
+     */
+    @FXML
+    private DatePicker dpFechaInput;
+    /**
+     * Campo de texto para editar el valor.
+     */
+    @FXML
+    private TextField txtValorInput;
+    /**
+     * Etiqueta fija con la unidad de medida.
+     */
+    @FXML
+    private Label lblUnidadInput;
+    /**
+     * Contenedor para los controles de edición de valor.
+     */
+    @FXML
+    private HBox boxEdicionValor;
+    /**
+     * Botón para guardar los cambios.
+     */
+    @FXML
+    private Button btnGuardar;
+
+
+    /**
+     * Objeto Huella que se está visualizando/editando.
+     */
     private Huella huellaActual;
-    /** Servicio para operaciones de persistencia. */
+    /**
+     * Servicio para operaciones de persistencia.
+     */
     private final HuellaService huellaService = new HuellaService();
 
     /**
@@ -83,16 +127,22 @@ public class DetalleHuellaController {
         // 1. Cabecera estática
         lblTitulo.setText(h.getIdActividad().getNombre());
         lblCategoria.setText(h.getIdActividad().getIdCategoria().getNombre().toUpperCase());
-        lblIcono.setText(getIconoPorCategoria(h.getIdActividad().getIdCategoria().getNombre()));
+
+        String codigo = getIconoPorCategoria(h.getIdActividad().getIdCategoria().getNombre());
+        FontIcon icon = new FontIcon(codigo);
+        icon.setIconSize(60);
+        icon.getStyleClass().add("texto-primario");
+        lblIcono.setGraphic(icon);
+        lblIcono.setText("");
 
         // 2. Rellenar Modo Lectura
         actualizarVistaLectura();
 
-        // 3. Preparar Modo Edición (Pre-cargar inputs)
+        // 3. Preparar Modo Edición
         if (h.getFecha() != null) {
             dpFechaInput.setValue(h.getFecha().atZone(ZoneId.systemDefault()).toLocalDate());
         }
-        txtValorInput.setText(String.valueOf(h.getValor())); // Changed to String.valueOf()
+        txtValorInput.setText(String.valueOf(h.getValor()));
         lblUnidadInput.setText(h.getUnidad());
     }
 
@@ -117,7 +167,7 @@ public class DetalleHuellaController {
 
         lblImpacto.setText(String.format("%.2f kg CO₂", impacto));
 
-        // Color Dinámico (Ancient Woods Theme)
+        // Color Dinámico
         String color = (impacto < 5) ? "#656D4A" : (impacto < 20) ? "#DDA15E" : "#bc4749";
         lblImpacto.setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold; -fx-font-size: 16px;");
     }
@@ -130,16 +180,22 @@ public class DetalleHuellaController {
     @FXML
     public void activarEdicion() {
         // Ocultar Lectura
-        lblFecha.setVisible(false); lblFecha.setManaged(false);
-        lblValor.setVisible(false); lblValor.setManaged(false);
-        btnEditar.setVisible(false); btnEditar.setManaged(false);
+        lblFecha.setVisible(false);
+        lblFecha.setManaged(false);
+        lblValor.setVisible(false);
+        lblValor.setManaged(false);
+        btnEditar.setVisible(false);
+        btnEditar.setManaged(false);
 
         // Mostrar Edición
-        dpFechaInput.setVisible(true); dpFechaInput.setManaged(true);
-        boxEdicionValor.setVisible(true); boxEdicionValor.setManaged(true);
-        btnGuardar.setVisible(true); btnGuardar.setManaged(true);
+        dpFechaInput.setVisible(true);
+        dpFechaInput.setManaged(true);
+        boxEdicionValor.setVisible(true);
+        boxEdicionValor.setManaged(true);
+        btnGuardar.setVisible(true);
+        btnGuardar.setManaged(true);
 
-        btnCerrar.setText("Cancelar"); // Cambiamos texto del botón cerrar
+        btnCerrar.setText("Cancelar");
     }
 
     /**
@@ -164,7 +220,7 @@ public class DetalleHuellaController {
 
                 // 4. Volver a Modo Lectura
                 activarModoLectura();
-                actualizarVistaLectura(); // Refrescar textos con lo nuevo
+                actualizarVistaLectura();
 
                 AlertUtils.info("Registro actualizado correctamente.");
 
@@ -184,14 +240,20 @@ public class DetalleHuellaController {
      */
     private void activarModoLectura() {
         // Mostrar Lectura
-        lblFecha.setVisible(true); lblFecha.setManaged(true);
-        lblValor.setVisible(true); lblValor.setManaged(true);
-        btnEditar.setVisible(true); btnEditar.setManaged(true);
+        lblFecha.setVisible(true);
+        lblFecha.setManaged(true);
+        lblValor.setVisible(true);
+        lblValor.setManaged(true);
+        btnEditar.setVisible(true);
+        btnEditar.setManaged(true);
 
         // Ocultar Edición
-        dpFechaInput.setVisible(false); dpFechaInput.setManaged(false);
-        boxEdicionValor.setVisible(false); boxEdicionValor.setManaged(false);
-        btnGuardar.setVisible(false); btnGuardar.setManaged(false);
+        dpFechaInput.setVisible(false);
+        dpFechaInput.setManaged(false);
+        boxEdicionValor.setVisible(false);
+        boxEdicionValor.setManaged(false);
+        btnGuardar.setVisible(false);
+        btnGuardar.setManaged(false);
 
         btnCerrar.setText("Cerrar");
     }
@@ -212,14 +274,15 @@ public class DetalleHuellaController {
      * @return Emoji como String.
      */
     private String getIconoPorCategoria(String categoria) {
-        if (categoria == null) return "🌿";
+        if (categoria == null) return "fas-leaf"; // Hoja por defecto
+
         return switch (categoria) {
-            case "Transporte" -> "🚗";
-            case "Alimentación" -> "🍎";
-            case "Energía" -> "💡";
-            case "Agua" -> "💧";
-            case "Residuos" -> "♻️";
-            default -> "🌿";
+            case "Transporte" -> "fas-car";          // Coche
+            case "Alimentación" -> "fas-apple-alt";  // Manzana
+            case "Energía" -> "fas-bolt";            // Rayo
+            case "Agua" -> "fas-tint";               // Gota
+            case "Residuos" -> "fas-recycle";        // Reciclaje
+            default -> "fas-leaf";                   // Hoja
         };
     }
 }

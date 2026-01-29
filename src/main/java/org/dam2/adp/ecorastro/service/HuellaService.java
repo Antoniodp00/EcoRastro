@@ -31,17 +31,12 @@ public class HuellaService {
         this.actividadDAO = new ActividadDAO();
     }
 
-    // ==========================================
-    // SECCIÓN: GESTIÓN DE ACTIVIDADES
-    // ==========================================
 
     public List<Actividad> getAllActividades() {
         return actividadDAO.getAllActividades();
     }
 
-    // ==========================================
-    // SECCIÓN: CRUD HUELLA
-    // ==========================================
+
 
     public boolean addHuella(Usuario usuario, Actividad actividad, double valorConsumo, LocalDate fecha) {
         if (usuario == null || actividad == null || valorConsumo <= 0 || fecha == null) {
@@ -71,7 +66,6 @@ public class HuellaService {
      * Recupera el historial completo de huellas de un usuario.
      */
     public List<Huella> getHuellasPorUsuario(int idUsuario) {
-        // Adaptado al nuevo DAO
         return huellaDAO.getHistorialHuellasUsuario(idUsuario);
     }
 
@@ -79,13 +73,11 @@ public class HuellaService {
      * Recupera huellas filtradas por rango de fechas.
      */
     public List<Huella> getHuellasPorFecha(int idUsuario, LocalDate fechaInicio, LocalDate fechaFin) {
-        // Adaptado al nuevo DAO
+
         return huellaDAO.getHuellasUsuarioPorRangoFecha(idUsuario, fechaInicio, fechaFin);
     }
 
-    // ==========================================
-    // SECCIÓN: CÁLCULOS Y ESTADÍSTICAS (KPIs y Gráficos)
-    // ==========================================
+
 
     public double calcularImpacto(Huella huella) {
         if (huella == null || huella.getIdActividad() == null) return 0.0;
@@ -146,9 +138,6 @@ public class HuellaService {
         return huellaDAO.getMediaImpactoComunidadPorCategoriaRangoFecha(fechaInicio, fechaFin);
     }
 
-    // ==========================================
-    // SECCIÓN: GAMIFICACIÓN Y CONTEXTO SOCIAL
-    // ==========================================
 
     /**
      * Obtiene el número de usuarios activos para dar contexto al ranking.
@@ -175,7 +164,6 @@ public class HuellaService {
             return 0L;
         }
 
-        // 2. Obtener ranking real del DAO
         return huellaDAO.getRankingUsuarioEnComunidad(idUsuario);
     }
 
@@ -189,21 +177,18 @@ public class HuellaService {
     public double getMediaComunidadSinUsuario(int idUsuario) {
         double totalGlobal = huellaDAO.getTotalImpactoComunidad();
 
-        // Reutilizamos el cálculo de impacto histórico del usuario
+
         double miTotal = huellaDAO.getTotalImpactoUsuarioPorRangoFecha(
                 idUsuario,
                 LocalDate.of(1970, 1, 1),
                 LocalDate.now().plusDays(1)
         );
-
         long numUsuarios = huellaDAO.countUsuariosActivosComunidad();
 
-        // Evitar división por cero o resultados negativos si soy el único usuario
         if (numUsuarios <= 1) {
             return 0.0;
         }
 
-        // Fórmula: (TotalGlobal - MiAporte) / (TotalPersonas - Yo)
         return (totalGlobal - miTotal) / (numUsuarios - 1);
     }
 }

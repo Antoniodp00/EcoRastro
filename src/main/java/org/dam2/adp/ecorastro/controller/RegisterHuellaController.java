@@ -34,7 +34,6 @@ import java.util.List;
  */
 public class RegisterHuellaController {
 
-    // --- ELEMENTOS FXML ---
 
     /** Desplegable para seleccionar la actividad (ej: Conducir coche, Electricidad). */
     public ComboBox<Actividad> cmbActividad;
@@ -48,7 +47,6 @@ public class RegisterHuellaController {
     /** Selector de fecha para indicar cuándo se realizó la actividad. */
     public DatePicker dpFecha;
 
-    // --- SERVICIOS ---
 
     /** Servicio encargado de la lógica de negocio y persistencia de huellas. */
     private final HuellaService huellaService = new HuellaService();
@@ -79,7 +77,6 @@ public class RegisterHuellaController {
 
         cargarActividades();
 
-        // Listener: Al cambiar de actividad, actualizamos la etiqueta de unidad (ej: "km")
         cmbActividad.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 // Accedemos a la Categoría para saber si son "km", "kg", "kWh", etc.
@@ -136,7 +133,6 @@ public class RegisterHuellaController {
             }
 
             String valorTexto = txtValor.getText();
-            // Validación simple de formato numérico (enteros o decimales)
             if(valorTexto == null || valorTexto.isBlank() || !valorTexto.matches("\\d+(\\.\\d+)?")){
                 AlertUtils.error("Introduce una cantidad válida.");
                 return;
@@ -145,13 +141,11 @@ public class RegisterHuellaController {
             double valorConsumo = Double.parseDouble(valorTexto);
             LocalDate fecha = dpFecha.getValue();
 
-            // Validación de negocio: Fecha futura
             if (fecha.isAfter(LocalDate.now())) {
                 AlertUtils.error("No puedes registrar una huella con fecha futura.");
                 return;
             }
 
-            // Llamada al servicio para guardar
             boolean insertado = huellaService.addHuella(
                     SessionManager.getInstance().getUsuarioActual(),
                     actividad,
@@ -161,7 +155,7 @@ public class RegisterHuellaController {
 
             if (insertado){
                 AlertUtils.info("Huella registrada correctamente.");
-                cerrarVentana(); // Cierra el modal y vuelve al historial
+                cerrarVentana();
             } else {
                 AlertUtils.error("Error al registrar huella.");
             }

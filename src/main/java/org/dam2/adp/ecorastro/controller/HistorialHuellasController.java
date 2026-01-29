@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import org.dam2.adp.ecorastro.model.Huella;
 import org.dam2.adp.ecorastro.service.HuellaService;
 import org.dam2.adp.ecorastro.util.AlertUtils;
+import org.dam2.adp.ecorastro.util.Navigation;
 import org.dam2.adp.ecorastro.util.SessionManager;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -53,13 +54,11 @@ public class HistorialHuellasController {
     /** Filtro para mostrar huellas de agua. */
     public CheckBox chkAgua;
 
-    // --- ELEMENTOS FXML ---
 
     /** Contenedor fluido donde se añadirán las tarjetas dinámicamente. */
     @FXML private FlowPane contenedorHuellas;
 
 
-    // --- SERVICIOS ---
     /** Servicio para gestionar huellas. */
     private final HuellaService huellaService = new HuellaService();
 
@@ -90,11 +89,9 @@ public class HistorialHuellasController {
             return;
         }
 
-        // --- FILTRADO EN MEMORIA ---
         for (Huella h : listaCompleta) {
             String cat = h.getIdActividad().getIdCategoria().getNombre();
 
-            // Si la categoría NO está marcada, saltamos este registro
             if (!isCategoriaSeleccionada(cat)) {
                 continue;
             }
@@ -130,29 +127,24 @@ public class HistorialHuellasController {
      */
     private VBox crearTarjetaHuella(Huella h) {
         VBox card = new VBox(5);
-        card.getStyleClass().add("item-card"); // Estilo definido en style.css
+        card.getStyleClass().add("item-card");
         card.setAlignment(Pos.CENTER);
 
-        // A. Icono según categoría
-        String codigoIcono = getCodigoIconoPorCategoria(h.getIdActividad().getIdCategoria().getNombre()); // Obtenemos el código (ej: "fas-car")
+
+        String codigoIcono = getCodigoIconoPorCategoria(h.getIdActividad().getIdCategoria().getNombre());
         FontIcon icon = new FontIcon(codigoIcono);
 
-        // Estilo: Ikonli usa -fx-icon-color y -fx-icon-size, pero hereda -fx-text-fill
-        // Puedes seguir usando tu clase CSS, pero asegúrate de que define el tamaño
         icon.getStyleClass().add("item-card-icono");
         icon.setIconSize(30);
 
-        // B. Título (Actividad)
         Label titulo = new Label(h.getIdActividad().getNombre());
         titulo.getStyleClass().add("item-card-titulo");
         titulo.setWrapText(true);
         titulo.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 
-        // C. Valor Principal (Cantidad)
         Label valor = new Label(h.getValor() + " " + h.getUnidad());
         valor.getStyleClass().add("item-card-valor");
 
-        // D. Impacto Calculado (Pequeño)
         double impacto = h.getValor() * h.getIdActividad().getIdCategoria().getFactorEmision(); // Changed to double
 
         String colorImpacto;
@@ -169,17 +161,14 @@ public class HistorialHuellasController {
 
         Label lblImpacto = new Label(String.format("Impacto: %.2f kg CO₂", impacto));
 
-        // Aplicamos el estilo dinámico
         lblImpacto.setStyle(String.format(
                 "-fx-font-size: 11px; -fx-text-fill: %s; -fx-font-weight: %s;",
                 colorImpacto, pesoFuente
         ));
 
-        // E. Fecha (Corregido para Instant)
+
         String fechaStr = "";
         if (h.getFecha() != null) {
-            // 1. Convertimos el Instant a la Zona Horaria del sistema
-            // 2. Formateamos
             fechaStr = h.getFecha()
                     .atZone(ZoneId.systemDefault())
                     .format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
@@ -187,10 +176,10 @@ public class HistorialHuellasController {
         Label fecha = new Label(fechaStr);
         fecha.getStyleClass().add("item-card-fecha");
 
-        // Añadir elementos a la tarjeta
+
         card.getChildren().addAll(icon, titulo, valor, lblImpacto, fecha);
 
-        // --- MENÚ CONTEXTUAL (Click Derecho) ---
+        // MENÚ CONTEXTUAL (Click Derecho)
         ContextMenu menu = new ContextMenu();
         MenuItem itemBorrar = new MenuItem("🗑 Eliminar Registro");
         itemBorrar.setOnAction(e -> eliminarHuella(h));
@@ -200,7 +189,6 @@ public class HistorialHuellasController {
         card.setOnContextMenuRequested(e -> menu.show(card, e.getScreenX(), e.getScreenY()));
 
         card.setOnMouseClicked(e -> {
-            // Evitamos que salte si hacemos click derecho (para el menú borrar)
             if (e.getButton() == javafx.scene.input.MouseButton.PRIMARY) {
                 abrirDetalleHuella(h);
             }
@@ -294,8 +282,6 @@ public class HistorialHuellasController {
             default:             return "fas-leaf";         // Hoja
         }
     }
-
-    // --- NAVEGACIÓN ---
 
     /**
      * Abre la ventana modal para registrar una nueva huella.

@@ -45,7 +45,6 @@ import java.util.*;
  */
 public class AnalisisController {
 
-    // --- ELEMENTOS FXML ---
     /** Selector de rango temporal (Mes, Semana, etc.). */
     @FXML private ComboBox<String> cmbRango;
     /** Selector de fecha de referencia para el filtro. */
@@ -67,7 +66,6 @@ public class AnalisisController {
     /** Gráfico de barras para la comparativa con la comunidad. */
     @FXML private BarChart<String, Number> barChart;
 
-    // --- SERVICIOS ---
     /** Servicio para gestión de huellas. */
     private final HuellaService huellaService = new HuellaService();
     /** Servicio para gestión de hábitos. */
@@ -75,7 +73,7 @@ public class AnalisisController {
     /** Servicio para recomendaciones. */
     private final RecomendacionService recomendacionService = new RecomendacionService();
 
-    // --- ESTADO ---
+
     /** Lista de huellas filtradas según el rango seleccionado. */
     private List<Huella> huellasFiltradas;
     /** Fecha de inicio del filtro actual. */
@@ -192,7 +190,7 @@ public class AnalisisController {
         }
     }
 
-    // --- GRÁFICOS ---
+
 
     /**
      * Actualiza el gráfico circular de distribución por categorías.
@@ -213,8 +211,7 @@ public class AnalisisController {
             }
         });
 
-        // 2. Colorear la leyenda (IMPORTANTE: Usar runLater)
-        // JavaFX tarda un instante en crear la leyenda internamente, por eso esperamos.
+        // 2. Colorear la leyenda
         javafx.application.Platform.runLater(this::colorearLeyenda);
     }
 
@@ -251,7 +248,7 @@ public class AnalisisController {
 
         lineChart.getData().clear();
         lineChart.getData().add(series);
-        // Color naranja para la línea
+
         series.getNode().setStyle("-fx-stroke: #E67E22; -fx-stroke-width: 2px;");
     }
 
@@ -287,7 +284,6 @@ public class AnalisisController {
         barChart.getData().clear();
         barChart.getData().addAll(serieYo, serieMedia);
 
-        // --- CORRECCIÓN DE COLORES BARCHART ---
         for (XYChart.Data<String, Number> d : serieYo.getData()) {
             if(d.getNode() != null) d.getNode().setStyle("-fx-bar-fill: #936639;"); // Marrón (Tú)
         }
@@ -351,22 +347,19 @@ public class AnalisisController {
      * Se debe llamar dentro de Platform.runLater() para asegurar que el gráfico ya se ha renderizado.
      */
     private void colorearLeyenda() {
-        // Buscamos el nodo de la leyenda dentro del PieChart (es un hijo oculto)
+
         javafx.scene.Node legend = pieChart.lookup(".chart-legend");
 
         if (legend != null && legend instanceof javafx.scene.Parent) {
             ObservableList<javafx.scene.Node> legendItems = ((javafx.scene.Parent) legend).getChildrenUnmodifiable();
 
-            // Iteramos sobre los items de la leyenda
             for (javafx.scene.Node item : legendItems) {
                 if (item instanceof Label) {
                     Label label = (Label) item;
 
-                    // El texto de la etiqueta es la categoría (ej: "Energía")
                     String categoria = label.getText();
                     String colorHex = getColorHexPorCategoria(categoria);
 
-                    // El símbolo de color es el "graphic" del Label
                     if (label.getGraphic() != null) {
                         label.getGraphic().setStyle("-fx-background-color: " + colorHex + ";");
                     }

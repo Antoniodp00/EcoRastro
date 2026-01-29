@@ -26,10 +26,6 @@ import java.util.Map;
  */
 public class HuellaDAO {
 
-    // ==========================================
-    // CONSTANTES HQL (QUERY LANGUAGE)
-    // Nomenclatura: HQL + ÁMBITO (USUARIO/COMUNIDAD) + DESCRIPCIÓN
-    // ==========================================
 
     /**
      * [USUARIO] Obtiene huellas de un usuario específico en un rango.
@@ -112,9 +108,6 @@ public class HuellaDAO {
                     "(SELECT SUM(h2.valor * c2.factorEmision) FROM Huella h2 " +
                     " JOIN h2.idActividad a2 JOIN a2.idCategoria c2 WHERE h2.idUsuario.id = :uid)";
 
-    // ==========================================
-    // OPERACIONES CRUD (Create, Update, Delete)
-    // ==========================================
 
     public boolean addHuella(Huella huella) {
         boolean insertada = false;
@@ -161,9 +154,6 @@ public class HuellaDAO {
         return eliminada;
     }
 
-    // ==========================================
-    // CONSULTAS: ÁMBITO USUARIO (Datos individuales)
-    // ==========================================
 
     /**
      * Recupera el historial completo de un usuario.

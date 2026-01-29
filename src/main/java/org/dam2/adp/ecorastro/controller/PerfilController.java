@@ -27,7 +27,6 @@ import org.dam2.adp.ecorastro.util.SessionManager;
  */
 public class PerfilController {
 
-    // --- ELEMENTOS FXML ---
     /** Campo de texto para editar el nombre. */
     @FXML private TextField txtNombre;
     /** Campo de texto para editar el email. */
@@ -37,7 +36,6 @@ public class PerfilController {
     /** Campo para confirmar la nueva contraseña. */
     @FXML private PasswordField txtPassConfirm;
 
-    // --- SERVICIOS Y DATOS ---
     /** Servicio para operaciones con usuarios. */
     private final UsuarioService usuarioService = new UsuarioService();
     /** Referencia al usuario actualmente logueado. */
@@ -71,7 +69,6 @@ public class PerfilController {
         String pass1 = txtPassNueva.getText();
         String pass2 = txtPassConfirm.getText();
 
-        // VALIDACIONES
         if (nuevoNombre.isEmpty() || nuevoEmail.isEmpty()) {
             AlertUtils.error("El nombre y el email no pueden estar vacíos.");
             return;
@@ -82,16 +79,12 @@ public class PerfilController {
             return;
         }
 
-        // ACTUALIZAR OBJETO EN MEMORIA
         usuarioActual.setNombre(nuevoNombre);
         usuarioActual.setEmail(nuevoEmail);
 
-        // LLAMAR AL SERVICIO
-        // Pasamos la nueva contraseña (o cadena vacía si no la cambia)
         if (usuarioService.actualizarUsuario(usuarioActual, pass1)) {
             AlertUtils.info("Perfil actualizado correctamente.");
 
-            // Actualizar la sesión global por si acaso
             SessionManager.getInstance().setUsuarioActual(usuarioActual);
 
 
